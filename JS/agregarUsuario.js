@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Seleccionar elementos del DOM
-    const nameInput = document.querySelector('.userName');
-    const apellidoInput = document.querySelector('.lastName');
-    const idInput = document.querySelector('.userId');
-    const phoneInput = document.querySelector('.userPhone');
+    const nameInput = document.querySelector('.register__input--name');
+    const apellidoInput = document.querySelector('.register__input--lastname');
+    const idInput = document.querySelector('.register__input--id');
+    const phoneInput = document.querySelector('.register__input--phone');
     const rolSelect = document.querySelector('.form__select');
     const userForm = document.querySelector('.form');
 
@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }, 2000);
         }
     });
+
     // Función para leer el texto de los inputs
     function readText(e) {
         console.log('Leyendo input:', e.target);
@@ -69,6 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
             messageElement.remove();
         }, 4000);
     }
+
     // Eventos para capturar los valores de los inputs
     nameInput.addEventListener('input', readText);
     apellidoInput.addEventListener('input', readText);

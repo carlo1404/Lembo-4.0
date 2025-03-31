@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,33 +13,35 @@
             <div class="form__container">
                 <div class="form__field">
                     <label class="form__label" for="name">Nombre:</label>
-                    <input class="userName register__input--name" type="text" name="name" id="name" placeholder="Nombre">
+                    <input class="register__input--name" type="text" name="name" id="name" placeholder="Nombre" required>
                 </div>
                 <div class="form__field">
                     <label class="form__label" for="apellido">Apellido:</label>
-                    <input class="lastName register__input--lastname" type="text" name="apellido" id="apellido" placeholder="Apellido">
+                    <input class="register__input--lastname" type="text" name="apellido" id="apellido" placeholder="Apellido" required>
                 </div>
                 <div class="form__field">
                     <label class="form__label" for="id">ID:</label>
-                    <input class="userId register__input--id" type="number" name="id" id="id" placeholder="ID">
+                    <input class="register__input--id" type="number" name="id" id="id" placeholder="ID" required>
                 </div>
                 <div class="form__field">
                     <label class="form__label" for="telefono">Número de teléfono:</label>
-                    <input class="userPhone register__input--phone" type="number" name="telefono" id="telefono" placeholder="Número de teléfono">
+                    <input class="register__input--phone" type="tel" name="telefono" id="telefono" placeholder="Número de teléfono" required>
                 </div>
                 <div class="form__field">
-                    <label class="form__label userRole" for="rol">Rol:</label>
-                    <select class="form__select" name="rol" id="rol">
+                    <label class="form__label" for="rol">Rol:</label>
+                    <select class="form__select" name="rol" id="rol" required>
                         <option value="">Selecciona un Rol</option>
-                        <option value="Usuario">Usuario</option>
-                        <option value="ADMIN">ADMIN</option>
-                        <option value="personal_de_Apoyo">Personal de Apoyo</option>
+                        <option value="usuario">Usuario</option>
+                        <option value="admin">Admin</option>
+                        <option value="personal de apoyo">Personal de Apoyo</option>
                     </select>
                 </div>
             </div>
-            <button class="form__button" type="submit" formaction="../HTML/listar-usuarios.html">Agregar Usuario</button>
+            <button class="form__button" type="submit">Agregar Usuario</button>
         </form>
     </section>
+
+    <script src="../JS/agregarUsuario.js"></script>
+    <script src="../server-agregar-usuario.js"></script>
 </body>
-<script src="../JS/agregarUsuario.js"></script>
 </html>

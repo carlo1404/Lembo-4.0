@@ -10,7 +10,7 @@ app.use(cors()); // Evitar problemas con CORS
 const db = mysql.createConnection({
     host: "localhost",
     user: "root", // Reemplaza con tu usuario de MySQL
-    password: "", // Reemplaza con tu contraseña
+    password: "root", // Reemplaza con tu contraseña
     database: "lembo",
 });
 
