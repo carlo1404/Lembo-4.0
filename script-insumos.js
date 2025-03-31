@@ -9,36 +9,42 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const name = document.getElementById('name');
-        const id = document.getElementById('id');
-        const valor = document.getElementById('valor');
-        const cantidad = document.getElementById('cantidad');
-        const unidad = document.getElementById('unidad');
-        const descripcion = document.getElementById('descripcion');
+        const insumoName = document.querySelector('.form__input--name');
+        const insumoId = document.querySelector('.form__input--id');
+        const insumoValor = document.querySelector('.form__input--valor');
+        const insumoCantidad = document.querySelector('.form__input--cantidad');
+        const insumoUnidad = document.querySelector('#unidad');
+        const insumoDescripcion = document.querySelector('.form__textarea--descripcion');
 
         const formData = {
-            name: name ? name.value.trim() : '',
-            id: id ? parseInt(id.value) : 0,
-            valor: valor ? parseFloat(valor.value) : 0,
-            cantidad: cantidad ? parseInt(cantidad.value) : 0,
-            unidad: unidad ? unidad.value : '',
-            descripcion: descripcion ? descripcion.value.trim() : ''
+            name: insumoName ? insumoName.value.trim() : '',
+            id: insumoId ? insumoId.value.trim() : '',
+            valor: insumoValor ? insumoValor.value.trim() : '',
+            cantidad: insumoCantidad ? insumoCantidad.value.trim() : '',
+            unidad: insumoUnidad ? insumoUnidad.value : '',
+            descripcion: insumoDescripcion ? insumoDescripcion.value.trim() : ''
         };
 
-        // Validación
-        if (!formData.name || !formData.id || !formData.valor || !formData.cantidad || !formData.unidad) {
-            alert('Por favor, completa todos los campos obligatorios.');
-            return;
-        }
-
         try {
-            const response = await axios.post('http://localhost:5500/insumo', formData);
-            console.log('Insumo registrado:', response.data);
+            const response = await fetch('http://localhost:5500/api/insumos', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al enviar los datos. Por favor, intenta nuevamente.');
+            }
+
+            const result = await response.json();
+            console.log('Insumo registrado:', result);
             alert('Insumo agregado exitosamente');
             form.reset();
         } catch (error) {
-            console.error('Error:', error.response?.data || error.message);
-            alert('Ocurrió un error al registrar el insumo. Por favor, intenta nuevamente.');
+            console.error(error);
+            alert('Ocurrió un error al agregar el insumo. Por favor, intenta nuevamente.');
         }
     });
 });
