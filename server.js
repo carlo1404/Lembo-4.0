@@ -4,9 +4,9 @@ import cors from "cors";
 
 const app = express();
 
-// Configurar middleware
-app.use(express.json()); // Permitir el uso de JSON en las peticiones
-app.use(cors()); // Evitar problemas con CORS
+// Middleware
+app.use(express.json());
+app.use(cors());
 
 // Conexión a MySQL
 const db = mysql.createConnection({
@@ -17,7 +17,7 @@ const db = mysql.createConnection({
     port: 4400
 });
 
-// Manejo de errores en la conexión
+// Verificar conexión a la base de datos
 db.connect(err => {
     if (err) {
         console.error("❌ Error de conexión a MySQL:", err);
@@ -26,44 +26,32 @@ db.connect(err => {
     console.log("✅ Conectado a la base de datos MySQL");
 });
 
-// Ruta para agregar cultivos
-// app.post("/api/cultivos", (req, res) => {
-//    const { nombre, tipo, ubicacion, descripcion } = req.body;
-
- //   if (!nombre || !tipo || !ubicacion) {
- //       return res.status(400).json({ message: "Todos los campos obligatorios deben estar llenos." });
- //   }
-
- //   const sql = "INSERT INTO cultivos (nombre, tipo, ubicacion, descripcion) VALUES (?, ?, ?, ?)";
- //   db.query(sql, [nombre, tipo, ubicacion, descripcion], (err, result) => {
- //       if (err) {
- //           console.error("Error al insertar en la base de datos:", err);
- //           return res.status(500).json({ message: "Error al agregar cultivo" });
- //       }
- //       res.status(201).json({ message: "Cultivo agregado correctamente", id: result.insertId });
- //   });
-// });
-
-// Ruta para agregar insumos
+// Ruta única para agregar insumos
 app.post("/api/insumos", (req, res) => {
     console.log("📩 Datos recibidos:", req.body);
 
-app.post('/insumo', (req, res) => {
-    const {name, id, valor, cantidad, unidad, descripcion} = req.body;
+    const { id, nombre, valor_unitario, cantidad, unidad, descripcion } = req.body;
+
+    // Validación de campos
+    if (!id || !nombre || !valor_unitario || !cantidad || !unidad ) {
+        return res.status(400).json({ error: "Todos los campos son obligatorios" });
+    }
+
+    // Consulta SQL
     db.query(
-        'INSERT INTO insumos (name, id, valor, cantidad, unidad, descripcion) VALUES (?, ?, ?, ?, ?, ?)',
-        [name, id, valor, cantidad, unidad, descripcion],
+        'INSERT INTO insumos (id, nombre, valor_unitario, cantidad, unidad, descripcion) VALUES (?, ?, ?, ?, ?, ?)',
+        [id, nombre, valor_unitario, cantidad, unidad, descripcion],
         (err, results) => {
-            if(err){
-                console.log('Error inserting user: ', err);
-                res.status(500).json({error: 'Error inserting user'});
-            }else{
-                res.status(201).json({id: results.insertId, name, id, valor, cantidad, unidad, descripcion});
+            if (err) {
+                console.error('❌ Error al insertar en la base de datos:', err);
+                return res.status(500).json({ error: "Error al agregar el insumo" });
             }
+            res.status(201).json({ insertId: results.insertId, id, nombre, valor_unitario, cantidad, unidad, descripcion });
         }
     );
 });
+
+// Iniciar servidor
 app.listen(5500, () => {
-    console.log('Server is running on puerto htt://localhost:5500');
-    });
+    console.log("✅ Server running on http://localhost:5500");
 });
