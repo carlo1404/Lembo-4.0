@@ -23,7 +23,7 @@ body {
 /* Header & Navigation */
 .header {
     background-color: var(--white);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 0.2rem 0.4rem rgba(0,0,0,0.1);
     position: fixed;
     width: 100%;
     top: 0;
@@ -38,9 +38,17 @@ body {
 }
 
 .nav__logo-img {
-    height: 40px;
+    height: 4rem;
     width: auto;
 }
+.nav__toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
 
 .nav__list {
     display: flex;
@@ -63,13 +71,13 @@ body {
 
 /* Hero Section */
 .main {
-    margin-top: 72px;
+    margin-top: 7.2rem;
 }
 
 .hero {
     display: flex;
     align-items: center;
-    min-height: calc(100vh - 72px);
+    min-height: calc(100vh - 7.2rem);
     padding: 2rem;
     background-color: var(--light-gray);
 }
@@ -115,7 +123,7 @@ body {
     width: 100%;
     height: auto;
     border-radius: 1rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 0.4rem 0.6rem rgba(0,0,0,0.1);
 }
 
 /* Hero Stats */
@@ -131,12 +139,12 @@ body {
     background-color: var(--white);
     padding: 1.5rem;
     border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 0.2rem 0.4rem rgba(0,0,0,0.1);
     transition: transform 0.3s;
 }
 
 .hero__stat-item:hover {
-    transform: translateY(-5px);
+    transform: translateY(-0.5rem);
 }
 
 .hero__stat-item i {
@@ -185,14 +193,14 @@ body {
     padding: 2rem;
     background-color: var(--white);
     border-radius: 1rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 0.4rem 0.6rem rgba(0,0,0,0.1);
     transition: transform 0.3s, box-shadow 0.3s;
     overflow: hidden;
 }
 
 .feature-card__img {
     width: 100%;
-    height: 200px;
+    height: 20rem;
     object-fit: cover;
     border-radius: 0.5rem;
     margin-bottom: 1.5rem;
@@ -204,8 +212,8 @@ body {
 }
 
 .feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    transform: translateY(-0.5rem);
+    box-shadow: 0 0.6rem 1.2rem rgba(0,0,0,0.15);
 }
 
 .feature-card__list {
@@ -243,13 +251,13 @@ body {
 }
 
 .dashboard-preview__content {
-    max-width: 1200px;
+    max-width: 120rem;
     margin: 0 auto;
 }
 
 .dashboard-preview__stats {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
     gap: 2rem;
 }
 
@@ -262,7 +270,7 @@ body {
 }
 
 .stat-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-0.5rem);
 }
 
 .stat-card i {
@@ -290,13 +298,13 @@ body {
 }
 
 .footer__content {
-    max-width: 1200px;
+    max-width: 120rem;
     margin: 0 auto;
     text-align: center;
 }
 
 .footer__logo-img {
-    height: 40px;
+    height: 4rem;
     width: auto;
     margin-bottom: 1.5rem;
 }
@@ -317,9 +325,31 @@ body {
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (width < 768px) {
     .nav__list {
         display: none;
+        padding: 1rem;
+        flex-direction: column;
+        position: absolute;
+        top: 7rem;
+        right: 1rem;
+        left: auto;
+        background: white;
+        width: 40%;
+        gap: 1.2rem;
+        box-shadow: 0 0.4rem 0.6rem rgba(0, 0, 0, 0.1);
+        border-radius: 0.6rem;
+        text-align: center;
+    }
+    
+    .nav__list.active {
+        display: flex;
+    }
+    
+    .nav__toggle {
+        display: block;
+        height: 2.8rem;
+        width: 2.8rem;
     }
 
     .nav__menu-btn {
@@ -355,5 +385,33 @@ body {
 
     .feature-card__list {
         padding-left: 0;
+    }
+}
+
+
+@media (width < 480px) {
+    
+    .nav__list {
+        display: none;
+        padding: 1rem;
+        flex-direction: column;
+        position: absolute;
+        top: 7rem;
+        right: 1rem;
+        left: auto;
+        background: white;
+        width: 40%;
+        gap: 1.2rem;
+        box-shadow: 0 0.4rem 0.6rem rgba(0, 0, 0, 0.1);
+        border-radius: 0.6rem;
+        text-align: center;
+    }
+    
+    .nav__list.active {
+        display: flex;
+    }
+    
+    .nav__toggle {
+        display: block;
     }
 }
