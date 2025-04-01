@@ -15,6 +15,7 @@
     /* Secundary Color */
     --Green: #007832;
     --Blue: #50E5F9;
+    --Orange: #FDC300;
 
     /* Color Neutro */
     --Blanco: #FFF;
@@ -156,25 +157,25 @@ p {
 }
 /* Alertas del formulario */
 .correcto {
-    background-color: var(--Primary-500);
-    border: solid var(--Gris-100) 0.1rem ;
+    background-color: var(--Primary-600);
     border-radius: 1rem;
     margin-top: 1rem;
     text-align: center;
     padding: 1rem;
-    color: var(--Blanco);
+    color: var(--Negro);
     text-transform: uppercase;
     border-radius: 1rem;
 }
 
 .error {
-    background-color: var(--Gris-40);
+    background-color: var(--Orange);
     /* border: solid var(--Gris-100) 0.1rem ; */
     border-radius: 1rem;
     text-align: center;
+    
     padding: 1rem;
     margin-top: 1rem;
-    color: var(--blanco);
+    color: var(--Blanco);
     text-transform: uppercase;
     border-radius: 1rem;
 }
