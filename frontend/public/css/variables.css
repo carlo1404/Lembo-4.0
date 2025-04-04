@@ -1,0 +1,59 @@
+:root {
+    /* Primary color*/
+
+    --primary-950: #4DB100;
+    --primary-900: #55B40C;
+    --primary-800: #67BC26;
+    --primary-700: #79C43F;
+    --primary-600: #8BCC59;
+    --primary-500: #9DD472;
+    --primary-400: #AEDB8C;
+    --primary-300: #C0E3A5;
+    --primary-200: #D2EBBF;
+    --primary-100: #EAF3D8;
+    --primary-50: #F6FBF2;
+
+    /* Secundary color*/
+
+    --secundary-950:#FED638;
+    --secundary-900:#FED841;
+    --secundary-800:#FEDC55;
+    --secundary-700:#FEE069;
+    --secundary-600:#FEE47D;
+    --secundary-500:#FEE891;
+    --secundary-400:#FEECA5;
+    --secundary-300:#FEF0B9;
+    --secundary-200:#FEF4CD;
+    --secundary-100:#FEF8E1;
+    --secundary-50:#FEFCF5;
+
+    /* Basic color*/
+    --white: #fff;
+    --black: #000;
+    --gray-950: #101010;
+    --gray-900: #262626;
+    --gray-800: #3B3B3B;
+    --gray-700: #515151;
+    --gray-600: #676767;
+    --gray-500: #7D7D7D;
+    --gray-400: #929292;
+    --gray-300: #A8A8A8;
+    --gray-200: #BEBEBE;
+    --gray-100: #D4D4D4;
+    --gray-50: #E9E9E9;
+
+    /* Font-family */
+    --main-font: Helvetica, Arial, sans-serif;
+
+    /* Font-size */
+    --fs-xxxxl: 8.0rem; /* Ultra grande */
+    --fs-xxxl: 6.4rem; /* Súper grande */
+    --fs-xxl: 4.8rem; /* Extra grande */
+    --fs-xl: 4.0rem;  /* Muy grande */
+    --fs-lg: 3.2rem;  /* Grande */
+    --fs-md: 2.4rem;  /* Mediano */
+    --fs-sm: 2.0rem;  /* Pequeño */
+    --fs-xs: 1.6rem;  /* Extra pequeño */
+    --fs-xxs: 1.4rem; /* Extra extra pequeño */
+    --fs-xxxs: 1.2rem; /* Mínimo */
+}

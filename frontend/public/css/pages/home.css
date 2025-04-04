@@ -1,12 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Quicksand:wght@300..700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
-:root {
-    --primary-color: #39A900;
-    --secondary-color: #5DD12E;
-    --text-color: #313131;
-    --light-gray: #EDF7E8;
-    --white: #ffffff;
-}
 
 * {
     margin: 0;
@@ -20,8 +13,8 @@ body {
     line-height: 1.5;
 }
 
-/* Header & Navigation */
-.header {
+/* Header & Navigation*/
+/* .header {
     background-color: var(--white);
     box-shadow: 0 0.2rem 0.4rem rgba(0,0,0,0.1);
     position: fixed;
@@ -67,7 +60,7 @@ body {
 .nav__link--active {
     color: var(--primary-color);
 }
-
+ */
 
 /* Hero Section */
 .main {
@@ -280,7 +273,7 @@ body {
 }
 
 .stat-card h4 {
-    color: var(--text-color);
+    color: var(--gray-800);
     font-size: 1.25rem;
     margin-bottom: 0.5rem;
 }
@@ -292,7 +285,7 @@ body {
 
 /* Footer */
 .footer {
-    background-color: var(--text-color);
+    background-color: var(--gray-900);
     color: var(--white);
     padding: 3rem 2rem;
 }
@@ -321,7 +314,7 @@ body {
 }
 
 .footer__social-link:hover {
-    color: var(--primary-color);
+    color: var( --primary-950r);
 }
 
 /* Responsive Design */
