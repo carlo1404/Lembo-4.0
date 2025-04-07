@@ -6,7 +6,7 @@ document.getElementById("download").onclick = function() {
 };
 
 document.getElementById("listar-cultivos").onclick = function() {
-    window.location.href = "/frontend/public/views/components/cultivos.html";
+    window.location.href = "/frontend/public/views/cultivos.html";
 };
 
 document.addEventListener("DOMContentLoaded", function () {
