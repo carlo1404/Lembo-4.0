@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ciclo de Cultivo</title>
+    <link rel="stylesheet" href="/frontend/public/css/pages/ciclo_cultivo.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/frontend/JS/sidebar.js" defer></script>
+    <script src="/frontend/JS/graficos.js" defer></script>
+</head>
+
+<body>
+    <div class="header">
+        <div class="header__left-section">
+            <span class="header__menu-item">Cultivos</span>
+            <span class="header__menu-separator">/</span>
+            <span class="header__menu-item">Lista de Cultivos</span>
+            <span class="header__menu-separator">-</span>
+            <span class="header__menu-item">Cantidad de Cultivos: 34</span>
+        </div>
+        <div class="header__right-section">
+            <input type="text" class="header__search-bar" placeholder="Buscar">
+            <span class="header__icon"><i class='bx bx-message-square-add' id="add" title="Agregar"></i></span>
+            <span class="header__icon"><i class='bx bxs-download' id="download" title="Descargar Informe"></i></span>
+            <!-- <span class="header__icon"><i class='bx bxs-bell'></i></span>-->
+        </div>
+    </div>
+    <main>
+        <!-- Aquí va la SIDEBAR -->
+        <div class="sidebar"></div>
+        <div class="container__charts">
+            <h2 class="container__charts-title">Estadísticas de Cultivos</h2>
+            <section class="crop-cycle__charts">
+                <div class="chart chart--siembra">
+                    <h2 class="chart__title">Siembra</h2>
+                    <canvas id="chartSiembra"></canvas>
+                </div>
+                <div class="chart chart--crecimiento">
+                    <h2 class="chart__title">Crecimiento</h2>
+                    <canvas id="chartCrecimiento"></canvas>
+                </div>
+                <div class="chart chart--cosecha">
+                    <h2 class="chart__title">Cosecha</h2>
+                    <canvas id="chartCosecha"></canvas>
+                </div>
+            </section>
+            <div class="button__container">
+                <button class="button__listar-cultivos" id="listar-cultivos">Listar Cultivos</button>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

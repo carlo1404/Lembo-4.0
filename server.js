@@ -1,12 +1,26 @@
 import express from "express";
 import mysql from "mysql2";
 import cors from "cors";
+import path from 'path';
+import { fileURLToPath } from 'url';
 
+// Necesario para __dirname con ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Inicializar Express
 const app = express();
 
 // Middleware
 app.use(express.json());
 app.use(cors());
+
+// Servir archivos estáticos desde frontend/public
+app.use(express.static(path.join(__dirname, 'frontend', 'public')));
+
+app.get("/views/home.html", (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend", "public", "views", "home.html"));
+});
 
 // Conexión a MySQL
 const db = mysql.createConnection({
@@ -17,7 +31,7 @@ const db = mysql.createConnection({
     port: 3307
 });
 
-// Verificar conexión a la base de datos
+// Verificar conexión
 db.connect(err => {
     if (err) {
         console.error("❌ Error de conexión a MySQL:", err);
@@ -26,19 +40,21 @@ db.connect(err => {
     console.log("✅ Conectado a la base de datos MySQL");
 });
 
-// Ruta para agregar insumos (omitiendo el id)
-app.post("/api/insumos", (req, res) => {
-    console.log("📩 Datos recibidos:", req.body);
+// RUTA PRINCIPAL: Servir home.html
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend", "public", "views", "home.html"));
+});
 
-    // Extraemos sin el id
+/////////////////////// RUTAS DE API ///////////////////////
+
+// Ruta para agregar insumos
+app.post("/api/insumos", (req, res) => {
     const { nombre, valor_unitario, cantidad, unidad, descripcion } = req.body;
 
-    // Validación de campos
     if (!nombre || !valor_unitario || !cantidad || !unidad) {
         return res.status(400).json({ error: "Todos los campos son obligatorios" });
     }
 
-    // Consulta SQL sin el campo id
     db.query(
         'INSERT INTO insumos (nombre, valor_unitario, cantidad, unidad, descripcion) VALUES (?, ?, ?, ?, ?)',
         [nombre, valor_unitario, cantidad, unidad, descripcion],
@@ -51,23 +67,16 @@ app.post("/api/insumos", (req, res) => {
         }
     );
 });
-// CONECCION DE USUARIOS 
-// Ruta para agregar un nuevo usuario
-// Ruta para agregar un nuevo usuario
+
+// Ruta para agregar usuarios
 app.post('/api/usuarios', (req, res) => {
     const { id, nombre, apellido, numero_telefonico, rol } = req.body;
-    // Validar los campos
-    if  (!id || !nombre || !apellido || !numero_telefonico || !rol) {
+    if (!id || !nombre || !apellido || !numero_telefonico || !rol) {
         return res.status(400).json({ error: "Todos los campos son obligatorios" });
     }
 
-    // Insertar el nuevo usuario en la base de datos (no es necesario el 'id' ya que es auto_incremental)
     const query = 'INSERT INTO usuarios (id, nombre, apellido, numero_telefonico, rol) VALUES (?, ?, ?, ?, ?)';
-db.query(query, [id, nombre, apellido, numero_telefonico, rol], (err, results) => {
-    // mostramos en la terminal los datos recibidos 
-    console.log('Datos recibidos:', { id, nombre, apellido, numero_telefonico, rol });
-
-
+    db.query(query, [id, nombre, apellido, numero_telefonico, rol], (err, results) => {
         if (err) {
             console.error('❌ Error al insertar usuario:', err);
             return res.status(500).json({ error: "Error al agregar el usuario" });
@@ -79,20 +88,14 @@ db.query(query, [id, nombre, apellido, numero_telefonico, rol], (err, results) =
 // Ruta para agregar cultivos
 app.post("/api/cultivos", (req, res) => {
     const { nombre, tipo, ubicacion, descripcion, usuario_id } = req.body;
-
-    // Validación de los campos obligatorios
     if (!nombre || !tipo || !ubicacion || !descripcion || !usuario_id) {
         return res.status(400).json({ message: "Todos los campos obligatorios deben estar llenos." });
     }
 
-    // mostramos en la terminal los datos recibidos
-    console.log('Datos recibidos:', { nombre, tipo, ubicacion, descripcion, usuario_id });
-    
-    // Insertar el cultivo con el usuario_id
     const sql = "INSERT INTO cultivos (nombre, tipo, ubicacion, descripcion, usuario_id) VALUES (?, ?, ?, ?, ?)";
     db.query(sql, [nombre, tipo, ubicacion, descripcion, usuario_id], (err, result) => {
         if (err) {
-            console.error("Error al insertar en la base de datos:", err);
+            console.error("❌ Error al insertar en la base de datos:", err);
             return res.status(500).json({ message: "Error al agregar cultivo" });
         }
         res.status(201).json({ message: "Cultivo agregado correctamente", id: result.insertId });
@@ -101,5 +104,5 @@ app.post("/api/cultivos", (req, res) => {
 
 // Iniciar servidor
 app.listen(3000, () => {
-    console.log("✅ Server running on http://localhost:3000");
+    console.log("🚀 Servidor corriendo en http://localhost:3000");
 });

@@ -1,12 +1,9 @@
+fetch("/frontend/public/views/components/header.html")
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById("header-container").innerHTML = data;
 
-
-
-    fetch("header.html")
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById("header-container").innerHTML = data;
-
-            // 👇 Aquí debes ejecutar el script del menú
+        setTimeout(() => {
             const menuToggle = document.getElementById("menu-toggle");
             const navList = document.getElementById("nav-list");
 
@@ -22,16 +19,17 @@
                     }
                 });
             }
-        });
-
-
+        }, 0);
+    });
 // para que aparezca el header 
 
-document.addEventListener('DOMContentLoaded', () => {
-    fetch('/frontend/public/views/components/header.html')
-        .then(response => response.text())
-        .then(data => {
-            document.querySelector('header').innerHTML = data;
-        })
-        .catch(error => console.error('Error al cargar el header:', error));
+document.addEventListener("DOMContentLoaded", function () {
+    const toggleButton = document.getElementById("menu-toggle");
+    const navList = document.getElementById("nav-list");
+
+    if (toggleButton && navList) {
+        toggleButton.addEventListener("click", function () {
+            navList.classList.toggle("active");
+        });
+    }
 });
