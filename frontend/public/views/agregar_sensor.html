@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/frontend/public/css/pages/Agregar_insumo.css">
+    <title>Agregar Sensor</title>
+</head>
+
+<body>
+    <section class="form-container">
+        <form class="form" method="POST" action="">
+            <h2 class="form__title">Agregar Sensor</h2>
+            <div class="form__container">
+                <div class="form__field">
+                    <label class="form__label" for="unidad">Tipo de sensor:</label>
+                    <select class="form__select" name="unidad" id="unidad">
+                        <option value="">Tipo de sensor</option>
+                        <option value="luz">Luz</option>
+                        <option value="movimiento">Movimiento</option>
+                        <option value="temperatura">Temperatura</option>
+                        <option value="humedad">Humedad</option>
+                    </select>
+                </div>
+                <div class="form__field">
+                    <label class="form__label" for="id">ID:</label>
+                    <input class="form__input form__input--id" type="number" name="id" id="id" placeholder="ID Sensor">
+                </div>
+                <div class="form__field">
+                    <label class="form__label" for="name">Nombre:</label>
+                    <input class="form__input form__input--name" type="text" name="name" id="name"
+                        placeholder="Nombre del sensor">
+                </div>
+                <div class="form__field">
+                    <label class="form__label" for="medida">Unidad de medida:</label>
+                    <select class="form__select" name="medida" id="medida">
+                        <option value="">Unidad de medida</option>
+                        <option value="metros">Metros</option>
+                        <option value="lux">Intensidad (lux)</option>
+                        <option value="temperatura">Temperatura (ºC)</option>
+                        <option value="humedad">Humedad (%)</option>
+                    </select>
+                </div>
+                <div class="form__field">
+                    <label class="form__label" for="estado">Estado:</label>
+                    <select class="form__select" name="estado" id="estado">
+                        <option value="habilitado">Habilitado</option>
+                        <option value="deshabilitado">Deshabilitado</option>
+                    </select>
+                </div>
+                <div class="form__field"></div>
+                <label class="form__label" for="tiempo">Tiempo de muestreo:</label>
+                <input class="form__input form__input--tiempo" type="number" name="tiempo" id="Tiempo"
+                    placeholder="Tiempo de muestreo">
+            </div>
+            <div class="form__field">
+                <label class="form__label" for="img">Imagen del Sensor:</label>
+                <input class="form__input form__input--img" type="file" name="img" id="img"
+                    placeholder="Imagen del sensor">
+            </div>
+            <div class="form__field">
+                <label class="form__label" for="descripcion">Descripción:</label>
+                <textarea class="form__textarea form__textarea--descripcion" name="descripción" id="descripcion"
+                    placeholder="Descripción"></textarea>
+            </div>
+            </div>
+            <button class="form__button" type="submit" id="agregarSensor">Agregar Sensor</button>
+        </form>
+    </section>
+    <script>
+        document.getElementById("agregarSensor").onclick = function () {
+            window.location.href = "listar-sensor.html";
+        };
+    </script>
+</body>
+<script src="/frontend/JS/agregarSensor.js"></script>
+</html>

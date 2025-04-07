@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Sensor</title>
+    <link rel="stylesheet" href="/frontend/public/css/pages/insumo.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/frontend/JS/sidebar.js" defer></script>
+    <script src="/frontend/JS/scriptHTML2.js" defer></script>
+</head>
+
+<body>
+    <div class="header">
+        <div class="header__left-section">
+            <span class="header__menu-item">Sensor</span>
+            <span class="header__menu-separator">/</span>
+            <span class="header__menu-item">Lista de Sensores</span>
+            <span class="header__menu-separator">-</span>
+            <span class="header__menu-item">Cantidad de Sensores: 8</span>
+        </div>
+        <div class="header__right-section">
+            <input type="text" class="header__search-bar" placeholder="Buscar">
+            <span class="header__icon"><i class='bx bx-message-square-add' id="add" title="Agregar"></i></span>
+            <span class="header__icon"><i class='bx bxs-download' id="download" title="Descargar Informe"></i></span>
+            <span class="header__icon"><box-icon name='bell' type='solid'></box-icon></span>
+        </div>
+    </div>
+    <main>
+        <!-- Aquí va la SIDEBAR -->
+        <div class="sidebar"> </div>
+        <section class="content">
+            <table class="content__table">
+                <thead class="content__table-head">
+                    <tr class="content__table-row">
+                        <th class="content__table-header">Nombre</th>
+                        <th class="content__table-header">ID</th>
+                        <th class="content__table-header">Tipo de sensor</th>
+                        <th class="content__table-header">Unidad de medida</th>
+                        <th class="content__table-header">Tiempo de escaneo</th>
+                        <th class="content__table-header">Estado</th>
+                        <th class="content__table-header">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="content__table-body">
+                    <tr class="content__table-row">
+                        <td class="content__table-data">Sensor de Luz</td>
+                        <td class="content__table-data">SEN76286</td>
+                        <td class="content__table-data">Sensor de luz</td>
+                        <td class="content__table-data">Pascal</td>
+                        <td class="content__table-data">3 minutos</td>
+                        <td class="content__table-data content__table-data--status">Habilitado:
+                            &nbsp;<span></span>&nbsp; Deshabilitado: &nbsp;<span
+                                class="content__status-disabled"></span></td>
+                        <td class="content__table-data">
+                            <div class="content__icon-container">
+                                <div class="content__icon content__icon--blue" title="Editar">
+                                    <i class='bx bxs-edit' id="redirectButton"></i>
+                                </div>
+                                <div class="content__icon content__icon--red" title="Eliminar">
+                                    <i class='bx bxs-trash'></i>
+                                </div>
+                                <div class="icon-container__icon icon-container__icon--green" id="cropCycleDetails"
+                                    title="Más información">
+                                    <i class='bx bx-plus-circle' id="showCycleDetails"></i>
+                                </div>
+                                <!-- Modal -->
+                                <div class="modal" id="cropCycleModal">
+                                    <div class="modal__content">
+                                        <span class="modal__close" id="closeModal">&times;</span>
+                                        <div id="modalContent" class="modal__body">
+                                            <!-- Aquí se carga dinámicamente el contenido del sensor -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="content__table-row">
+                        <td class="content__table-data">Sensor de frecuencia de luz</td>
+                        <td class="content__table-data">SEN76269</td>
+                        <td class="content__table-data">Frecuencia de luz</td>
+                        <td class="content__table-data">Intencidad luminica</td>
+                        <td class="content__table-data">10 segundos</td>
+                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span
+                                class="content__status-enabled"></span>&nbsp;
+                            Deshabilitado:&nbsp;<span></span></td>
+                        <td class="content__table-data">
+                            <div class="content__icon-container">
+                                <div class="content__icon content__icon--blue" title="Editar">
+                                    <i class='bx bxs-edit' id="redirectButton"></i>
+                                </div>
+                                <div class="content__icon content__icon--red" title="Eliminar">
+                                    <i class='bx bxs-trash'></i>
+                                </div>
+                                <div class="icon-container__icon icon-container__icon--green" id="cropCycleDetails"
+                                    title="Más información">
+                                    <i class='bx bx-plus-circle' id="showCycleDetails"></i>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="content__table-row">
+                        <td class="content__table-data">Sensor de Movimiento</td>
+                        <td class="content__table-data">SEN79286</td>
+                        <td class="content__table-data">Movimiento</td>
+                        <td class="content__table-data">Distancia</td>
+                        <td class="content__table-data">2 minutos</td>
+                        <td class="content__table-data content__table-data--status">Habilitado:
+                            &nbsp;<span></span>&nbsp; Deshabilitado: &nbsp;<span
+                                class="content__status-disabled"></span></td>
+                        <td class="content__table-data">
+                            <div class="content__icon-container">
+                                <div class="content__icon content__icon--blue" title="Editar">
+                                    <i class='bx bxs-edit' id="redirectButton"></i>
+                                </div>
+                                <div class="content__icon content__icon--red" title="Eliminar">
+                                    <i class='bx bxs-trash'></i>
+                                </div>
+                                <div class="icon-container__icon icon-container__icon--green" id="cropCycleDetails"
+                                    title="Más información">
+                                    <i class='bx bx-plus-circle' id="showCycleDetails"></i>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="content__table-row">
+                        <td class="content__table-data">Sensor de Humedad</td>
+                        <td class="content__table-data">SEN74269</td>
+                        <td class="content__table-data">Sensor de Humedad</td>
+                        <td class="content__table-data">Humedad relativa</td>
+                        <td class="content__table-data">10 segundos</td>
+                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span
+                                class="content__status-enabled"></span>&nbsp;
+                            Deshabilitado:&nbsp;<span></span></td>
+                        <td class="content__table-data">
+                            <div class="content__icon-container">
+                                <div class="content__icon content__icon--blue" title="Editar">
+                                    <i class='bx bxs-edit' id="redirectButton"></i>
+                                </div>
+                                <div class="content__icon content__icon--red" title="Eliminar">
+                                    <i class='bx bxs-trash'></i>
+                                </div>
+                                <div class="icon-container__icon icon-container__icon--green" id="cropCycleDetails"
+                                    title="Más información">
+                                    <i class='bx bx-plus-circle' id="showCycleDetails"></i>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="content__table-row">
+                        <td class="content__table-data">Sensor de Temperatura</td>
+                        <td class="content__table-data">SEN77269</td>
+                        <td class="content__table-data">Sensor de Temperatura</td>
+                        <td class="content__table-data">Energía calorica</td>
+                        <td class="content__table-data">8 segundos</td>
+                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span
+                                class="content__status-enabled"></span>&nbsp;
+                            Deshabilitado:&nbsp;<span></span></td>
+                        <td class="content__table-data">
+                            <div class="content__icon-container">
+                                <div class="content__icon content__icon--blue" title="Editar">
+                                    <i class='bx bxs-edit' id="redirectButton"></i>
+                                </div>
+                                <div class="content__icon content__icon--red" title="Eliminar">
+                                    <i class='bx bxs-trash'></i>
+                                </div>
+                                <div class="icon-container__icon icon-container__icon--green" id="cropCycleDetails"
+                                    title="Más información">
+                                    <i class='bx bx-plus-circle' id="showCycleDetails"></i>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="content__table-row">
+                        <td class="content__table-data">Sensor de Temperatura #2</td>
+                        <td class="content__table-data">SEN77269</td>
+                        <td class="content__table-data">Sensor de Temperatura</td>
+                        <td class="content__table-data">Energía calorica</td>
+                        <td class="content__table-data">8 segundos</td>
+                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span
+                                class="content__status-enabled"></span>&nbsp;
+                            Deshabilitado:&nbsp;<span></span></td>
+                        <td class="content__table-data">
+                            <div class="content__icon-container">
+                                <div class="content__icon content__icon--blue" title="Editar">
+                                    <i class='bx bxs-edit' id="redirectButton"></i>
+                                </div>
+                                <div class="content__icon content__icon--red" title="Eliminar">
+                                    <i class='bx bxs-trash'></i>
+                                </div>
+                                <div class="icon-container__icon icon-container__icon--green" id="cropCycleDetails"
+                                    title="Más información">
+                                    <i class='bx bx-plus-circle' id="showCycleDetails"></i>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="content__table-row">
+                        <td class="content__table-data">Sensor de frecuencia de luz #2</td>
+                        <td class="content__table-data">SEN76269</td>
+                        <td class="content__table-data">Frecuencia de luz</td>
+                        <td class="content__table-data">Intencidad luminica</td>
+                        <td class="content__table-data">10 segundos</td>
+                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span
+                                class="content__status-enabled"></span>&nbsp;
+                            Deshabilitado:&nbsp;<span></span></td>
+                        <td class="content__table-data">
+                            <div class="content__icon-container">
+                                <div class="content__icon content__icon--blue" title="Editar">
+                                    <i class='bx bxs-edit' id="redirectButton"></i>
+                                </div>
+                                <div class="content__icon content__icon--red" title="Eliminar">
+                                    <i class='bx bxs-trash'></i>
+                                </div>
+                                <div class="icon-container__icon icon-container__icon--green" id="cropCycleDetails"
+                                    title="Más información">
+                                    <i class='bx bx-plus-circle' id="showCycleDetails"></i>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="content__table-row">
+                        <td class="content__table-data">Sensor de Luz #2</td>
+                        <td class="content__table-data">SEN76586</td>
+                        <td class="content__table-data">Sensor de luz</td>
+                        <td class="content__table-data">Pascal</td>
+                        <td class="content__table-data">3 minutos</td>
+                        <td class="content__table-data content__table-data--status">Habilitado:
+                            &nbsp;<span></span>&nbsp; Deshabilitado: &nbsp;<span
+                                class="content__status-disabled"></span></td>
+                        <td class="content__table-data">
+                            <div class="content__icon-container">
+                                <div class="content__icon content__icon--blue" title="Editar">
+                                    <i class='bx bxs-edit' id="redirectButton"></i>
+                                </div>
+                                <div class="content__icon content__icon--red" title="Eliminar">
+                                    <i class='bx bxs-trash'></i>
+                                </div>
+                                <div class="icon-container__icon icon-container__icon--green" id="cropCycleDetails"
+                                    title="Más información">
+                                    <i class='bx bx-plus-circle' id="showCycleDetails"></i>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+</body>
+
+</html>
