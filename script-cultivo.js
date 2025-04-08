@@ -1,47 +1,29 @@
-const express = require("express");
-const mysql = require("mysql2");
-const cors = require("cors");
+document.getElementById("cultivoForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-const app = express();
-app.use(express.json()); // Permitir JSON en las peticiones
-app.use(cors()); // Evitar problemas con CORS
+    const form = this;
+    const formData = new FormData(form);
 
-// aca esta la  Conexión a MySQL
-const db = mysql.createConnection({
-    host: "localhost",
-    user: "root", // Reemplaza con tu usuario de MySQL
-    password: "root", // Reemplaza con tu contraseña
-    database: "lembo",
-});
+    try {
+        const response = await fetch("http://localhost:3000/api/cultivos", {
+            method: "POST",
+            body: formData
+        });
 
-db.connect(err => {
-    if (err) {
-        console.error("Error de conexión a MySQL:", err);
-        return;
-    }
-    console.log("Conectado a MySQL");
-});
+        const data = await response.json();
 
-// Ruta para agregar cultivos
-app.post("/api/cultivos", (req, res) => {
-    const { nombre, tipo, ubicacion, descripcion } = req.body;
+        if (response.ok) {
+            alert("✅ Cultivo agregado correctamente");
+            console.log(data);
 
-    if (!nombre || !tipo || !ubicacion) {
-        return res.status(400).json({ message: "Todos los campos obligatorios deben estar llenos." });
-    }
-
-    const sql = "INSERT INTO cultivos (nombre, tipo, ubicacion, descripcion) VALUES (?, ?, ?, ?)";
-    db.query(sql, [nombre, tipo, ubicacion, descripcion], (err, result) => {
-        if (err) {
-            console.error("Error al insertar en la base de datos:", err);
-            return res.status(500).json({ message: "Error al agregar cultivo" });
+            setTimeout(() => {
+                window.location.href = 'cultivos.html';
+            }, 3000);
+        } else {
+            alert("❌ Error: " + (data.message || data.error));
         }
-        res.status(201).json({ message: "Cultivo agregado correctamente", id: result.insertId });
-    });
-});
-
-// Iniciar el servidor
-const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+    } catch (err) {
+        console.error("❌ Error en la petición:", err);
+        alert("❌ Hubo un error al conectar con el servidor.");
+    }
 });

@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/frontend/public/css/pages/cultivo-agregar.css">
     <link rel="stylesheet" href="/frontend/public/css/pages/Normalize.css">
+    <link rel="stylesheet" href="/frontend/public/css/main.css">
+    <link rel="stylesheet" href="/frontend/public/css/pages/cultivo-agregar.css">
     <title>Agregar Cultivo</title>
 </head>
 <body>
@@ -14,12 +15,32 @@
             <div class="form-container__content">
                 <div class="form-container__field">
                     <label for="nombre" class="form-container__label">Nombre:</label>
-                    <input type="text" name="nombre" id="nombre" placeholder="Nombre" class="form-container__input" required>
+                    <input type="text" name="nombre" id="nombre" placeholder="Lechuga" class="form-container__input" required>
                 </div>
+
+                <div class="form-container__field">
+                    <label for="tamaño" class="form-container__label">Tamaño:</label>
+                    <input type="number" id="tamaño" name="tamaño" placeholder="798" class="form-container__input" required>
+                </div>
+
+                <div class="form-container__field">
+                    <label for="id" class="form-container__label">ID:</label>
+                    <input type="text" name="id" id="id" placeholder="CUL000011" class="form-container__input" required>
+                </div>
+
+                <div class="form-container__field">
+                    <label for="imagen" class="form-container__label">Imagen del Cultivo:</label>
+                    <input type="file" id="imagen" name="imagen" accept="image/*" class="form-container__input-file">
+                    <div class="form-container__preview">
+                        <img id="preview-img" src="#" alt="Vista previa de la imagen" style="display: none;">
+                    </div>
+                </div>
+
                 <div class="form-container__field">
                     <label for="tipo" class="form-container__label">Tipo:</label>
                     <input type="text" name="tipo" id="tipo" placeholder="Tipo de Cultivo" class="form-container__input" required>
                 </div>
+
                 <div class="form-container__field">
                     <label for="ubicacion" class="form-container__label">Ubicación:</label>
                     <select name="ubicacion" id="ubicacion" class="form-container__select" required>
@@ -30,18 +51,21 @@
                         <option value="Invernadero Central">Invernadero Central</option>
                     </select>
                 </div>
+
                 <div class="form-container__field">
                     <label for="descripcion" class="form-container__label">Descripción:</label>
                     <textarea name="descripcion" id="descripcion" placeholder="Descripción" class="form-container__textarea" required></textarea>
                 </div>
+
                 <!-- Campo oculto para usuario_id -->
                 <input type="hidden" name="usuario_id" id="usuario_id" value="1">
             </div>
+
             <button type="submit" class="form-container__button">Agregar Cultivo</button>
         </form>
     </section>
 
-    <script src="../JS/cultivoAgregar.js"></script>
-    <script src="../script-cultivo.js"></script>
+    <script src="/frontend/JS/cultivoAgregar.js"></script>
+    <script src="/script-cultivo.js"></script>
 </body>
 </html>
