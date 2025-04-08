@@ -1,5 +1,3 @@
-
-
 document.addEventListener('DOMContentLoaded', () => {
     const insumos = [
         { nombre: "Semillas", cantidad: 5 },
