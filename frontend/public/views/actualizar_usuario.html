@@ -1,44 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/frontend/public/css/pages/actualizar_usuarios.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="/frontend/public/css/pages/actualizar_cultivos.css"/>
     <title>Actualizar Usuario</title>
 </head>
 <body>
-    <section class="form-container">
-        <form class="form">
-            <h2 class="form__title">Actualizar Usuario</h2>
-            <div class="form__container">
-                <div class="form__content">
-                    <label class="form__label" for="nombre">Nombre</label>
-                    <input class="userName form__input" type="text" id="nombre" placeholder="PAPA" name="nombre">
-                    <label class="form__label" for="apellido">Apellido</label>
-                    <input class="lastName form__input" type="text" id="apellido" placeholder="FRANCISCO" name="apellido">
-                </div>
-                <div class="form__image-container">
-                    <img class="form__img" src="/IMG/foto_perfil.jpg" alt="Foto de perfil">
-                </div>
-            </div>     
-            <div class="form__campo">
-                <label class="form__label" for="id">ID</label>
-                <input class="userId form__input" type="text" name="id" id="id" placeholder="USR76286">
-            </div>
-            <div class="form__campo">
-                <label class="form__label" for="unidad">Tipo de Usuario:</label>
-                <select class="form__select" name="unidad" id="unidad">
-                    <option value="#">Seleccione un Rol</option>
-                    <option value="#">Administrador</option>
-                    <option value="#">Usuario</option>
-                    <option value="#">Campesino</option>
-                </select>
-            </div>
-            <div class="form__campo">
-                <label class="form__label" for="descripcion">Descripción:</label>
-                <textarea class="form__textarea" name="descripción" id="descripcion" placeholder="Descripción"></textarea>
-            </div>
-            <button class="form__button" type="submit" formaction="/frontend/public/views/listar-usuarios.html">Actualizar Usuario</button>
+<section class="form-container">
+    <form class="form">
+        <h2 class="form__title">Actualizar Usuario</h2>
+
+    <!-- Nombre, Apellido y Foto -->
+    <div class="form__container">
+        <div class="form__content">
+        <div class="form__campo">
+            <label class="form__label" for="nombre">Nombre</label>
+            <input class="userName form__input" type="text" id="nombre" placeholder="PAPA" name="nombre"/>
+        </div>
+        <div class="form__campo">
+            <label class="form__label" for="apellido">Apellido</label>
+            <input class="lastName form__input" type="text" id="apellido" placeholder="FRANCISCO" name="apellido"/>
+        </div>
+        </div>
+        <div class="form__image-container">
+            <img class="form__img" src="/IMG/foto_perfil.jpg" alt="Foto de perfil"/>
+        </div>
+    </div>
+
+    <!-- Tipo de documento -->
+    <div class="form__campo">
+        <label class="form__label" for="tipo_documento">Tipo de Documento</label>
+        <select class="form__select" name="tipo_documento" id="tipo_documento">
+            <option value="#">Seleccione un tipo</option>
+            <option value="cc">Cédula de Ciudadanía</option>
+            <option value="ce">Cédula de Extranjería</option>
+            <option value="ti">Tarjeta de Identidad</option>
+            <option value="pasaporte">Pasaporte</option>
+        </select>
+    </div>
+
+    <!-- ID -->
+    <div class="form__campo">
+        <label class="form__label" for="id">ID</label>
+        <input class="userId form__input" type="text" name="id" id="id" placeholder="USR76286"/>
+    </div>
+
+    <!-- Teléfono -->
+        <div class="form__campo">
+            <label class="form__label" for="telefono">Teléfono</label>
+            <input class="form__input" type="tel" name="telefono" id="telefono" placeholder="3123456789"/>
+        </div>
+
+    <!-- Correo Electrónico -->
+        <div class="form__campo">
+            <label class="form__label" for="correo">Correo Electrónico</label>
+            <input class="form__input" type="email" name="correo" id="correo" placeholder="usuario@correo.com"/>
+        </div>
+
+<!-- Tipo de Usuario -->
+    <div class="form__campo">
+        <label class="form__label" for="unidad">Tipo de Usuario</label>
+            <select class="form__select" name="unidad" id="unidad">
+                <option value="#">Seleccione un Rol</option>
+                <option value="admin">Administrador</option>
+                <option value="usuario">Usuario</option>
+                <option value="campesino">Campesino</option>
+            </select>
+    </div>
+
+    <!-- Descripción -->
+        <div class="form__campo">
+            <label class="form__label" for="descripcion">Descripción</label>
+            <textarea class="form__textarea" name="descripción" id="descripcion" placeholder="Descripción"></textarea>
+        </div>
+
+            <button class="form__button" type="submit" formaction="/frontend/public/views/listar-usuarios.html">
+                Actualizar Usuario
+            </button>
         </form>
     </section>
 </body>

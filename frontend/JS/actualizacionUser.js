@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Si todo está correcto, mostrar mensaje de éxito
             showMessage('¡Usuario actualizado con éxito!', 'correcto');
             setTimeout(() => {
-                window.location.href = '../HTML/listar-usuarios.html';
+                window.location.href = '/frontend/public/views/listar-usuarios.html'; // Redirigir a la lista de usuarios después de 2 segundos
             }, 2000);
         }
     });

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Quicksand:wght@300..700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Quicksand:wght@400;600&family=Work+Sans:wght@400;600&display=swap');
 
 :root {
     --green-50: #EDF7E8;
@@ -33,121 +33,143 @@
     margin: 0;
     padding: 0;
 }
+
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+    font-family: 'Quicksand', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     background-image: url(/IMG/Fondo_Cultivo.png);
     background-size: cover;
-
+    background-position: center;
+    overflow: hidden;
 }
 
 .form-container {
-    /* display: flex; */
-    width: 35.625rem;
+    width: 90%;
+    max-width: 720px;
     background-color: var(--white);
-    border-radius: 0.9375rem;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 1.875rem;
-    height: 41.875rem;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1rem 1.2rem;
+    max-height: 95vh;
+    overflow-y: auto;
 }
 
-h2 {
+.form__title {
     text-align: center;
     color: var(--green-900);
-    font-size: 1.5rem;
-    margin-bottom: 1.25rem;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
 }
 
 .form__container {
     display: flex;
-    justify-content: flex-end; /* Alinea los elementos hacia la derecha */
-    align-items: center;
-    width: 18.75rem;
-}
-.form__image-container {
-    display: flex;
-    max-width: 1.25rem ; /* Ajusta el ancho máximo según tu preferencia */
-    max-height: 3.125rem;
-    margin-left: 1.875rem;
-    transform: translateY(-1.875rem);
-}
-.form__image-container,.form__img{
-    width: 8.75rem;
-    height: 8.75rem;
-    border-radius: 0.9375rem;
-    cursor: pointer;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 .form__content {
     display: flex;
     flex-direction: column;
-    flex-grow: 2;
-    gap: 0.3125rem;
-}
-.form__content,label{
-    font-size: 0.875rem;
-    width: 30%;
-    color: var(--gray-80);
-}
-.form__content, label, input{
-    width: 80%;
-    height: 20%;
-    padding: 0.625rem;
-    border-radius: 5;
+    gap: 0.6rem;
+    flex: 1;
+    min-width: 220px;
 }
 
 .form__campo {
     display: flex;
     flex-direction: column;
-    gap: 0.3125rem;
-    width: 100%;
-    height: 6.875rem;
+    gap: 0.3rem;
+    margin-top: 0.4rem;
 }
 
-.form__campo label {
-    font-size: 0.875rem;
+.form__label {
+    font-size: 0.85rem;
     color: var(--gray-80);
-    width: 70%;
+    font-weight: 600;
 }
 
-.form__campo input,
-.form__campo select,
-.form__campo textarea {
-    padding: 0.75rem;
-    font-size: 0.875rem;
-    border: 0.0625rem solid var(--gray-60);
-    border-radius: 0.3125rem;
+.form__input,
+.form__select,
+.form__textarea {
+    padding: 0.45rem 0.7rem;
+    font-size: 0.85rem;
+    border: 1px solid var(--gray-60);
+    border-radius: 6px;
+    background-color: var(--gray-20);
     outline: none;
-    height: 2.5rem;
 }
 
-.form__campo input::placeholder,
-.form__campo textarea::placeholder {
-    color: var(--gray-60);
+.form__input:focus,
+.form__select:focus,
+.form__textarea:focus {
+    border-color: var(--green-700);
+    background-color: #fff;
 }
 
-textarea {
-    resize: none;
-    height: 3.75rem;
+textarea.form__textarea {
+    resize: vertical;
+    min-height: 60px;
+    max-height: 100px;
 }
 
-button {
+.form__image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 2px solid var(--gray-40);
+    cursor: pointer;
+}
+
+.form__img {
     width: 100%;
-    padding: 0.625rem;
+    height: 100%;
+    object-fit: cover;
+}
+
+.form__button {
+    margin-top: 1.2rem;
+    width: 100%;
+    padding: 0.6rem;
     background-color: var(--green-950);
     color: var(--white);
-    font-size: 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
     border: none;
-    border-radius: 0.3125rem;
+    border-radius: 6px;
     cursor: pointer;
-    margin-top: 0.9375rem;
+    transition: background-color 0.3s ease;
 }
 
-button:hover {
+.form__button:hover {
     background-color: var(--green-900);
+}
+
+/* Responsive */
+@media screen and (max-width: 600px) {
+    .form__container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form__img {
+        width: 90px;
+        height: 90px;
+    }
+
+    .form__title {
+        font-size: 1.2rem;
+    }
+
+    .form-container {
+        padding: 1rem;
+    }
 }
