@@ -148,7 +148,7 @@ main {
     max-width: 50rem;
     margin: 2rem auto;
     padding: 2rem;
-    background-color: #fff;
+    background-color: var(--white);
     border-radius: 1rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -157,13 +157,15 @@ main {
 .content__chart-container h2 {
     margin-bottom: 1.5rem;
     font-size: 1.8rem;
-    color: #333;
+    color: var(--gray-100);
 }
 
 .insumosChart {
     width: 100% !important;
+
     height: 400px !important;
     height: auto !important;
+
 }
 
 /* Botón de listar insumos */
