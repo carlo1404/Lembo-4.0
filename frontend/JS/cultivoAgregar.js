@@ -1,15 +1,12 @@
+// Manejar envío del formulario
 document.getElementById("cultivoForm").addEventListener("submit", function(event) {
     event.preventDefault();
 
-    const formData = new FormData(this);
-
-    // Asegurar que usuario_id se agregue correctamente
-    const usuarioId = document.getElementById("usuario_id").value;
-    formData.append("usuario_id", usuarioId);
+    const formData = new FormData(this); // Ya incluye el campo oculto "usuario_id"
 
     fetch("http://localhost:3000/api/cultivos", {
         method: "POST",
-        body: formData, // Enviamos FormData directamente
+        body: formData
     })
     .then(response => response.json())
     .then(data => {
@@ -31,13 +28,13 @@ document.getElementById("cultivoForm").addEventListener("submit", function(event
     });
 });
 
+// Vista previa de la imagen al seleccionarla
 document.getElementById("imagen").addEventListener("change", function(event) {
     const file = event.target.files[0];
     const preview = document.getElementById("preview-img");
 
     if (file) {
         const reader = new FileReader();
-
         reader.onload = function(e) {
             preview.src = e.target.result;
             preview.style.display = "block";
@@ -45,7 +42,6 @@ document.getElementById("imagen").addEventListener("change", function(event) {
             preview.style.marginTop = "10px";
             preview.style.borderRadius = "10px";
         };
-
         reader.readAsDataURL(file);
     } else {
         preview.style.display = "none";

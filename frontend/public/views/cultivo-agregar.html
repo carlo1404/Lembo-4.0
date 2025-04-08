@@ -10,7 +10,7 @@
 </head>
 <body>
     <section class="form-container">
-        <form class="form-container__form" id="cultivoForm">
+        <form class="form-container__form" id="cultivoForm" enctype="multipart/form-data" method="POST">
             <h2 class="form-container__title">Agregar Cultivo</h2>
             <div class="form-container__content">
                 <div class="form-container__field">
@@ -20,7 +20,7 @@
 
                 <div class="form-container__field">
                     <label for="tamaño" class="form-container__label">Tamaño:</label>
-                    <input type="number" id="tamaño" name="tamaño" placeholder="798" class="form-container__input" required>
+                    <input type="number" id="tamaño" name="tamano" placeholder="798" class="form-container__input" required>
                 </div>
 
                 <div class="form-container__field">
@@ -65,7 +65,7 @@
         </form>
     </section>
 
-    <script src="/frontend/JS/cultivoAgregar.js"></script>
-    <script src="/script-cultivo.js"></script>
+    <script type="module" src="/frontend/JS/cultivoAgregar.js"></script>
+    <!-- <script src="/script-cultivo.js"></script> -->
 </body>
 </html>
