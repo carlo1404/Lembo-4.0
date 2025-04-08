@@ -31,3 +31,15 @@ CREATE TABLE insumos (
     descripcion TEXT,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- luego sigue la de sensores
+CREATE TABLE sensores (
+    id INT PRIMARY KEY,
+    tipo_sensor ENUM('luz', 'movimiento', 'temperatura', 'humedad') NOT NULL,
+    esatdo ENUM('habilitado', 'deshabilitado') NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    unidad_medida VARCHAR(50),
+    tiempo_muestreo INT,
+    imagen VARCHAR(255),
+    descripcion TEXT
+);
