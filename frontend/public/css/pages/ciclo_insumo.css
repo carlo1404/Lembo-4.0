@@ -40,11 +40,13 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     background-color: var(--white);
+    overflow: hidden;
 }
 
 /* Layout principal */
 main {
     display: flex;
+    overflow: hidden;
 }
 
 /* Panel lateral */
@@ -137,10 +139,11 @@ main {
 }
 
 /* Graficos */
-.content{
-    margin-top: 5rem;
+.content {
+    margin-top: 2rem;
     margin-left: 25rem;
 }
+
 .content__chart-container {
     max-width: 50rem;
     margin: 2rem auto;
@@ -159,7 +162,10 @@ main {
 
 .insumosChart {
     width: 100% !important;
-    height: 25rem !important;
+
+    height: 400px !important;
+    height: auto !important;
+
 }
 
 /* Botón de listar insumos */
