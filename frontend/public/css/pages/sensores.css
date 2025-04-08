@@ -138,7 +138,8 @@ main {
 
 /*Sensores*/
 .container__charts{
-    margin-left: 10rem;
+    margin-top: 5rem;
+    margin-left: 15rem;
 }
 
 .sensor-charts {
