@@ -132,6 +132,28 @@ app.post("/api/cultivos", upload.single("imagen"), (req, res) => {
     });
 });
 
+app.post("/api/sensores", (req, res) => {
+    const { id, tipo_sensor, esatdo, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion } = req.body;
+
+    // Validación de los campos obligatorios
+    if (!id || !tipo_sensor || !esatdo || !nombre) {
+        return res.status(400).json({ message: "Los campos ID, tipo de sensor, estado y nombre son obligatorios." });
+    }
+
+    // Mostramos en la terminal los datos recibidos
+    console.log('Datos recibidos:', { id, tipo_sensor, esatdo, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion });
+    
+    // Insertar el sensor
+    const sql = "INSERT INTO sensores (id, tipo_sensor, esatdo, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    db.query(sql, [id, tipo_sensor, esatdo, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion], (err, result) => {
+        if (err) {
+            console.error("Error al insertar en la base de datos:", err);
+            return res.status(500).json({ message: "Error al agregar sensor" });
+        }
+        res.status(201).json({ message: "Sensor agregado correctamente", id: result.insertId });
+    });
+});
+
 // Iniciar servidor
 app.listen(3000, () => {
     console.log("🚀 Servidor corriendo en http://localhost:3000");
