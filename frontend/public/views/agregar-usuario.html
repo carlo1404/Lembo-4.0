@@ -20,28 +20,43 @@
                     <input class="register__input--lastname" type="text" name="apellido" id="apellido" placeholder="Apellido" required>
                 </div>
                 <div class="form__field">
+                    <label class="form__label" for="document">Tipo de documento:</label>
+                    <select class="form__select" name="document" id="document" required>
+                        <option value="">Selecciona el tipo de documento</option>
+                        <option value="C.C">C.C</option>
+                        <option value="T.I">T.I</option>
+                        <option value="PEP">PEP</option>
+                        <option value="PPT">PPT</option>
+                    </select>
+                </div>
+                <div class="form__field">
                     <label class="form__label" for="id">ID:</label>
                     <input class="register__input--id" type="number" name="id" id="id" placeholder="ID" required>
                 </div>
                 <div class="form__field">
                     <label class="form__label" for="telefono">Número de teléfono:</label>
-                    <input class="register__input--phone" type="tel" name="telefono" id="telefono" placeholder="Número de teléfono" required>
+                    <input class="register__input--phone" type="number" name="telefono" id="telefono" placeholder="Número de teléfono" required>
+                </div>
+                <div class="form__field">
+                    <label class="form__label" for="email">Correo Electronico:</label>
+                    <input class="register__input--email" type="email" name="email" id="email" placeholder="Correo Electronico" required>
                 </div>
                 <div class="form__field">
                     <label class="form__label" for="rol">Rol:</label>
-                    <select class="form__select" name="rol" id="rol" required>
+                    <select class="form__select register__input--rol" name="rol" id="rol" required>
                         <option value="">Selecciona un Rol</option>
-                        <option value="usuario">Usuario</option>
-                        <option value="admin">Admin</option>
+                        <option value="admin">Administrador</option>
                         <option value="personal de apoyo">Personal de Apoyo</option>
+                        <option value="usuario">Usuario</option>
                     </select>
                 </div>
+                
             </div>
             <button class="form__button" type="submit">Agregar Usuario</button>
         </form>
     </section>
 
-    <script src="../JS/agregarUsuario.js"></script>
-    <script src="../server-agregar-usuario.js"></script>
+    <script src="/frontend/JS/agregarUsuario.js"></script>
+    <script src="/server-agregar-usuario.js"></script>
 </body>
 </html>
