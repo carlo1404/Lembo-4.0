@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Insumos</title>
-    <link rel="stylesheet" href="../CSS/insumo.css">
+    <link rel="stylesheet" href="/frontend/public/css/pages/insumo.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <script src="../JS/sidebar.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/frontend/JS/sidebar.js" defer></script>
+    <script src="/frontend/JS/grafico_insumo.js" defer></script>
 </head>
 
 <body>
@@ -49,7 +51,8 @@
                         <td class="content__table-data">Gramos</td>
                         <td class="content__table-data">5</td>
                         <td class="content__table-data">$8.000</td>
-                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span class="content__status-enabled"></span>&nbsp;
+                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span
+                                class="content__status-enabled"></span>&nbsp;
                             Deshabilitado:&nbsp;<span></span></td>
                         <td class="content__table-data">
                             <div class="content__icon-container">
@@ -66,9 +69,10 @@
                         <td class="content__table-data">Fertilizante</td>
                         <td class="content__table-data">GNR76286</td>
                         <td class="content__table-data">Kilos</td>
-                        <td class="content__table-data">1</td>
+                        <td class="content__table-data">6</td>
                         <td class="content__table-data">$3.000</td>
-                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span class="content__status-enabled"></span>&nbsp; Deshabilitado:
+                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span
+                                class="content__status-enabled"></span>&nbsp; Deshabilitado:
                             &nbsp;<span></span></td>
                         <td class="content__table-data">
                             <div class="content__icon-container">
@@ -87,7 +91,8 @@
                         <td class="content__table-data">Kilos</td>
                         <td class="content__table-data">20</td>
                         <td class="content__table-data">$25.000</td>
-                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span class="content__status-enabled"></span>&nbsp; Deshabilitado:
+                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span
+                                class="content__status-enabled"></span>&nbsp; Deshabilitado:
                             &nbsp;<span></span></td>
                         <td class="content__table-data">
                             <div class="content__icon-container">
@@ -106,45 +111,8 @@
                         <td class="content__table-data">Kilos</td>
                         <td class="content__table-data">3</td>
                         <td class="content__table-data">$25.000</td>
-                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span></span>&nbsp; Deshabilitado: &nbsp;<span
-                                class="content__status-disabled"></span></td>
-                        <td class="content__table-data">
-                            <div class="content__icon-container">
-                                <div class="content__icon content__icon--blue" title="Editar">
-                                    <i class='bx bxs-edit' id="redirectButton"></i>
-                                </div>
-                                <div class="content__icon content__icon--red" title="Eliminar">
-                                    <i class='bx bxs-trash'></i>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="content__table-row">
-                        <td class="content__table-data">Sensor de Luz</td>
-                        <td class="content__table-data">USR76286</td>
-                        <td class="content__table-data">Pascal</td>
-                        <td class="content__table-data">43</td>
-                        <td class="content__table-data">$65.000</td>
-                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span></span>&nbsp; Deshabilitado: &nbsp;<span
-                                class="content__status-disabled"></span></td>
-                        <td class="content__table-data">
-                            <div class="content__icon-container">
-                                <div class="content__icon content__icon--blue" title="Editar">
-                                    <i class='bx bxs-edit' id="redirectButton"></i>
-                                </div>
-                                <div class="content__icon content__icon--red" title="Eliminar">
-                                    <i class='bx bxs-trash'></i>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="content__table-row">
-                        <td class="content__table-data">Sensor de Movimiento</td>
-                        <td class="content__table-data">USR76286</td>
-                        <td class="content__table-data">Pascal</td>
-                        <td class="content__table-data">39</td>
-                        <td class="content__table-data">$50.000</td>
-                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span></span>&nbsp; Deshabilitado: &nbsp;<span
+                        <td class="content__table-data content__table-data--status">Habilitado:
+                            &nbsp;<span></span>&nbsp; Deshabilitado: &nbsp;<span
                                 class="content__status-disabled"></span></td>
                         <td class="content__table-data">
                             <div class="content__icon-container">
@@ -163,7 +131,8 @@
                         <td class="content__table-data">Personal de Apoyo</td>
                         <td class="content__table-data">12</td>
                         <td class="content__table-data">$35.000</td>
-                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span class="content__status-enabled"></span>&nbsp; Deshabilitado:
+                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span
+                                class="content__status-enabled"></span>&nbsp; Deshabilitado:
                             &nbsp;<span></span></td>
                         <td class="content__table-data">
                             <div class="content__icon-container">
@@ -177,12 +146,13 @@
                         </td>
                     </tr>
                     <tr class="content__table-row">
-                        <td class="content__table-data">Sistema de Riego</td>
+                        <td class="content__table-data">Aspersores</td>
                         <td class="content__table-data">USR76288</td>
                         <td class="content__table-data">Personal de Apoyo</td>
                         <td class="content__table-data">25</td>
                         <td class="content__table-data">$55.000</td>
-                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span class="content__status-enabled"></span>&nbsp; Deshabilitado:
+                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span
+                                class="content__status-enabled"></span>&nbsp; Deshabilitado:
                             &nbsp;<span></span></td>
                         <td class="content__table-data">
                             <div class="content__icon-container">
@@ -201,7 +171,8 @@
                         <td class="content__table-data">Metros</td>
                         <td class="content__table-data">22</td>
                         <td class="content__table-data">$19.500</td>
-                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span class="content__status-enabled"></span>&nbsp; Deshabilitado:
+                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span
+                                class="content__status-enabled"></span>&nbsp; Deshabilitado:
                             &nbsp;<span></span></td>
                         <td class="content__table-data">
                             <div class="content__icon-container">
@@ -220,7 +191,8 @@
                         <td class="content__table-data">Metros</td>
                         <td class="content__table-data">17</td>
                         <td class="content__table-data">$5.000</td>
-                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span></span>&nbsp; Deshabilitado: &nbsp;<span
+                        <td class="content__table-data content__table-data--status">Habilitado:
+                            &nbsp;<span></span>&nbsp; Deshabilitado: &nbsp;<span
                                 class="content__status-disabled"></span></td>
                         <td class="content__table-data">
                             <div class="content__icon-container">
@@ -239,7 +211,8 @@
                         <td class="content__table-data">Metro Cubico</td>
                         <td class="content__table-data">12</td>
                         <td class="content__table-data">$5.000</td>
-                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span class="content__status-enabled"></span>&nbsp; Deshabilitado:
+                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span
+                                class="content__status-enabled"></span>&nbsp; Deshabilitado:
                             &nbsp;<span></span></td>
                         <td class="content__table-data">
                             <div class="content__icon-container">
@@ -259,14 +232,14 @@
     </main>
     <script>
         document.getElementById("redirectButton").onclick = function () {
-            window.location.href = "Actualizar_insumo.html"; 
+            window.location.href = "Actulizar_insumo.html";
         };
         document.getElementById("add").onclick = function () {
-            window.location.href = "Agregar_Insumo.html"; 
+            window.location.href = "Agregar_Insumo.html";
         };
         document.getElementById("download").onclick = function () {
-            window.location.href = "informe.html"; 
-        };
+            window.location.href = "informe.html";
+        }; 
     </script>
 </body>
 
