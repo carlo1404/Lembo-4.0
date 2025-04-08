@@ -3,6 +3,7 @@ import mysql from "mysql2";
 import cors from "cors";
 import path from 'path';
 import { fileURLToPath } from 'url';
+import multer from "multer";
 
 // Necesario para __dirname con ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -15,12 +16,9 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Servir archivos estáticos desde frontend/public
+// Servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'frontend', 'public')));
-
-app.get("/views/home.html", (req, res) => {
-    res.sendFile(path.join(__dirname, "frontend", "public", "views", "home.html"));
-});
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Conexión a MySQL
 const db = mysql.createConnection({
@@ -40,10 +38,26 @@ db.connect(err => {
     console.log("✅ Conectado a la base de datos MySQL");
 });
 
-// RUTA PRINCIPAL: Servir home.html
+// Rutas de vistas
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "frontend", "public", "views", "home.html"));
 });
+
+app.get("/views/home.html", (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend", "public", "views", "home.html"));
+});
+
+// Configuración de multer para imágenes
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, path.join(__dirname, 'uploads'));
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + '-' + file.originalname);
+    }
+});
+const upload = multer({ storage: storage });
 
 /////////////////////// RUTAS DE API ///////////////////////
 
@@ -85,20 +99,36 @@ app.post('/api/usuarios', (req, res) => {
     });
 });
 
-// Ruta para agregar cultivos
-app.post("/api/cultivos", (req, res) => {
-    const { nombre, tipo, ubicacion, descripcion, usuario_id } = req.body;
+// Ruta para agregar cultivos con imagen
+app.post("/api/cultivos", upload.single("imagen"), (req, res) => {
+    let { nombre, tipo, ubicacion, descripcion, usuario_id } = req.body;
+    const imagen = req.file ? req.file.filename : null;
+
+    console.log("📥 BODY:", req.body);
+    console.log("🖼️ FILE:", req.file);
+
+    // Corregir posible array duplicado en usuario_id
+    usuario_id = Array.isArray(usuario_id) ? usuario_id[0] : usuario_id;
+
     if (!nombre || !tipo || !ubicacion || !descripcion || !usuario_id) {
         return res.status(400).json({ message: "Todos los campos obligatorios deben estar llenos." });
     }
 
-    const sql = "INSERT INTO cultivos (nombre, tipo, ubicacion, descripcion, usuario_id) VALUES (?, ?, ?, ?, ?)";
-    db.query(sql, [nombre, tipo, ubicacion, descripcion, usuario_id], (err, result) => {
+    if (!imagen) {
+        return res.status(400).json({ message: "No se ha recibido la imagen correctamente." });
+    }
+
+    const sql = "INSERT INTO cultivos (nombre, tipo, ubicacion, descripcion, usuario_id, imagen) VALUES (?, ?, ?, ?, ?, ?)";
+    db.query(sql, [nombre, tipo, ubicacion, descripcion, usuario_id, imagen], (err, result) => {
         if (err) {
             console.error("❌ Error al insertar en la base de datos:", err);
             return res.status(500).json({ message: "Error al agregar cultivo" });
         }
-        res.status(201).json({ message: "Cultivo agregado correctamente", id: result.insertId });
+        res.status(201).json({
+            message: "Cultivo agregado correctamente",
+            id: result.insertId,
+            imagen: `/uploads/${imagen}`
+        });
     });
 });
 

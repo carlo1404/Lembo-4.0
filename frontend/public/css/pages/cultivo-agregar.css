@@ -71,6 +71,28 @@ body {
     gap: 0.31rem;
 }
 
+.form__image-container {
+    display: flex;
+    max-width: 1.25rem ; /* Ajusta el ancho máximo según tu preferencia */
+    max-height: 3.125rem;
+    margin-left: 1.875rem;
+    transform: translateY(-1.875rem);
+}
+
+.form__container {
+    display: flex;
+    justify-content: flex-end; /* Alinea los elementos hacia la derecha */
+    align-items: center;
+    width: 18.75rem;
+}
+
+.form__image-container,.form__img{
+    width: 8.75rem;
+    height: 8.75rem;
+    border-radius: 0.9375rem;
+    cursor: pointer;
+}
+
 .form-container__field label {
     font-size: 0.875rem;
     color: var(--gray-60);
