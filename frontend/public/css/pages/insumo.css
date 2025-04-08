@@ -214,7 +214,7 @@ tbody .content__table-data--status span {
 }
 
 .content__status-disabled {
-    background-color: var(--alert);
+    background-color: var(--expired);
 }
 
 /* Botones de acción */
