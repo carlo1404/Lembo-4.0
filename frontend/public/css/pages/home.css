@@ -72,7 +72,7 @@ body {
     align-items: center;
     min-height: calc(100vh - 7.2rem);
     padding: 2rem;
-    background-color: var(--light-gray);
+    background-color: var(--gray-50);
 }
 
 .hero__content {
@@ -233,7 +233,7 @@ body {
 /* Dashboard Preview */
 .dashboard-preview {
     padding: 4rem 2rem;
-    background-color: var(--light-gray);
+    background-color: var(--gray-50);
 }
 
 .dashboard-preview__title {
