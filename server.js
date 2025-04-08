@@ -47,6 +47,10 @@ app.get("/views/home.html", (req, res) => {
     res.sendFile(path.join(__dirname, "frontend", "public", "views", "home.html"));
 });
 
+// Ruta corregida para listar usuarios
+app.get("/views/listar-usuarios.html", (req, res) => {
+    res.sendFile(path.join(__dirname, "frontend", "public", "views", "listar-usuarios.html"));
+});
 // Configuración de multer para imágenes
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -85,6 +89,7 @@ app.post("/api/insumos", (req, res) => {
 // Ruta para agregar usuarios
 app.post('/api/usuarios', (req, res) => {
     const { id, nombre, apellido, numero_telefonico, rol } = req.body;
+
     if (!id || !nombre || !apellido || !numero_telefonico || !rol) {
         return res.status(400).json({ error: "Todos los campos son obligatorios" });
     }
@@ -92,9 +97,10 @@ app.post('/api/usuarios', (req, res) => {
     const query = 'INSERT INTO usuarios (id, nombre, apellido, numero_telefonico, rol) VALUES (?, ?, ?, ?, ?)';
     db.query(query, [id, nombre, apellido, numero_telefonico, rol], (err, results) => {
         if (err) {
-            console.error('❌ Error al insertar usuario:', err);
-            return res.status(500).json({ error: "Error al agregar el usuario" });
+            console.error('❌ Error al insertar usuario:', err.sqlMessage);
+            return res.status(500).json({ error: err.sqlMessage });
         }
+
         res.status(201).json({ message: "Usuario agregado exitosamente", id: results.insertId });
     });
 });
@@ -107,7 +113,6 @@ app.post("/api/cultivos", upload.single("imagen"), (req, res) => {
     console.log("📥 BODY:", req.body);
     console.log("🖼️ FILE:", req.file);
 
-    // Corregir posible array duplicado en usuario_id
     usuario_id = Array.isArray(usuario_id) ? usuario_id[0] : usuario_id;
 
     if (!nombre || !tipo || !ubicacion || !descripcion || !usuario_id) {
@@ -132,18 +137,16 @@ app.post("/api/cultivos", upload.single("imagen"), (req, res) => {
     });
 });
 
+// Ruta para agregar sensores
 app.post("/api/sensores", (req, res) => {
     const { id, tipo_sensor, esatdo, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion } = req.body;
 
-    // Validación de los campos obligatorios
     if (!id || !tipo_sensor || !esatdo || !nombre) {
         return res.status(400).json({ message: "Los campos ID, tipo de sensor, estado y nombre son obligatorios." });
     }
 
-    // Mostramos en la terminal los datos recibidos
     console.log('Datos recibidos:', { id, tipo_sensor, esatdo, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion });
-    
-    // Insertar el sensor
+
     const sql = "INSERT INTO sensores (id, tipo_sensor, esatdo, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     db.query(sql, [id, tipo_sensor, esatdo, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion], (err, result) => {
         if (err) {

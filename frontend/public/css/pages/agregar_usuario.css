@@ -49,11 +49,12 @@ body {
 }
 
 .form-container {
-    width: 25rem;
+    width: 25rem; /* Mantienes el ancho si lo deseas */
     background-color: var(--white);
     border-radius: 0.625rem;
-    padding: 1.25rem;
+    padding: 0.75rem 1.25rem; /* Disminuye el padding superior e inferior */
 }
+
 
 .form__title{
     text-align: center;
@@ -80,13 +81,13 @@ body {
 }
 
 .form__field input,
-.form__field select{
+.form__field select {
     padding: 0.625rem;
     font-size: 0.875rem;
     border: 0.063rem solid var(--gray-60);
     border-radius: 0.3125rem;
     outline: none;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.75rem; /* Reducido de 1.5rem a 0.75rem */
 }
 textarea{
     padding: 0.625rem;
@@ -101,10 +102,11 @@ textarea{
 }
 
 textarea {
+    padding: 0.625rem;
+    width: 100%; /* Para que se adapte al contenedor */
     resize: none;
-    height: 3.75rem;
+    height: 2.5rem; /* Ajusta este valor según lo que necesites */
 }
-
 button {
     width: 100%;
     padding: 0.625rem;
