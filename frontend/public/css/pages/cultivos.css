@@ -275,6 +275,51 @@ tbody td:last-child .action-btn:hover {
     cursor: pointer;
 }
 
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+}
+
+.modal__overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+}
+
+.modal__content {
+    position: relative;
+    background-color: var(--white);
+    margin: 5% auto;
+    padding: 1.875rem;
+    border-radius: 0.75rem;
+    width: 80%;
+    max-width: 43.75rem;
+    box-shadow: 0 0 1.25rem rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+.modal__close {
+    position: absolute;
+    top: 0.625rem;
+    right: 1.25rem;
+    font-size: 1.75rem;
+    cursor: pointer;
+    color: var(--gray-100);
+}
+
+.modal__body {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
 /* Media Queries */
 @media (max-width: 768px) {
     .sidebar {
