@@ -31,10 +31,10 @@ function listarAsociaciones() {
         item.className = 'association-item';
 
         item.innerHTML = `
-          <span>${a.sensor} - ${a.insumo} - ${a.ciclo} - ${a.usuario}</span>
-          <span class="status ${a.habilitado ? 'enabled' : 'disabled'}">
+            <span>${a.sensor} - ${a.insumo} - ${a.ciclo} - ${a.usuario}</span>
+            <span class="status ${a.habilitado ? 'enabled' : 'disabled'}">
             ${a.habilitado ? 'Habilitado' : 'Deshabilitado'}
-          </span>
+            </span>
         `;
 
         item.onclick = () => {
