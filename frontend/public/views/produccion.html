@@ -1,11 +1,485 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Gestión de Producciones Agrícolas</title>
+    <link rel="stylesheet" href="../css/pages/produccion.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
+
 <body>
-    
+    <div class="produccion">
+        <!-- Header -->
+        <header class="produccion__header">
+            <h1 class="produccion__title">Gestión de Producciones Agrícolas</h1>
+            <div class="produccion__actions">
+                <button class="produccion__button produccion__button--primary" id="crearProduccionBtn">
+                    <i class="fas fa-plus"></i> Crear Producción
+                </button>
+            </div>
+        </header>
+
+        <!-- Tabs Navigation -->
+        <nav class="produccion__tabs">
+            <button class="produccion__tab produccion__tab--active" data-tab="listar">Listar Producciones</button>
+            <button class="produccion__tab" data-tab="visualizar">Visualizar Producción</button>
+            <button class="produccion__tab" data-tab="actualizar">Actualizar Producción</button>
+            <button class="produccion__tab" data-tab="estado">Habilitar/Deshabilitar</button>
+            <button class="produccion__tab" data-tab="reportes">Generar Reportes</button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="produccion__content">
+            <!-- Listar Producciones (Default View) -->
+            <section class="produccion__section produccion__section--active" id="listar">
+                <div class="produccion__filters">
+                    <div class="produccion__filter-group">
+                        <label for="filterNombre" class="produccion__label">Nombre:</label>
+                        <input type="text" id="filterNombre" class="produccion__input">
+                    </div>
+                    <div class="produccion__filter-group">
+                        <label for="filterCultivo" class="produccion__label">Cultivo:</label>
+                        <select id="filterCultivo" class="produccion__select">
+                            <option value="">Todos</option>
+                            <!-- Cultivos se cargarán dinámicamente -->
+                        </select>
+                    </div>
+                    <div class="produccion__filter-group">
+                        <label for="filterEstado" class="produccion__label">Estado:</label>
+                        <select id="filterEstado" class="produccion__select">
+                            <option value="">Todos</option>
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                    <button class="produccion__button produccion__button--secondary" id="aplicarFiltros">
+                        <i class="fas fa-filter"></i> Aplicar Filtros
+                    </button>
+                    <button class="produccion__button produccion__button--secondary" id="limpiarFiltros">
+                        <i class="fas fa-broom"></i> Limpiar
+                    </button>
+                </div>
+
+                <div class="produccion__table-container">
+                    <table class="produccion__table">
+                        <thead>
+                            <tr>
+                                <th>ID Producción</th>
+                                <th>Nombre</th>
+                                <th>Cultivo</th>
+                                <th>Ciclo</th>
+                                <th>Fecha Inicio</th>
+                                <th>Fecha Fin</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="produccionesTableBody">
+                            <!-- Datos se cargarán dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="produccion__pagination">
+                    <button class="produccion__pagination-button" id="prevPage"><i class="fas fa-chevron-left"></i>
+                        Anterior</button>
+                    <div class="produccion__pagination-numbers" id="paginationNumbers"></div>
+                    <button class="produccion__pagination-button" id="nextPage">Siguiente <i
+                            class="fas fa-chevron-right"></i></button>
+                </div>
+            </section>
+
+            <!-- Visualizar Producción -->
+            <section class="produccion__section" id="visualizar">
+                <div class="produccion__view-container">
+                    <h2 class="produccion__subtitle">Visualizar Producción</h2>
+                    <div class="produccion__view-content" id="visualizarContent">
+                        <!-- Contenido se cargará dinámicamente al seleccionar una producción -->
+                        <p class="produccion__empty-message">Seleccione una producción de la lista para visualizar sus
+                            detalles.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Actualizar Producción -->
+            <section class="produccion__section" id="actualizar">
+                <div class="produccion__form-container">
+                    <h2 class="produccion__subtitle">Actualizar Producción</h2>
+                    <form id="actualizarProduccionForm" class="produccion__form">
+                        <!-- Se cargará dinámicamente la información para editar -->
+                        <p class="produccion__empty-message">Seleccione una producción de la lista para editar sus
+                            detalles.</p>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Habilitar/Deshabilitar Producción -->
+            <section class="produccion__section" id="estado">
+                <div class="produccion__status-container">
+                    <h2 class="produccion__subtitle">Cambiar Estado de Producciones</h2>
+                    <div class="produccion__status-actions">
+                        <button class="produccion__button produccion__button--success" id="habilitarProducciones">
+                            <i class="fas fa-check-circle"></i> Habilitar Seleccionadas
+                        </button>
+                        <button class="produccion__button produccion__button--danger" id="deshabilitarProducciones">
+                            <i class="fas fa-times-circle"></i> Deshabilitar Seleccionadas
+                        </button>
+                    </div>
+                    <div class="produccion__table-container">
+                        <table class="produccion__table">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="selectAllProducciones"></th>
+                                    <th>ID Producción</th>
+                                    <th>Nombre</th>
+                                    <th>Cultivo</th>
+                                    <th>Estado Actual</th>
+                                </tr>
+                            </thead>
+                            <tbody id="estadoTableBody">
+                                <!-- Datos se cargarán dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Generar Reportes -->
+            <section class="produccion__section" id="reportes">
+                <div class="produccion__reports-container">
+                    <h2 class="produccion__subtitle">Generar Reportes de Producciones</h2>
+                    <div class="produccion__report-filters">
+                        <div class="produccion__filter-group">
+                            <label for="reportFechaInicio" class="produccion__label">Fecha Inicio:</label>
+                            <input type="text" id="reportFechaInicio" class="produccion__input produccion__input--date">
+                        </div>
+                        <div class="produccion__filter-group">
+                            <label for="reportFechaFin" class="produccion__label">Fecha Fin:</label>
+                            <input type="text" id="reportFechaFin" class="produccion__input produccion__input--date">
+                        </div>
+                        <div class="produccion__filter-group">
+                            <label for="reportEstado" class="produccion__label">Estado:</label>
+                            <select id="reportEstado" class="produccion__select">
+                                <option value="">Todos</option>
+                                <option value="activo">Activo</option>
+                                <option value="inactivo">Inactivo</option>
+                            </select>
+                        </div>
+                        <button class="produccion__button produccion__button--secondary" id="aplicarReportFilters">
+                            <i class="fas fa-filter"></i> Aplicar Filtros
+                        </button>
+                    </div>
+
+                    <div class="produccion__table-container">
+                        <table class="produccion__table">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="selectAllReports"></th>
+                                    <th>ID Producción</th>
+                                    <th>Nombre</th>
+                                    <th>Cultivo</th>
+                                    <th>Ciclo</th>
+                                    <th>Fecha Inicio</th>
+                                    <th>Fecha Fin</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportesTableBody">
+                                <!-- Datos se cargarán dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="produccion__report-actions">
+                        <div class="produccion__report-format">
+                            <label class="produccion__label">Formato:</label>
+                            <select id="reportFormat" class="produccion__select">
+                                <option value="pdf">PDF</option>
+                                <option value="excel">Excel</option>
+                            </select>
+                        </div>
+                        <button class="produccion__button produccion__button--primary" id="generarReporte">
+                            <i class="fas fa-file-export"></i> Generar Reporte
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal para Crear Producción -->
+    <div class="modal" id="crearProduccionModal">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h2 class="modal__title">Crear Nueva Producción</h2>
+                <button class="modal__close">&times;</button>
+            </div>
+            <div class="modal__body">
+                <form id="crearProduccionForm" class="produccion__form">
+                    <div class="produccion__form-group">
+                        <label for="produccionId" class="produccion__label">Identificador de Producción:</label>
+                        <input type="text" id="produccionId" class="produccion__input" readonly>
+                    </div>
+
+                    <div class="produccion__form-group">
+                        <label for="responsable" class="produccion__label">Responsable:</label>
+                        <div class="produccion__select-container">
+                            <select id="responsable" class="produccion__select" required>
+                                <!-- Usuarios se cargarán dinámicamente -->
+                            </select>
+                            <button type="button" class="produccion__button produccion__button--small"
+                                id="agregarResponsable">
+                                <i class="fas fa-plus"></i> Agregar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="produccion__form-group">
+                        <label for="nombreProduccion" class="produccion__label">Nombre de Producción:</label>
+                        <input type="text" id="nombreProduccion" class="produccion__input" required>
+                        <div class="produccion__error-message" id="nombreError"></div>
+                    </div>
+
+                    <div class="produccion__form-group">
+                        <label for="cultivo" class="produccion__label">Cultivo:</label>
+                        <div class="produccion__select-container">
+                            <select id="cultivo" class="produccion__select" required>
+                                <!-- Cultivos se cargarán dinámicamente -->
+                            </select>
+                            <button type="button" class="produccion__button produccion__button--small"
+                                id="agregarCultivo">
+                                <i class="fas fa-plus"></i> Agregar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="produccion__form-group">
+                        <label for="cicloCultivo" class="produccion__label">Ciclo de Cultivo:</label>
+                        <div class="produccion__select-container">
+                            <select id="cicloCultivo" class="produccion__select" required>
+                                <!-- Ciclos se cargarán dinámicamente -->
+                            </select>
+                            <button type="button" class="produccion__button produccion__button--small"
+                                id="agregarCiclo">
+                                <i class="fas fa-plus"></i> Agregar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="produccion__form-group">
+                        <label for="sensores" class="produccion__label">Sensores (Máx. 3):</label>
+                        <div class="produccion__select-container">
+                            <select id="sensores" class="produccion__select" multiple>
+                                <!-- Sensores se cargarán dinámicamente -->
+                            </select>
+                            <button type="button" class="produccion__button produccion__button--small"
+                                id="agregarSensor">
+                                <i class="fas fa-plus"></i> Agregar
+                            </button>
+                        </div>
+                        <div class="produccion__selected-items" id="selectedSensores"></div>
+                    </div>
+
+                    <div class="produccion__form-group">
+                        <label for="insumos" class="produccion__label">Insumos:</label>
+                        <div class="produccion__select-container">
+                            <select id="insumos" class="produccion__select" multiple>
+                                <!-- Insumos se cargarán dinámicamente -->
+                            </select>
+                            <button type="button" class="produccion__button produccion__button--small"
+                                id="agregarInsumo">
+                                <i class="fas fa-plus"></i> Agregar
+                            </button>
+                        </div>
+                        <div class="produccion__selected-items" id="selectedInsumos"></div>
+                    </div>
+
+                    <div class="produccion__form-group">
+                        <label for="fechaInicio" class="produccion__label">Fecha de Inicio:</label>
+                        <input type="text" id="fechaInicio" class="produccion__input produccion__input--date" required>
+                    </div>
+
+                    <div class="produccion__form-group">
+                        <label for="fechaFin" class="produccion__label">Fecha de Fin Estimada:</label>
+                        <input type="text" id="fechaFin" class="produccion__input produccion__input--date">
+                    </div>
+
+                    <div class="produccion__form-group">
+                        <label class="produccion__label">Inversión Estimada:</label>
+                        <div class="produccion__input produccion__input--readonly" id="inversionEstimada">$0.00</div>
+                    </div>
+
+                    <div class="produccion__form-group">
+                        <label class="produccion__label">Meta de Ganancias:</label>
+                        <div class="produccion__input produccion__input--readonly" id="metaGanancias">$0.00</div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal__footer">
+                <button class="produccion__button produccion__button--secondary" id="guardarBorrador">Guardar
+                    Borrador</button>
+                <button class="produccion__button produccion__button--primary" id="crearProduccion" disabled>Crear
+                    Producción</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Agregar Nuevo Elemento (Responsable, Cultivo, etc.) -->
+    <div class="modal" id="agregarElementoModal">
+        <div class="modal__content modal__content--small">
+            <div class="modal__header">
+                <h2 class="modal__title" id="agregarElementoTitulo">Agregar Nuevo Elemento</h2>
+                <button class="modal__close">&times;</button>
+            </div>
+            <div class="modal__body">
+                <form id="agregarElementoForm" class="produccion__form">
+                    <div class="produccion__form-group" id="elementoFormContent">
+                        <!-- Contenido dinámico según el tipo de elemento a agregar -->
+                    </div>
+                </form>
+            </div>
+            <div class="modal__footer">
+                <button class="produccion__button produccion__button--secondary modal__cancel">Cancelar</button>
+                <button class="produccion__button produccion__button--primary" id="guardarElemento">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Usar Insumos -->
+    <div class="modal" id="usarInsumoModal">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h2 class="modal__title">Registrar Uso de Insumo</h2>
+                <button class="modal__close">&times;</button>
+            </div>
+            <div class="modal__body">
+                <form id="usarInsumoForm" class="produccion__form">
+                    <div class="produccion__form-group">
+                        <label for="insumoSeleccionado" class="produccion__label">Insumo:</label>
+                        <input type="text" id="insumoSeleccionado" class="produccion__input" required>
+                    </div>
+                    <div class="produccion__form-group">
+                        <label for="fechaUso" class="produccion__label">Fecha de Uso:</label>
+                        <input type="text" id="fechaUso" class="produccion__input produccion__input--date" required>
+                    </div>
+                    <div class="produccion__form-group">
+                        <label for="cantidad" class="produccion__label">Cantidad:</label>
+                        <input type="number" id="cantidad" class="produccion__input" min="0.01" step="0.01" required>
+                    </div>
+                    <div class="produccion__form-group">
+                        <label for="responsableUso" class="produccion__label">Responsable:</label>
+                        <select id="responsableUso" class="produccion__select" required>
+                            <!-- Usuarios se cargarán dinámicamente -->
+                        </select>
+                    </div>
+                    <div class="produccion__form-group">
+                        <label for="valorUnitario" class="produccion__label">Valor Unitario:</label>
+                        <input type="number" id="valorUnitario" class="produccion__input" min="0" step="0.01" required>
+                    </div>
+                    <div class="produccion__form-group">
+                        <label for="valorTotal" class="produccion__label">Valor Total:</label>
+                        <input type="number" id="valorTotal" class="produccion__input" readonly>
+                    </div>
+                    <div class="produccion__form-group">
+                        <label for="observaciones" class="produccion__label">Observaciones:</label>
+                        <textarea id="observaciones" class="produccion__textarea" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal__footer">
+                <button class="produccion__button produccion__button--secondary modal__cancel">Cancelar</button>
+                <button class="produccion__button produccion__button--primary" id="guardarUsoInsumo">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Visualizar Lecturas de Sensores -->
+    <div class="modal" id="lecturasSensorModal">
+        <div class="modal__content modal__content--large">
+            <div class="modal__header">
+                <h2 class="modal__title">Lecturas de Sensores</h2>
+                <button class="modal__close">&times;</button>
+            </div>
+            <div class="modal__body">
+                <div class="produccion__sensor-filter">
+                    <div class="produccion__form-group">
+                        <label for="sensorSeleccionado" class="produccion__label">Sensor:</label>
+                        <select id="sensorSeleccionado" class="produccion__select">
+                            <!-- Sensores se cargarán dinámicamente -->
+                        </select>
+                    </div>
+                    <div class="produccion__form-group">
+                        <label for="fechaInicioLectura" class="produccion__label">Fecha Inicio:</label>
+                        <input type="text" id="fechaInicioLectura" class="produccion__input produccion__input--date">
+                    </div>
+                    <div class="produccion__form-group">
+                        <label for="fechaFinLectura" class="produccion__label">Fecha Fin:</label>
+                        <input type="text" id="fechaFinLectura" class="produccion__input produccion__input--date">
+                    </div>
+                    <button class="produccion__button produccion__button--secondary" id="filtrarLecturas">
+                        <i class="fas fa-filter"></i> Filtrar
+                    </button>
+                </div>
+                <div class="produccion__chart-container">
+                    <canvas id="sensorChart"></canvas>
+                </div>
+                <div class="produccion__table-container">
+                    <table class="produccion__table">
+                        <thead>
+                            <tr>
+                                <th>Fecha/Hora</th>
+                                <th>Valor</th>
+                                <th>Unidad</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lecturasTableBody">
+                            <!-- Datos se cargarán dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts externos -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Se asume que los archivos JS están en el mismo directorio; modifique las rutas si es necesario -->
+    <script src="../../JS/produccionData.js"></script>
+    <script src="../../JS/produccionUI.js"></script>
+    <script src="../../JS/produccionForms.js"></script>
+
+    <!-- Script adicional para manejar filtros (aplicar/limpiar) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const aplicarFiltrosBtn = document.getElementById('aplicarFiltros');
+            const limpiarFiltrosBtn = document.getElementById('limpiarFiltros');
+
+            if (aplicarFiltrosBtn) {
+                aplicarFiltrosBtn.addEventListener('click', () => {
+                    // Reinicia a la primera página y actualiza la tabla (los eventos de cambio en los selects ya actualizan también)
+                    currentPage = 1;
+                    updateProduccionesTable();
+                    updatePagination();
+                });
+            }
+
+            if (limpiarFiltrosBtn) {
+                limpiarFiltrosBtn.addEventListener('click', () => {
+                    document.getElementById('filterNombre').value = '';
+                    document.getElementById('filterCultivo').value = '';
+                    document.getElementById('filterEstado').value = '';
+                    currentPage = 1;
+                    updateProduccionesTable();
+                    updatePagination();
+                });
+            }
+        });
+    </script>
 </body>
+
 </html>
