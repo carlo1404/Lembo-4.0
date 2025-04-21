@@ -1,0 +1,108 @@
+:root{
+    --fuente: Rubik Mono One;
+    --fuente-dos: lato;
+    --fuente-tre: Pontano Sans;
+    --fuente-cuatro: Black Han Sans;
+    --fuente-primary:Work Sans;
+    
+   /* TONOS COLOR */
+
+    --blue: #1b86ff;
+    --black: #000;
+    --black-suave:#b4b4b4;
+    --white: #FFFFFF;
+    --Yellow-button: #eed11c;
+    --colorv:#B1CC33;
+    --color2v: #A8FF35;
+    --color-f:#DBEFB9;
+    --color-h:#5DD12E;
+}
+
+h1{
+    font-size: 3.2rem;
+
+}
+h2{
+    font-size: 2.4rem ;
+}
+h3{
+    font-size: 2rem;
+}
+h4{
+    font-size: 1.6rem;
+}
+h5{
+    font-size: 1.4rem;
+}
+h6{
+    font-size: 1rem;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.verificacion {
+    background-image: url('/IMG/fondo_pantalla.jpeg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.verificacion__contenedor {
+    background-color: #d9d9d9;
+    padding: 2rem x 3rem;
+    border-radius: 0.8rem;
+    text-align: center;
+    box-shadow: 0 0.4rem 0.6rem var(--black);
+    width: 30rem;
+    opacity: 69%;
+}
+
+h2 {
+    margin-bottom: 1rem;
+    font-size: 2.4rem;
+    color: var(--black);
+}
+
+p {
+    margin-bottom: 2rem ;
+    font-size: 1rem;
+    color: var(--black);
+}
+
+.verificacion__inputs {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 1rem;
+}
+
+.verificacion__inputs input {
+    background-color: #d9d9d9;
+    width: 3.5rem;
+    height: 4rem;
+    font-size: 1.5rem;
+    text-align: center;
+    border: 0.1rem solid var(--black);
+    border-radius: 0.5rem;
+
+}
+
+
+.verificacion__boton {
+    background-color: var(--white);
+    color: var(--black);
+    border: 0.1rem solid var(--black);
+    margin: 1rem;
+    padding: 0.4rem 3rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
