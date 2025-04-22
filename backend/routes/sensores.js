@@ -1,9 +1,9 @@
-// backend/routes/sensores.js
-import { Router } from 'express';
-import { createSensor } from './../controllers/sensoresController.js';
+// // backend/routes/sensores.js
+// import { Router } from 'express';
+// import { createSensor } from './../controllers/sensoresController.js';
 
-const router = Router();
+// const router = Router();
 
-router.post('/', createSensor);
+// router.post('/', createSensor);
 
-export default router;
+// export default router;
