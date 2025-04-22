@@ -44,7 +44,7 @@
     width: 3.75rem;
     overflow: hidden;
     transition: width 0.3s ease;
-    background-color: var(--green-600);
+    background-color: var(--primary-800);
     height: 100vh;
     position: fixed;
 }
@@ -75,7 +75,7 @@
 }
 
 .sidebar__nav-item:hover {
-    background-color: var(--secondary-green);
+    background-color: var(--green-800);
 }
 
 .sidebar__nav-item i {
