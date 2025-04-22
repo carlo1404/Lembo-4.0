@@ -390,7 +390,7 @@ function submitProduccionForm(isDraft = false) {
     updateReportesTable();
     updatePagination();
     
-    alert(`Producción ${isDraft ? 'guardada como borrador' : window.editingProductionId ? 'actualizada exitosamente' : 'creada exitosamente'}`);
+    alert(`Producción ${isDraft ? 'guardada' : window.editingProductionId ? 'actualizada exitosamente' : 'creada exitosamente'}`);
     
     closeAllModals();
     const produccionForm = document.getElementById('crearProduccionForm');

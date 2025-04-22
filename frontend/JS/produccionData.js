@@ -56,9 +56,10 @@ function loadUsuarios() {
 
 function loadCultivos() {
     cultivosData = [
-        { id: '1', nombre: 'Maíz', descripcion: 'Cultivo de maíz amarillo' },
-        { id: '2', nombre: 'Trigo', descripcion: 'Cultivo de trigo para harina' },
-        { id: '3', nombre: 'Soja', descripcion: 'Cultivo de soja transgénica' }
+        { id: '1', nombre: 'Verdura', description: 'Verduras frescas' },
+        { id: '2', nombre: 'Hortaliza', description: 'Su consumo puede ser crudo' },
+        { id: '3', nombre: 'Tubérculo', description: 'Las raíces' },
+        { id: '4', nombre: 'Fruta', description: 'Frutas frescas' }
     ];
     const cultivoSelect = document.getElementById('cultivo');
     if (cultivoSelect) {
