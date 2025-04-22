@@ -161,3 +161,12 @@ app.post("/api/sensores", (req, res) => {
 app.listen(3000, () => {
     console.log("🚀 Servidor corriendo en http://localhost:3000");
 });
+
+// esta es la parte para agrgar rutas
+
+import sensoresRouter from './routes/sensores.js'; // 👈 nuevo import
+
+// ...
+
+app.use('/api/producciones', produccionesRouter);
+app.use('/api/sensores', sensoresRouter); // 👈 montar aquí la ruta

@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         // Enviar datos al servidor
-        fetch('http://localhost:5500/api/sensores', {
+        fetch('http://localhost:3000/api/sensores', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
