@@ -6,6 +6,7 @@ function openCrearProduccionModal() {
     if (crearProduccionModal) {
         crearProduccionModal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
+        initFormEventListeners();
     }
 }
 
@@ -142,22 +143,17 @@ function validateNombreProduccion() {
     } else if (value.length > 100) {
         isValid = false;
         errorMessage = 'El nombre no puede exceder los 100 caracteres.';
-    } else if (!/[a-zA-Z]/.test(value)) {
+    } else if (!/^[a-zA-Z0-9\s]+$/.test(value)) {
         isValid = false;
-        errorMessage = 'El nombre debe contener al menos una letra.';
-    } else if (produccionesData.some(p => p.nombre.toLowerCase() === value.toLowerCase())) {
+        errorMessage = 'El nombre solo puede contener letras, números y espacios.';
+    } else if (window.editingProductionId === null && produccionesData.some(p => p.nombre.toLowerCase() === value.toLowerCase())) {
         isValid = false;
         errorMessage = 'Este nombre de producción ya existe.';
     }
     
-    if (!isValid) {
-        nombreError.textContent = errorMessage;
-        nombreError.style.display = 'block';
-        nombreProduccionInput.classList.add('produccion__input--error');
-    } else {
-        nombreError.style.display = 'none';
-        nombreProduccionInput.classList.remove('produccion__input--error');
-    }
+    nombreError.textContent = errorMessage;
+    nombreError.style.display = isValid ? 'none' : 'block';
+    nombreProduccionInput.classList.toggle('produccion__input--error', !isValid);
     
     updateCreateButtonState();
     return isValid;
@@ -266,22 +262,27 @@ function updateInversionEstimada() {
 }
 
 function updateCreateButtonState() {
-    const isNombreValid = validateNombreProduccion();
     const responsableSelect = document.getElementById('responsable');
+    const nombreProduccionInput = document.getElementById('nombreProduccion');
     const cultivoSelect = document.getElementById('cultivo');
     const cicloCultivoSelect = document.getElementById('cicloCultivo');
     const sensoresSelect = document.getElementById('sensores');
     const insumosSelect = document.getElementById('insumos');
+    const fechaInicioInput = document.getElementById('fechaInicio');
     
     const hasResponsable = responsableSelect && responsableSelect.value !== '';
+    const hasNombre = nombreProduccionInput && nombreProduccionInput.value.trim() !== '';
     const hasCultivo = cultivoSelect && cultivoSelect.value !== '';
     const hasCiclo = cicloCultivoSelect && cicloCultivoSelect.value !== '';
     const hasSensores = sensoresSelect && sensoresSelect.selectedOptions.length > 0;
     const hasInsumos = insumosSelect && insumosSelect.selectedOptions.length > 0;
+    const hasFechaInicio = fechaInicioInput && fechaInicioInput.value !== '';
     
     const crearProduccionSubmit = document.getElementById('crearProduccion');
     if (crearProduccionSubmit) {
-        crearProduccionSubmit.disabled = !(isNombreValid && hasResponsable && hasCultivo && hasCiclo && hasSensores && hasInsumos);
+        const allFieldsValid = hasResponsable && hasNombre && hasCultivo && 
+                             hasCiclo && hasSensores && hasInsumos && hasFechaInicio;
+        crearProduccionSubmit.disabled = !allFieldsValid;
     }
 }
 
@@ -378,9 +379,12 @@ function submitProduccionForm(isDraft = false) {
             crearProduccionSubmit.textContent = "Crear Producción";
         }
     } else {
-        // Agregar nueva producción
+        // Agregar nueva producción al inicio del array
         produccionesData.unshift(formProduction);
     }
+
+    // Asegurarse que los cambios se reflejen en la UI
+    currentPage = 1; // Volver a la primera página
     updateProduccionesTable();
     updateEstadoTable();
     updateReportesTable();
@@ -466,4 +470,36 @@ function submitAgregarElementoForm() {
     
     closeAllModals();
     agregarElementoForm.reset();
+}
+
+function initFormEventListeners() {
+    const form = document.getElementById('crearProduccionForm');
+    if (!form) return;
+
+    const inputs = form.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+        input.addEventListener('input', updateCreateButtonState);
+        input.addEventListener('change', updateCreateButtonState);
+    });
+
+    const nombreProduccionInput = document.getElementById('nombreProduccion');
+    if (nombreProduccionInput) {
+        nombreProduccionInput.addEventListener('input', validateNombreProduccion);
+    }
+
+    const sensoresSelect = document.getElementById('sensores');
+    if (sensoresSelect) {
+        sensoresSelect.addEventListener('change', () => {
+            updateSelectedSensores();
+            updateCreateButtonState();
+        });
+    }
+
+    const insumosSelect = document.getElementById('insumos');
+    if (insumosSelect) {
+        insumosSelect.addEventListener('change', () => {
+            updateSelectedInsumos();
+            updateCreateButtonState();
+        });
+    }
 }

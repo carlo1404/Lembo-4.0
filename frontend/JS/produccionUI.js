@@ -178,6 +178,93 @@ function cambiarEstadoProducciones(estado) {
     updateReportesTable();
 }
 
+// Función para filtrar y mostrar las lecturas de sensores
+function filtrarLecturasSensores() {
+    const sensorId = document.getElementById('sensorSeleccionado')?.value;
+    const fechaInicio = document.getElementById('fechaInicioLectura')?.value;
+    const fechaFin = document.getElementById('fechaFinLectura')?.value;
+    
+    if (!selectedProduccion || !sensorId) return;
+    
+    const produccion = produccionesData.find(p => p.id === selectedProduccion);
+    if (!produccion || !produccion.lecturas) return;
+    
+    let lecturas = produccion.lecturas.filter(l => l.sensor === sensorId);
+    
+    if (fechaInicio) {
+        const inicio = new Date(fechaInicio.split('/').reverse().join('-'));
+        lecturas = lecturas.filter(l => new Date(l.fecha.split(' ')[0].split('/').reverse().join('-')) >= inicio);
+    }
+    
+    if (fechaFin) {
+        const fin = new Date(fechaFin.split('/').reverse().join('-'));
+        lecturas = lecturas.filter(l => new Date(l.fecha.split(' ')[0].split('/').reverse().join('-')) <= fin);
+    }
+    
+    // Actualizar tabla
+    const lecturasTableBody = document.getElementById('lecturasTableBody');
+    if (lecturasTableBody) {
+        lecturasTableBody.innerHTML = lecturas.map(l => `
+            <tr>
+                <td>${l.fecha}</td>
+                <td>${l.valor}</td>
+                <td>${l.unidad}</td>
+            </tr>
+        `).join('');
+    }
+    
+    // Actualizar gráfico
+    updateSensorChart(lecturas);
+}
+
+// Función para actualizar el gráfico de sensor
+function updateSensorChart(lecturas) {
+    const ctx = document.getElementById('sensorChart');
+    if (!ctx) return;
+
+    // Destruir gráfico existente si hay uno
+    if (window.sensorChart instanceof Chart) {
+        window.sensorChart.destroy();
+    }
+
+    const labels = lecturas.map(l => l.fecha);
+    const valores = lecturas.map(l => l.valor);
+    const unidad = lecturas[0]?.unidad || '';
+
+    window.sensorChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: `Valores (${unidad})`,
+                data: valores,
+                borderColor: '#4CAF50',
+                backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: unidad
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Fecha/Hora'
+                    }
+                }
+            }
+        }
+    });
+}
+
 // Registro de event listeners de la UI
 function setupEventListeners() {
     const tabs = document.querySelectorAll('.produccion__tab');

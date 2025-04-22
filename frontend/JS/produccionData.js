@@ -24,7 +24,6 @@ function initDatePickers() {
     });
 }
 
-
 // Funciones para cargar datos (simulados)
 function loadUsuarios() {
     usuariosData = [
@@ -235,6 +234,16 @@ function loadInitialData() {
         const responsableSelect = document.getElementById('responsable');
         if (responsableSelect && usuariosData.length > 0) {
             responsableSelect.value = usuariosData[0].id;
+        }
+
+        // Inicializar event listeners después de cargar los datos
+        if (typeof initFormEventListeners === 'function') {
+            initFormEventListeners();
+        }
+        
+        // Actualizar estado inicial del botón
+        if (typeof updateCreateButtonState === 'function') {
+            updateCreateButtonState();
         }
     }, 500);
 }
