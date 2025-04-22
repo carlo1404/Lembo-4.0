@@ -11,7 +11,7 @@ export async function createSensor(req, res) {
         unidad_medida,
         tiempo_muestreo,
         imagen,
-        descripcion
+      descripcion
     } = req.body;
 
     await pool.query(

@@ -137,18 +137,17 @@ app.post("/api/cultivos", upload.single("imagen"), (req, res) => {
     });
 });
 
-// Ruta para agregar sensores
 app.post("/api/sensores", (req, res) => {
-    const { id, tipo_sensor, esatdo, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion } = req.body;
+    const { id, tipo_sensor, estado, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion } = req.body;
 
-    if (!id || !tipo_sensor || !esatdo || !nombre) {
+    if (!id || !tipo_sensor || !estado || !nombre) {
         return res.status(400).json({ message: "Los campos ID, tipo de sensor, estado y nombre son obligatorios." });
     }
 
-    console.log('Datos recibidos:', { id, tipo_sensor, esatdo, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion });
+    console.log('Datos recibidos:', { id, tipo_sensor, estado, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion });
 
-    const sql = "INSERT INTO sensores (id, tipo_sensor, esatdo, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    db.query(sql, [id, tipo_sensor, esatdo, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion], (err, result) => {
+    const sql = "INSERT INTO sensores (id, tipo_sensor, estado, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    db.query(sql, [id, tipo_sensor, estado, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion], (err, result) => {
         if (err) {
             console.error("Error al insertar en la base de datos:", err);
             return res.status(500).json({ message: "Error al agregar sensor" });
@@ -161,12 +160,3 @@ app.post("/api/sensores", (req, res) => {
 app.listen(3000, () => {
     console.log("🚀 Servidor corriendo en http://localhost:3000");
 });
-
-// esta es la parte para agrgar rutas
-
-import sensoresRouter from './routes/sensores.js'; // 👈 nuevo import
-
-// ...
-
-app.use('/api/producciones', produccionesRouter);
-app.use('/api/sensores', sensoresRouter); // 👈 montar aquí la ruta
