@@ -136,26 +136,93 @@ app.post("/api/cultivos", upload.single("imagen"), (req, res) => {
         });
     });
 });
+// =================== SENSORES ===================
 
-app.post("/api/sensores", (req, res) => {
-    const { id, tipo_sensor, estado, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion } = req.body;
+// Ruta para agregar un sensor con imagen
+app.post('/api/sensores', upload.single('imagen'), (req, res) => {
+    const { tipo_sensor, id, nombre, unidad_medida, estado, tiempo_muestreo, descripcion } = req.body;
+    const imagen = req.file ? req.file.filename : null;
 
-    if (!id || !tipo_sensor || !estado || !nombre) {
-        return res.status(400).json({ message: "Los campos ID, tipo de sensor, estado y nombre son obligatorios." });
+    if (!tipo_sensor || !id || !nombre || !estado) {
+        return res.status(400).json({ error: 'Los campos tipo_sensor, id, nombre y estado son obligatorios.' });
     }
 
-    console.log('Datos recibidos:', { id, tipo_sensor, estado, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion });
+    const query = `
+        INSERT INTO sensores (tipo_sensor, id, nombre, unidad_medida, estado, tiempo_muestreo, imagen, descripcion)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
 
-    const sql = "INSERT INTO sensores (id, tipo_sensor, estado, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    db.query(sql, [id, tipo_sensor, estado, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion], (err, result) => {
+    db.query(query, [tipo_sensor, id, nombre, unidad_medida, estado, tiempo_muestreo, imagen, descripcion], (err, result) => {
         if (err) {
-            console.error("Error al insertar en la base de datos:", err);
-            return res.status(500).json({ message: "Error al agregar sensor" });
+            console.error('❌ Error al insertar el sensor:', err);
+            return res.status(500).json({ error: 'Error al insertar el sensor.' });
         }
-        res.status(201).json({ message: "Sensor agregado correctamente", id: result.insertId });
+        res.status(201).json({ message: 'Sensor agregado con éxito', sensorId: result.insertId });
     });
 });
 
+// Ruta para obtener todos los sensores
+app.get('/api/sensores', (req, res) => {
+    db.query('SELECT * FROM sensores', (err, results) => {
+        if (err) {
+            console.error('❌ Error al obtener sensores:', err);
+            return res.status(500).json({ error: 'Error al obtener sensores.' });
+        }
+        res.json(results);
+    });
+});
+
+// Ruta para obtener un sensor por ID
+app.get('/api/sensores/:id', (req, res) => {
+    const id = req.params.id;
+    db.query('SELECT * FROM sensores WHERE id = ?', [id], (err, results) => {
+        if (err) {
+            console.error('❌ Error al obtener el sensor:', err);
+            return res.status(500).json({ error: 'Error al obtener el sensor.' });
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ error: 'Sensor no encontrado.' });
+        }
+        res.json(results[0]);
+    });
+});
+
+// Ruta para actualizar un sensor
+app.post('/api/sensores', upload.single('imagen'), (req, res) => {
+    console.log("📥 Datos recibidos del frontend:", req.body);  // Verifica los datos del body
+    console.log("📥 Archivo recibido:", req.file);  // Verifica si el archivo está llegando
+    
+    const { tipo_sensor, id, nombre, unidad_medida, estado, tiempo_muestreo, descripcion } = req.body;
+    console.log("📥 Campos extraídos:", tipo_sensor, id, nombre, unidad_medida, estado);  // Log adicional
+
+    if (!tipo_sensor || !id || !nombre || !estado) {
+        return res.status(400).json({ error: 'Los campos ID, tipo de sensor, estado y nombre son obligatorios.' });
+    }
+
+    const imagen = req.file ? req.file.filename : null;
+
+    const query = `
+        INSERT INTO sensores (tipo_sensor, id, nombre, unidad_medida, estado, tiempo_muestreo, imagen, descripcion)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    db.query(query, [tipo_sensor, id, nombre, unidad_medida, estado, tiempo_muestreo, imagen, descripcion], (err, result) => {
+        if (err) {
+            console.error('❌ Error al insertar el sensor:', err);
+            return res.status(500).json({ error: 'Error al insertar el sensor.' });
+        }
+        res.status(201).json({ message: 'Sensor agregado con éxito', sensorId: result.insertId });
+    });
+});
+
+app.delete('/api/sensores/:id', (req, res) => {
+    const id = req.params.id;
+    db.query('DELETE FROM sensores WHERE id = ?', [id], (err, result) => {
+        if (err) {
+            console.error('❌ Error al eliminar el sensor:', err);
+            return res.status(500).json({ error: 'Error al eliminar el sensor.' });
+        }
+        res.json({ message: 'Sensor eliminado correctamente.' });
+    });
+});
 // Iniciar servidor
 app.listen(3000, () => {
     console.log("🚀 Servidor corriendo en http://localhost:3000");

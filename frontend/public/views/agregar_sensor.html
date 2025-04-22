@@ -1,88 +1,88 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/frontend/public/css/pages/Agregar_insumo.css">
-    <title>Agregar Sensor</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/frontend/public/css/pages/Agregar_insumo.css">
+  <title>Agregar Sensor</title>
 </head>
 <body>
-    <section class="form-container">
-        <form class="form" method="POST" action="http://localhost:3000/api/sensores" enctype="multipart/form-data">
-            <h2 class="form__title">Agregar Sensor</h2>
-            <div class="form__container">
-                <!-- Tipo de sensor -->
-                <div class="form__field">
-                    <label class="form__label" for="unidad">Tipo de sensor:</label>
-                    <select class="form__select" name="tipo_sensor" id="unidad" required>
-                        <option value="">Tipo de sensor</option>
-                        <option value="luz">Luz</option>
-                        <option value="movimiento">Movimiento</option>
-                        <option value="temperatura">Temperatura</option>
-                        <option value="humedad">Humedad</option>
-                    </select>
-                </div>
+  <section class="form-container">
+    <form class="form" method="POST" action="http://localhost:3000/api/sensores" enctype="multipart/form-data" id="form-sensor">
+      
+      <h2 class="form__title">Agregar Sensor</h2>
+      <div class="form__container">
+        <!-- Tipo de sensor -->
+        <div class="form__field">
+          <label class="form__label" for="tipo_sensor">Tipo de sensor:</label>
+          <!-- Se usa id "tipo_sensor" para coincidir con el JS y el servidor -->
+          <select class="form__select" name="tipo_sensor" id="tipo_sensor" required>
+            <option value="">Tipo de sensor</option>
+            <option value="luz">Luz</option>
+            <option value="movimiento">Movimiento</option>
+            <option value="temperatura">Temperatura</option>
+            <option value="humedad">Humedad</option>
+          </select>
+        </div>
 
-                <!-- ID del sensor -->
-                <div class="form__field">
-                    <label class="form__label" for="id">ID:</label>
-                    <input class="form__input form__input--id" type="number" name="id" id="id" placeholder="ID Sensor" required>
-                </div>
+        <!-- ID del sensor -->
+        <div class="form__field">
+          <label class="form__label" for="id">ID:</label>
+          <input class="form__input form__input--id" type="number" name="id" id="id" placeholder="ID Sensor" required>
+        </div>
 
-                <!-- Nombre del sensor -->
-                <div class="form__field">
-                    <label class="form__label" for="name">Nombre:</label>
-                    <input class="form__input form__input--name" type="text" name="nombre" id="name" placeholder="Nombre del sensor" required>
-                </div>
+        <!-- Nombre del sensor -->
+        <div class="form__field">
+          <label class="form__label" for="name">Nombre:</label>
+          <input class="form__input form__input--name" type="text" name="nombre" id="name" placeholder="Nombre del sensor" required>
+        </div>
 
-                <!-- Unidad de medida -->
-                <div class="form__field">
-                    <label class="form__label" for="medida">Unidad de medida:</label>
-                    <select class="form__select" name="unidad_medida" id="medida" required>
-                        <option value="">Unidad de medida</option>
-                        <option value="metros">Metros</option>
-                        <option value="lux">Intensidad (lux)</option>
-                        <option value="temperatura">Temperatura (ºC)</option>
-                        <option value="humedad">Humedad (%)</option>
-                    </select>
-                </div>
+        <!-- Unidad de medida -->
+        <div class="form__field">
+          <label class="form__label" for="unidad_medida">Unidad de medida:</label>
+          <select class="form__select" name="unidad_medida" id="unidad_medida" required>
+            <option value="">Unidad de medida</option>
+            <option value="metros">Metros</option>
+            <option value="lux">Intensidad (lux)</option>
+            <option value="temperatura">Temperatura (ºC)</option>
+            <option value="humedad">Humedad (%)</option>
+          </select>
+        </div>
 
-                <!-- Estado -->
-                <div class="form__field">
-                    <label class="form__label" for="estado">Estado:</label>
-                    <select class="form__select" name="estado" id="estado" required>
-                        <option value="habilitado">Habilitado</option>
-                        <option value="deshabilitado">Deshabilitado</option>
-                    </select>
-                </div>
+        <!-- Estado -->
+        <div class="form__field">
+          <label class="form__label" for="estado">Estado:</label>
+          <select class="form__select" name="estado" id="estado" required>
+            <option value="habilitado">Habilitado</option>
+            <option value="deshabilitado">Deshabilitado</option>
+          </select>
+        </div>
 
-                <!-- Tiempo de muestreo -->
-                <div class="form__field">
-                    <label class="form__label" for="tiempo">Tiempo de muestreo:</label>
-                    <input class="form__input form__input--tiempo" type="number" name="tiempo_muestreo" id="tiempo" placeholder="Tiempo de muestreo">
-                </div>
+        <!-- Tiempo de muestreo -->
+        <div class="form__field">
+          <label class="form__label" for="tiempo_muestreo">Tiempo de muestreo:</label>
+          <input class="form__input form__input--tiempo" type="number" name="tiempo_muestreo" id="tiempo_muestreo" placeholder="Tiempo de muestreo">
+        </div>
 
-                <!-- Imagen del sensor -->
-                <div class="form__field">
-                    <label class="form__label" for="img">Imagen del Sensor:</label>
-                    <input class="form__input form__input--img" type="file" name="imagen" id="img" required>
-                </div>
+        <!-- Imagen del sensor -->
+        <div class="form__field">
+          <label class="form__label" for="imagen">Imagen del Sensor:</label>
+          <!-- Usamos id "imagen" para que coincida en el JS -->
+          <input class="form__input form__input--img" type="file" name="imagen" id="imagen" required>
+        </div>
 
-                <!-- Descripción -->
-                <div class="form__field">
-                    <label class="form__label" for="descripcion">Descripción:</label>
-                    <textarea class="form__textarea form__textarea--descripcion" name="descripcion" id="descripcion" placeholder="Descripción"></textarea>
-                </div>
-            </div>
+        <!-- Descripción -->
+        <div class="form__field">
+          <label class="form__label" for="descripcion">Descripción:</label>
+          <textarea class="form__textarea form__textarea--descripcion" name="descripcion" id="descripcion" placeholder="Descripción"></textarea>
+        </div>
+      </div>
 
-            <!-- Botón de enviar -->
-            <button class="form__button" type="submit" id="agregarSensor">Agregar Sensor</button>
-        </form>
-    </section>
-    
-    <script>
-        // Aquí no necesitamos redirigir, porque el formulario se enviará al servidor directamente.
-    </script>
+      <!-- Botón de enviar -->
+      <button class="form__button" type="submit" id="agregarSensor">Agregar Sensor</button>
+    </form>
+  </section>
+  
+  <script src="/frontend/JS/agregarSensor.js"></script>
 </body>
-<script src="/frontend/JS/agregarSensor.js"></script>
 </html>
