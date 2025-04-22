@@ -1,161 +1,141 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const editButtons = document.querySelectorAll('.edit-button');
+    // Referencias del DOM
     const editModal = document.getElementById('editInsumoModal');
     const closeEditModal = document.getElementById('closeEditModal');
     const saveButton = document.getElementById('saveEditInsumo');
 
-    // Cargar datos guardados al iniciar
-    loadInsumosData();
-
-    function loadInsumosData() {
-        const savedInsumos = localStorage.getItem('insumosData');
-        if (!savedInsumos) {
-            // Si no hay datos guardados, guardar los datos actuales de la tabla
-            saveCurrentTableData();
-        } else {
-            // Si hay datos guardados, actualizar la tabla
-            updateTableFromStorage();
-        }
+    // Inicializar datos solo una vez al cargar
+    if (!localStorage.getItem('insumosDataInitialized')) {
+        saveCurrentTableData();
+        localStorage.setItem('insumosDataInitialized', 'true');
     }
 
-    function saveCurrentTableData() {
-        const insumos = [];
-        document.querySelectorAll('.content__table-row').forEach(row => {
-            if (row.parentElement.tagName === 'THEAD') return;
-            
-            const insumo = {
-                nombre: row.querySelector('td:nth-child(1)')?.textContent,
-                id: row.querySelector('td:nth-child(2)')?.textContent,
-                unidad: row.querySelector('td:nth-child(3)')?.textContent,
-                cantidad: row.querySelector('td:nth-child(4)')?.textContent,
-                valor: row.querySelector('td:nth-child(5)')?.textContent,
-                estado: row.querySelector('td:nth-child(6)')?.textContent.includes('Habilitado') ? 'habilitado' : 'deshabilitado'
-            };
-            insumos.push(insumo);
-        });
-        localStorage.setItem('insumosData', JSON.stringify(insumos));
+    // Solo adjuntar event listeners una vez
+    document.querySelectorAll('.edit-button').forEach(button => {
+        button.removeEventListener('click', handleEdit);
+        button.addEventListener('click', handleEdit);
+    });
+
+    if (closeEditModal) {
+        closeEditModal.addEventListener('click', closeModal);
     }
 
-    function updateTableFromStorage() {
-        const savedInsumos = JSON.parse(localStorage.getItem('insumosData'));
-        if (!savedInsumos) return;
-
-        const tbody = document.querySelector('.content__table-body');
-        tbody.innerHTML = '';
-
-        savedInsumos.forEach(insumo => {
-            const row = document.createElement('tr');
-            row.className = 'content__table-row';
-            row.innerHTML = `
-                <td class="content__table-data">${insumo.nombre}</td>
-                <td class="content__table-data">${insumo.id}</td>
-                <td class="content__table-data">${insumo.unidad}</td>
-                <td class="content__table-data">${insumo.cantidad}</td>
-                <td class="content__table-data">${insumo.valor}</td>
-                <td class="content__table-data content__table-data--status">
-                    Habilitado: &nbsp;<span class="${insumo.estado === 'habilitado' ? 'content__status-enabled' : ''}"></span>&nbsp;
-                    Deshabilitado:&nbsp;<span class="${insumo.estado === 'deshabilitado' ? 'content__status-disabled' : ''}"></span>
-                </td>
-                <td class="content__table-data">
-                    <div class="content__icon-container">
-                        <div class="content__icon content__icon--blue" title="Editar">
-                            <i class='bx bxs-edit edit-button'></i>
-                        </div>
-                        <div class="content__icon content__icon--red" title="Eliminar">
-                            <i class='bx bxs-trash'></i>
-                        </div>
-                    </div>
-                </td>
-            `;
-            tbody.appendChild(row);
-        });
-
-        // Recargar event listeners después de actualizar la tabla
-        attachEditListeners();
+    if (saveButton) {
+        saveButton.removeEventListener('click', handleSave);
+        saveButton.addEventListener('click', handleSave);
     }
 
-    function attachEditListeners() {
-        document.querySelectorAll('.edit-button').forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                const row = this.closest('.content__table-row');
-                if (!row) return;
+    // Funciones de manejo
+    function handleEdit(e) {
+        e.preventDefault();
+        const row = this.closest('.content__table-row');
+        if (!row) return;
 
-                const insumoData = {
-                    id: row.querySelector('td:nth-child(2)')?.textContent || '',
-                    nombre: row.querySelector('td:nth-child(1)')?.textContent || '',
-                    unidad: row.querySelector('td:nth-child(3)')?.textContent || '',
-                    cantidad: row.querySelector('td:nth-child(4)')?.textContent || '',
-                    valor: row.querySelector('td:nth-child(5)')?.textContent.replace('$', '') || '',
-                    estado: row.querySelector('td:nth-child(6)')?.textContent.includes('Habilitado') ? 'habilitado' : 'deshabilitado'
-                };
-                openEditModal(insumoData);
-            });
-        });
+        const insumoData = {
+            id: row.querySelector('td:nth-child(2)').textContent,
+            nombre: row.querySelector('td:nth-child(1)').textContent,
+            unidad: row.querySelector('td:nth-child(3)').textContent,
+            cantidad: row.querySelector('td:nth-child(4)').textContent,
+            valor: row.querySelector('td:nth-child(5)').textContent.replace('$', '').replace('.', ''),
+            estado: row.querySelector('.content__status-enabled') ? 'habilitado' : 'deshabilitado'
+        };
+
+        openEditModal(insumoData);
     }
 
     function openEditModal(insumoData) {
-        const modal = document.getElementById('editInsumoModal');
-        if (!modal) return;
-        
         document.getElementById('editNombre').value = insumoData.nombre;
         document.getElementById('editUnidad').value = insumoData.unidad;
         document.getElementById('editCantidad').value = insumoData.cantidad;
         document.getElementById('editValor').value = insumoData.valor;
         document.getElementById('editEstado').value = insumoData.estado;
-        modal.style.display = 'block';
-        modal.dataset.insumoId = insumoData.id;
+        editModal.dataset.insumoId = insumoData.id;
+        editModal.style.display = 'block';
     }
 
-    if (closeEditModal) {
-        closeEditModal.addEventListener('click', () => {
-            if (editModal) editModal.style.display = 'none';
-        });
-    }
+    function handleSave(e) {
+        e.preventDefault();
+        const insumoId = editModal.dataset.insumoId;
+        
+        const editedData = {
+            nombre: document.getElementById('editNombre').value,
+            unidad: document.getElementById('editUnidad').value,
+            cantidad: document.getElementById('editCantidad').value,
+            valor: document.getElementById('editValor').value,
+            estado: document.getElementById('editEstado').value
+        };
 
-    if (saveButton) {
-        saveButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            if (!editModal) return;
-            
-            const insumoId = editModal.dataset.insumoId;
-            if (!insumoId) {
-                alert('Error: No se pudo identificar el insumo a editar');
-                return;
-            }
-            
-            const editedData = {
-                nombre: document.getElementById('editNombre')?.value || '',
-                unidad: document.getElementById('editUnidad')?.value || '',
-                cantidad: document.getElementById('editCantidad')?.value || '',
-                valor: document.getElementById('editValor')?.value || '',
-                estado: document.getElementById('editEstado')?.value || ''
-            };
-
-            // Validación de campos requeridos
-            if (!editedData.nombre || !editedData.unidad || !editedData.cantidad || !editedData.valor) {
-                alert('Todos los campos son requeridos');
-                return;
-            }
-
-            // Actualizar DOM y Storage
+        if (validateData(editedData)) {
             updateInsumoData(insumoId, editedData);
-            
-            editModal.style.display = 'none';
-            alert('Insumo actualizado exitosamente');
-        });
+            closeModal();
+        }
+    }
+
+    function validateData(data) {
+        if (!data.nombre || !data.unidad || !data.cantidad || !data.valor) {
+            alert('Todos los campos son requeridos');
+            return false;
+        }
+        return true;
+    }
+
+    function closeModal() {
+        editModal.style.display = 'none';
     }
 
     function updateInsumoData(insumoId, editedData) {
-        const savedInsumos = JSON.parse(localStorage.getItem('insumosData'));
-        const updatedInsumos = savedInsumos.map(insumo => {
-            if (insumo.id === insumoId) {
-                return { ...insumo, ...editedData };
+        // Buscar la fila correcta usando el ID
+        const rows = document.querySelectorAll('.content__table-body .content__table-row');
+        const row = Array.from(rows).find(row => {
+            const idCell = row.querySelector('td:nth-child(2)');
+            return idCell && idCell.textContent.trim() === insumoId;
+        });
+
+        if (!row) {
+            console.error('Fila no encontrada para ID:', insumoId);
+            return;
+        }
+
+        // Actualizar directamente usando los índices de las celdas
+        const cells = row.getElementsByTagName('td');
+        cells[0].textContent = editedData.nombre;
+        cells[2].textContent = editedData.unidad;
+        cells[3].textContent = editedData.cantidad;
+        cells[4].textContent = `$${editedData.valor}`;
+
+        // Actualizar el estado
+        const estadoCell = cells[5];
+        if (editedData.estado === 'habilitado') {
+            estadoCell.innerHTML = `Habilitado: &nbsp;<span class="content__status-enabled"></span>&nbsp; Deshabilitado:&nbsp;<span></span>`;
+        } else {
+            estadoCell.innerHTML = `Habilitado: &nbsp;<span></span>&nbsp; Deshabilitado: &nbsp;<span class="content__status-disabled"></span>`;
+        }
+
+        // Forzar actualización visual
+        row.style.display = 'none';
+        row.offsetHeight;
+        row.style.display = '';
+
+        saveCurrentTableData();
+        alert('Cambios guardados exitosamente');
+    }
+
+    function saveCurrentTableData() {
+        const insumos = [];
+        document.querySelectorAll('.content__table-body .content__table-row').forEach(row => {
+            const cells = row.getElementsByTagName('td');
+            if (cells.length >= 6) {
+                insumos.push({
+                    nombre: cells[0].textContent.trim(),
+                    id: cells[1].textContent.trim(),
+                    unidad: cells[2].textContent.trim(),
+                    cantidad: cells[3].textContent.trim(),
+                    valor: cells[4].textContent.trim(),
+                    estado: cells[5].querySelector('.content__status-enabled') ? 'habilitado' : 'deshabilitado'
+                });
             }
-            return insumo;
         });
         
-        localStorage.setItem('insumosData', JSON.stringify(updatedInsumos));
-        updateTableFromStorage();
+        localStorage.setItem('insumosData', JSON.stringify(insumos));
     }
 });
