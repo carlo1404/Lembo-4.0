@@ -1,3 +1,11 @@
+document.getElementById("add").onclick = function() {
+    window.location.href = "Agregar_Insumo.html";
+};
+
+document.getElementById("download").onclick = function() {
+    window.location.href = "informe-insumo.html";
+};
+
 document.addEventListener('DOMContentLoaded', function() {
     // Referencias del DOM
     const editModal = document.getElementById('editInsumoModal');
