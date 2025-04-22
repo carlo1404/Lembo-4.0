@@ -1,21 +1,43 @@
 /* Variables */
 :root {
-    --primary-color: #4CAF50;
-    --primary-dark: #388E3C;
-    --secondary-color: #2196F3;
-    --danger-color: #F44336;
-    --warning-color: #FFC107;
-    --success-color: #8BC34A;
-    --light-gray: #f5f5f5;
-    --medium-gray: #e0e0e0;
-    --dark-gray: #757575;
-    --text-color: #212121;
+    /* Colores principales */
+    --green-50: #e8f5e9;
+    --green-100: #c8e6c9;
+    --green-500: #4CAF50;
+    --green-600: #388E3C;
+    --green-700: #2E7D32;
+    --green-800: #1B5E20;
+
+    /* Colores de estado */
+    --blue-500: #2196F3;
+    --red-500: #F44336;
+    --yellow-500: #FFC107;
+    --green-accent: #8BC34A;
+    
+    /* Escala de grises */
+    --gray-50: #f5f5f5;
+    --gray-100: #e0e0e0;
+    --gray-500: #757575;
+    --gray-900: #212121;
+
+    /* Variables existentes actualizadas */
+    --primary-color: var(--green-500);
+    --primary-dark: var(--green-600);
+    --secondary-color: var(--blue-500);
+    --danger-color: var(--red-500);
+    --warning-color: var(--yellow-500);
+    --success-color: var(--green-accent);
+    --light-gray: var(--gray-50);
+    --medium-gray: var(--gray-100);
+    --dark-gray: var(--gray-500);
+    --text-color: var(--gray-900);
     --text-light: #ffffff;
-    --border-radius: 4px;
-    --box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+    /* Dimensiones y efectos */
+    --border-radius: 0.25rem;
+    --box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.1);
     --transition: all 0.3s ease;
 }
-
 
 /* Panel lateral */
 .sidebar {
@@ -160,39 +182,39 @@
 }
 
 .produccion__input {
-    padding: 8px 12px;
-    border: 1px solid var(--medium-gray);
+    padding: 0.5rem 0.75rem;
+    border: 0.0625rem solid var(--medium-gray);
     border-radius: var(--border-radius);
-    font-size: 14px;
+    font-size: 0.875rem;
     transition: var(--transition);
 }
 
 .produccion__input:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+    box-shadow: 0 0 0 0.125rem rgba(76, 175, 80, 0.2);
 }
 
 .produccion__input--date {
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23757575" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>') no-repeat right 10px center;
-    background-color: white;
-    padding-right: 35px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23757575" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>') no-repeat right 0.625rem center;
+    background-color: var(--text-light);
+    padding-right: 2.1875rem;
 }
 
 .produccion__input--readonly {
-    padding: 8px 12px;
-    border: 1px solid var(--medium-gray);
+    padding: 0.5rem 0.75rem;
+    border: 0.0625rem solid var(--medium-gray);
     border-radius: var(--border-radius);
     background-color: var(--light-gray);
-    font-size: 14px;
+    font-size: 0.875rem;
 }
 
 .produccion__select {
-    padding: 8px 12px;
-    border: 1px solid var(--medium-gray);
+    padding: 0.5rem 0.75rem;
+    border: 0.0625rem solid var(--medium-gray);
     border-radius: var(--border-radius);
-    font-size: 14px;
-    background-color: white;
+    font-size: 0.875rem;
+    background-color: var(--text-light);
     width: 100%;
     transition: var(--transition);
 }
@@ -200,12 +222,12 @@
 .produccion__select:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+    box-shadow: 0 0 0 0.125rem rgba(76, 175, 80, 0.2);
 }
 
 .produccion__select[multiple] {
     height: auto;
-    min-height: 100px;
+    min-height: 6.25rem;
 }
 
 /* Buttons */
@@ -241,21 +263,21 @@
 }
 
 .produccion__button--success {
-    background-color: var(--success-color);
+    background-color: var(--green-700);
     color: var(--text-light);
 }
 
 .produccion__button--success:hover {
-    background-color: #7CB342;
+    background-color: var(--green-500);
 }
 
 .produccion__button--danger {
-    background-color: var(--danger-color);
+    background-color: var(--yellow-500);
     color: var(--text-light);
 }
 
 .produccion__button--danger:hover {
-    background-color: #E53935;
+    background-color: var(--yellow-500);
 }
 
 .produccion__button--small {
