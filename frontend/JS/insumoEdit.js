@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (saveButton) {
-        saveButton.removeEventListener('click', handleSave);
         saveButton.addEventListener('click', handleSave);
     }
 
@@ -44,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
             nombre: row.querySelector('td:nth-child(1)').textContent,
             unidad: row.querySelector('td:nth-child(3)').textContent,
             cantidad: row.querySelector('td:nth-child(4)').textContent,
-            valor: row.querySelector('td:nth-child(5)').textContent.replace('$', '').replace('.', ''),
+            valor: row.querySelector('td:nth-child(5)').textContent.replace('$', '').replace(',', ''),
             estado: row.querySelector('.content__status-enabled') ? 'habilitado' : 'deshabilitado'
         };
 

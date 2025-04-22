@@ -127,12 +127,12 @@ h1 {
 }
 
 .btn-danger {
-    background-color: var(--expired);
+    background-color: var(--warning);
     color: var(--white);
 }
 
 .btn-danger:hover {
-    background-color: var(--alert);
+    background-color: var(--warning);
 }
 
 .association-list {
@@ -172,7 +172,7 @@ h1 {
 }
 
 .status.disabled {
-    background-color: var(--expired);
+    background-color: var(--warning);
     color: var(--white);
 }
 

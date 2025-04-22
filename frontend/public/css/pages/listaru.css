@@ -279,6 +279,102 @@ tbody td:last-child .action-btn:hover {
     cursor: pointer;
 }
 
+/* Estilos del Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal__content {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 0.5rem;
+    width: 90%;
+    max-width: 31.25rem;
+}
+
+.modal__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 0.0625rem solid var(--gray-20);
+}
+
+.modal__title {
+    font-size: 1.5rem;
+    color: var(--gray-100);
+}
+
+.modal__close {
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: var(--gray-80);
+}
+
+.modal__body {
+    margin-bottom: 1.5rem;
+}
+
+.modal__footer {
+    text-align: right;
+    padding-top: 1rem;
+    border-top: 0.0625rem solid var(--gray-20);
+}
+
+/* Estilos del Formulario dentro del Modal */
+.form__field {
+    margin-bottom: 1rem;
+}
+
+.form__label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--gray-100);
+    font-weight: 500;
+}
+
+.form__input,
+.form__select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 0.0625rem solid var(--gray-40);
+    border-radius: 0.25rem;
+    font-size: 1rem;
+}
+
+.form__input:focus,
+.form__select:focus {
+    outline: none;
+    border-color: var(--green-900);
+    box-shadow: 0 0 0 0.125rem rgba(75, 189, 23, 0.1);
+}
+
+.form__button {
+    background-color: var(--green-900);
+    color: var(--white);
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.form__button:hover {
+    background-color: var(--green-950);
+}
+
 /* Media Queries */
 @media (max-width: 768px) {
     .sidebar {
