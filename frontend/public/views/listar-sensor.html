@@ -57,7 +57,7 @@
                         <td class="content__table-data">
                             <div class="content__icon-container">
                                 <div class="content__icon content__icon--blue" title="Editar">
-                                    <i class='bx bxs-edit' id="redirectButton"></i>
+                                    <i class='bx bxs-edit edit-button'></i>
                                 </div>
                                 <div class="content__icon content__icon--red" title="Eliminar">
                                     <i class='bx bxs-trash'></i>
@@ -92,7 +92,7 @@
                         <td class="content__table-data">
                             <div class="content__icon-container">
                                 <div class="content__icon content__icon--blue" title="Editar">
-                                    <i class='bx bxs-edit' id="redirectButton"></i>
+                                    <i class='bx bxs-edit edit-button'></i>
                                 </div>
                                 <div class="content__icon content__icon--red" title="Eliminar">
                                     <i class='bx bxs-trash'></i>
@@ -116,7 +116,7 @@
                         <td class="content__table-data">
                             <div class="content__icon-container">
                                 <div class="content__icon content__icon--blue" title="Editar">
-                                    <i class='bx bxs-edit' id="redirectButton"></i>
+                                    <i class='bx bxs-edit edit-button'></i>
                                 </div>
                                 <div class="content__icon content__icon--red" title="Eliminar">
                                     <i class='bx bxs-trash'></i>
@@ -140,7 +140,7 @@
                         <td class="content__table-data">
                             <div class="content__icon-container">
                                 <div class="content__icon content__icon--blue" title="Editar">
-                                    <i class='bx bxs-edit' id="redirectButton"></i>
+                                    <i class='bx bxs-edit edit-button'></i>
                                 </div>
                                 <div class="content__icon content__icon--red" title="Eliminar">
                                     <i class='bx bxs-trash'></i>
@@ -164,7 +164,7 @@
                         <td class="content__table-data">
                             <div class="content__icon-container">
                                 <div class="content__icon content__icon--blue" title="Editar">
-                                    <i class='bx bxs-edit' id="redirectButton"></i>
+                                    <i class='bx bxs-edit edit-button'></i>
                                 </div>
                                 <div class="content__icon content__icon--red" title="Eliminar">
                                     <i class='bx bxs-trash'></i>
@@ -188,7 +188,7 @@
                         <td class="content__table-data">
                             <div class="content__icon-container">
                                 <div class="content__icon content__icon--blue" title="Editar">
-                                    <i class='bx bxs-edit' id="redirectButton"></i>
+                                    <i class='bx bxs-edit edit-button'></i>
                                 </div>
                                 <div class="content__icon content__icon--red" title="Eliminar">
                                     <i class='bx bxs-trash'></i>
@@ -212,7 +212,7 @@
                         <td class="content__table-data">
                             <div class="content__icon-container">
                                 <div class="content__icon content__icon--blue" title="Editar">
-                                    <i class='bx bxs-edit' id="redirectButton"></i>
+                                    <i class='bx bxs-edit edit-button'></i>
                                 </div>
                                 <div class="content__icon content__icon--red" title="Eliminar">
                                     <i class='bx bxs-trash'></i>
@@ -236,7 +236,7 @@
                         <td class="content__table-data">
                             <div class="content__icon-container">
                                 <div class="content__icon content__icon--blue" title="Editar">
-                                    <i class='bx bxs-edit' id="redirectButton"></i>
+                                    <i class='bx bxs-edit edit-button'></i>
                                 </div>
                                 <div class="content__icon content__icon--red" title="Eliminar">
                                     <i class='bx bxs-trash'></i>
@@ -251,8 +251,58 @@
                 </tbody>
             </table>
         </section>
-
     </main>
+
+    <!-- Modal de Edición -->
+    <div class="modal" id="editSensorModal">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h2 class="modal__title">Editar Sensor</h2>
+                <span class="modal__close" id="closeEditModal">&times;</span>
+            </div>
+            <div class="modal__body">
+                <form id="editSensorForm" class="form">
+                    <div class="form__field">
+                        <label class="form__label" for="editTipoSensor">Tipo de sensor:</label>
+                        <select class="form__select" name="tipo" id="editTipoSensor">
+                            <option value="luz">Luz</option>
+                            <option value="movimiento">Movimiento</option>
+                            <option value="temperatura">Temperatura</option>
+                            <option value="humedad">Humedad</option>
+                        </select>
+                    </div>
+                    <div class="form__field">
+                        <label class="form__label" for="editNombre">Nombre:</label>
+                        <input class="form__input" type="text" id="editNombre" required>
+                    </div>
+                    <div class="form__field">
+                        <label class="form__label" for="editUnidad">Unidad de medida:</label>
+                        <select class="form__select" id="editUnidad">
+                            <option value="metros">Metros</option>
+                            <option value="lux">Intensidad (lux)</option>
+                            <option value="temperatura">Temperatura (ºC)</option>
+                            <option value="humedad">Humedad (%)</option>
+                        </select>
+                    </div>
+                    <div class="form__field">
+                        <label class="form__label" for="editTiempo">Tiempo de escaneo:</label>
+                        <input class="form__input" type="text" id="editTiempo" required>
+                    </div>
+                    <div class="form__field">
+                        <label class="form__label" for="editEstado">Estado:</label>
+                        <select class="form__select" id="editEstado">
+                            <option value="habilitado">Habilitado</option>
+                            <option value="deshabilitado">Deshabilitado</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal__footer">
+                <button class="form__button" id="saveEditSensor">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>

@@ -1,6 +1,3 @@
-document.getElementById("redirectButton").onclick = function () {
-    window.location.href = "Actualizar_insumo.html";
-};
 document.getElementById("add").onclick = function () {
     window.location.href = "agregar_sensor.html";
 };
@@ -117,5 +114,97 @@ document.addEventListener("DOMContentLoaded", function () {
         if (e.target.classList.contains("modal__overlay")) {
             modal.style.display = 'none';
         }
+    });
+
+    const editButtons = document.querySelectorAll('.edit-button');
+    const editModal = document.getElementById('editSensorModal');
+    const closeEditModal = document.getElementById('closeEditModal');
+    const editForm = document.getElementById('editSensorForm');
+    const saveButton = document.getElementById('saveEditSensor');
+
+    // Función para abrir el modal y cargar datos
+    function openEditModal(sensorData) {
+        document.getElementById('editTipoSensor').value = sensorData.tipo;
+        document.getElementById('editNombre').value = sensorData.nombre;
+        document.getElementById('editUnidad').value = sensorData.unidad;
+        document.getElementById('editTiempo').value = sensorData.tiempo;
+        document.getElementById('editEstado').value = sensorData.estado;
+        editModal.style.display = 'block';
+
+        // Guardamos el ID del sensor que estamos editando
+        editModal.dataset.sensorId = sensorData.id;
+    }
+
+    // Agregar evento a todos los botones de editar
+    editButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const row = this.closest('.content__table-row');
+            const sensorData = {
+                id: row.querySelector('td:nth-child(2)').textContent,
+                nombre: row.querySelector('td:nth-child(1)').textContent,
+                tipo: row.querySelector('td:nth-child(3)').textContent,
+                unidad: row.querySelector('td:nth-child(4)').textContent,
+                tiempo: row.querySelector('td:nth-child(5)').textContent,
+                estado: row.querySelector('td:nth-child(6)').textContent.includes('Habilitado') ? 'habilitado' : 'deshabilitado'
+            };
+            openEditModal(sensorData);
+        });
+    });
+
+    // Cerrar modal
+    closeEditModal.addEventListener('click', () => {
+        editModal.style.display = 'none';
+    });
+
+    // Guardar cambios
+    saveButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        const editModal = document.getElementById('editSensorModal');
+        if (!editModal) return;
+        
+        const sensorId = editModal.dataset.sensorId;
+        if (!sensorId) {
+            alert('Error: No se pudo identificar el sensor a editar');
+            return;
+        }
+        
+        const editedData = {
+            tipo: document.getElementById('editTipoSensor')?.value || '',
+            nombre: document.getElementById('editNombre')?.value || '',
+            unidad: document.getElementById('editUnidad')?.value || '',
+            tiempo: document.getElementById('editTiempo')?.value || '',
+            estado: document.getElementById('editEstado')?.value || ''
+        };
+
+        // Aquí puedes agregar la lógica para enviar los datos al servidor
+        // Por ahora solo actualizamos la UI
+        const rows = document.querySelectorAll('.content__table-row');
+        rows.forEach(row => {
+            const idCell = row.querySelector('td:nth-child(2)');
+            if (!idCell) return; // Skip si no encontramos la celda del ID
+            
+            if (idCell.textContent === sensorId) {
+                const nombreCell = row.querySelector('td:nth-child(1)');
+                const tipoCell = row.querySelector('td:nth-child(3)');
+                const unidadCell = row.querySelector('td:nth-child(4)');
+                const tiempoCell = row.querySelector('td:nth-child(5)');
+                const statusCell = row.querySelector('td:nth-child(6)');
+
+                // Actualizar solo si las celdas existen
+                if (nombreCell) nombreCell.textContent = editedData.nombre;
+                if (tipoCell) tipoCell.textContent = editedData.tipo;
+                if (unidadCell) unidadCell.textContent = editedData.unidad;
+                if (tiempoCell) tiempoCell.textContent = editedData.tiempo;
+                if (statusCell) {
+                    statusCell.innerHTML = editedData.estado === 'habilitado' ?
+                        'Habilitado: &nbsp;<span class="content__status-enabled"></span>&nbsp; Deshabilitado:&nbsp;<span></span>' :
+                        'Habilitado: &nbsp;<span></span>&nbsp; Deshabilitado: &nbsp;<span class="content__status-disabled"></span>';
+                }
+            }
+        });
+
+        editModal.style.display = 'none';
+        alert('Sensor actualizado exitosamente');
     });
 });
