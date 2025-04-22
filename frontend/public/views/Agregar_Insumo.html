@@ -16,7 +16,7 @@
             <div class="form__container">
                 <div class="form__field">
                     <label class="form__label" for="name">Nombre:</label>
-                    <input class="form__input form__input--name" type="text" name="name" id="name" placeholder="Nombre">
+                    <input class="form__input form__input--name" type="text" name="name" id="name" placeholder="Nombre" pattern="^[a-zA-Z]+$">
                 </div>
                 <div class="form__field">
                     <label class="form__label" for="id">ID:</label>
@@ -24,11 +24,11 @@
                 </div>
                 <div class="form__field">
                     <label class="form__label" for="valor">Valor Unitario:</label>
-                    <input class="form__input form__input--valor" type="number" name="valor" id="valor" placeholder="Precio">
+                    <input class="form__input form__input--valor" type="number" name="valor" id="valor" placeholder="Precio" pattern="[0-9]*">
                 </div>
                 <div class="form__field"></div>
                     <label class="form__label" for="cantidad">Cantidad:</label>
-                    <input class="form__input form__input--cantidad" type="number" name="cantidad" id="cantidad" placeholder="Cantidad">
+                    <input class="form__input form__input--cantidad" type="number" name="cantidad" id="cantidad" placeholder="Cantidad" pattern="[0-9]*">
                 </div>
                 <div class="form__field">
                     <label class="form__label" for="unidad">Unidad de medida:</label>
