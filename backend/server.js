@@ -201,13 +201,13 @@ app.get('/api/generar-id', (req, res) => {
 });
 
 
-const express = require('express');
+
 
 // Ruta para obtener todas las producciones
 app.get('/api/producciones', (req, res) => {
     // Lógica para obtener producciones desde la base de datos
     res.json(producciones); // respuesta con las producciones en formato JSON
-  });
+});
   
   // Ruta para generar un ID
   app.get('/api/generar-id', (req, res) => {
@@ -223,6 +223,45 @@ app.get('/api/producciones', (req, res) => {
   });
   
 
+// Usar CORS para permitir las solicitudes desde el cliente
+app.use(cors());
+
+// Endpoint para obtener los usuarios con el rol "responsable"
+app.get('/api/usuarios', (req, res) => {
+  const rol = req.query.rol || ''; // Obtenemos el parámetro "rol" de la consulta (por defecto vacío)
+
+  const query = rol ? 
+    `SELECT id, nombre, rol FROM usuarios WHERE rol = ?` : 
+    `SELECT id, nombre, rol FROM usuarios`;
+
+  db.query(query, [rol], (err, results) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).json({ error: 'Error al obtener usuarios' });
+    }
+    res.json(results); // Enviar los usuarios como respuesta en formato JSON
+  });
+});
+
+app.use(express.json()); // Permite leer cuerpos de solicitudes JSON
+
+// Simulamos una base de datos de usuarios
+const usuarios = [
+    { id: 1, nombre: "Juan Pérez", rol: "responsable" },
+    { id: 2, nombre: "Ana Gómez", rol: "responsable" },
+    { id: 3, nombre: "Carlos López", rol: "admin" },
+    // Más usuarios
+];
+
+// Ruta para obtener usuarios por rol
+app.get('/api/usuarios', (req, res) => {
+    const rol = req.query.rol;
+    if (!rol) {
+        return res.status(400).json({ message: 'Falta el parámetro de rol' });
+    }
+    const usuariosFiltrados = usuarios.filter(usuario => usuario.rol.toLowerCase() === rol.toLowerCase());
+    res.json(usuariosFiltrados);
+});
 
 // Iniciar servidor
 app.listen(3000, () => {

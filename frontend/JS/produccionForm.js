@@ -44,10 +44,12 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Crear producción
     document.getElementById('crearProduccion').addEventListener('click', () => {
+        const cultivoId = document.getElementById('cultivo').value;
+        const cultivoNombre = document.querySelector(`#cultivo option[value="${cultivoId}"]`)?.textContent || '';
         const nueva = {
             id: document.getElementById('produccionId').value,
             nombre: nombreInput.value.trim(),
-            cultivo: document.getElementById('cultivo').value
+            cultivo: cultivoNombre
         };
         producciones.push(nueva);
         const row = document.createElement('tr');
@@ -56,32 +58,99 @@ document.addEventListener('DOMContentLoaded', async function () {
         modal.style.display = 'none';
     });
 
-    // Cargar datos en los selects
     async function fetchAndPopulateSelect(url, selectId) {
         try {
             const response = await fetch(url);
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error(`Error al cargar datos: ${response.status}`);
             }
             const data = await response.json();
             const select = document.getElementById(selectId);
             if (select) {
-                select.innerHTML = '<option value="">Seleccione</option>';
+                select.innerHTML = '<option value="">Seleccione</option>'; // Opción por defecto
                 data.forEach(item => {
                     const option = document.createElement('option');
-                    option.value = item.id;
-                    option.textContent = item.rol; // Aquí debe ser lo que quieras mostrar
+                    option.value = item.id; // El id del usuario será el valor
+                    option.textContent = `${item.nombre} (${item.rol})`; // Mostramos nombre y rol
                     select.appendChild(option);
                 });
             }
         } catch (error) {
-            console.error(`Error cargando ${selectId}:`, error);
+            console.error('Error al cargar los datos del select:', error);
         }
     }
+    
+    // Llamar a la API para cargar los responsables
+    await fetchAndPopulateSelect('http://localhost:3000/api/usuarios?rol=responsable', 'responsable');
+    
 
-    // Llamadas a la API para cargar datos en los selects
+    // Cargar datos desde API (si los necesitas)
     await fetchAndPopulateSelect('/api/usuarios?rol=responsable', 'responsable');
     await fetchAndPopulateSelect('/api/ciclos', 'cicloCultivo');
     await fetchAndPopulateSelect('/api/sensores', 'sensores');
-    await fetchAndPopulateSelect('/api/insumos', 'insumos');
+
+    // Datos simulados para cultivos e insumos (puedes cambiarlos por tu API si deseas)
+    const cultivos = [
+        { id: 1, nombre: "Maíz" },
+        { id: 2, nombre: "Papa" },
+        { id: 3, nombre: "Arroz" }
+    ];
+
+    const insumos = [
+        { id: 1, nombre: "Fertilizante A" },
+        { id: 2, nombre: "Insecticida X" },
+        { id: 3, nombre: "Abono B" }
+    ];
+
+    // Cargar selects de cultivos e insumos
+    cargarDatos(cultivos, 'cultivo');
+    cargarDatos(insumos, 'insumos');
+
+    function cargarDatos(lista, idSelect) {
+        const select = document.getElementById(idSelect);
+        if (select) {
+            select.innerHTML = '<option value="">Seleccione</option>';
+            lista.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.id;
+                option.textContent = item.nombre;
+                select.appendChild(option);
+            });
+        }
+    }
 });
+
+document.getElementById('crearProduccion').addEventListener('click', async () => {
+    const cultivoId = document.getElementById('cultivo').value;
+    const cultivoNombre = document.querySelector(`#cultivo option[value="${cultivoId}"]`)?.textContent || '';
+    const nueva = {
+        id: document.getElementById('produccionId').value,
+        nombre: nombreInput.value.trim(),
+        cultivo_id: cultivoId
+    };
+
+    try {
+        const response = await fetch('crear-produccion.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(nueva)
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            producciones.push(nueva);
+            const row = document.createElement('tr');
+            row.innerHTML = `<td>${nueva.id}</td><td>${nueva.nombre}</td><td>${cultivoNombre}</td><td>Ver | Editar</td>`;
+            document.getElementById('produccionesTableBody').appendChild(row);
+            modal.style.display = 'none';
+        } else {
+            alert('Error: ' + result.message);
+        }
+    } catch (err) {
+        console.error('Error al enviar los datos:', err);
+        alert('Ocurrió un error al guardar la producción.');
+    }
+});
+

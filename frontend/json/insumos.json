@@ -1,0 +1,5 @@
+[
+    { "id": 1, "nombre": "Fertilizante A" },
+    { "id": 2, "nombre": "Herbicida B" },
+    { "id": 3, "nombre": "Abono C" }
+]

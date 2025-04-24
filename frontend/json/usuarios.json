@@ -1,0 +1,12 @@
+[
+    {
+        "id": 1,
+        "nombre": "Carlos Pérez",
+        "rol": "responsable"
+    },
+    {
+        "id": 2,
+        "nombre": "Ana Gómez",
+        "rol": "responsable"
+    }
+]
