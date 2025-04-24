@@ -26,7 +26,7 @@ const db = mysql.createConnection({
     user: 'root',
     password: 'root',
     database: 'lembo',
-    port: 4400
+    port: 3307
 });
 
 // Verificar conexión
@@ -161,6 +161,9 @@ app.post("/api/sensores", upload.single("imagen"), (req, res) => {
     });
 });
 
+
+// ————— RUTAS PARA PRODUCCIONES —————
+
 // 1) Listar producciones con sus relaciones
 app.get('/api/producciones', (req, res) => {
     db.query('SELECT * FROM produccion ORDER BY creado_en DESC', (err, prods) => {
@@ -288,17 +291,17 @@ app.get('/api/producciones', (req, res) => {
   
     // 1) Actualizar datos principales
     const sqlUpdate = `
-      UPDATE produccion
-         SET nombre        = ?,
-             responsable_id= ?,
-             cultivo_id    = ?,
-             ciclo_id      = ?,
-             fecha_inicio  = ?,
-             fecha_fin     = ?,
-             inversion     = ?,
-             meta          = ?,
-             estado        = ?
-       WHERE id = ?
+        UPDATE produccion
+            SET nombre        = ?,
+                responsable_id= ?,
+                cultivo_id    = ?,
+                ciclo_id      = ?,
+                fecha_inicio  = ?,
+                fecha_fin     = ?,
+                inversion     = ?,
+                meta          = ?,
+                estado        = ?
+        WHERE id = ?
     `;
     db.query(
       sqlUpdate,
@@ -350,9 +353,7 @@ app.get('/api/producciones', (req, res) => {
       }
     );
   });
-  
-
 // Iniciar servidor
-app.listen(5500, () => {
-    console.log("🚀 Servidor corriendo en http://localhost:5500");
+app.listen(3000, () => {
+    console.log("🚀 Servidor corriendo en http://localhost:3000");
 });
