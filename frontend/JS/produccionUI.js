@@ -272,7 +272,7 @@ function setupEventListeners() {
         tab.addEventListener('click', () => switchTab(tab.dataset.tab));
     });
     
-    const crearProduccionBtn = document.getElementById('crearProduccionBtn');
+    document.getElementById('crearProduccionBtn')?.addEventListener('click', openCrearProduccionModal);
     if (crearProduccionBtn) {
         crearProduccionBtn.addEventListener('click', openCrearProduccionModal);
     }

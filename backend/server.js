@@ -5,6 +5,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import multer from "multer";
 
+
+
 // Necesario para __dirname con ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -164,245 +166,64 @@ app.post("/api/sensores", upload.single("imagen"), (req, res) => {
     });
 });
 
-// Endpoint para obtener sensores
+// Ruta para obtener sensores
 app.get('/api/sensores', (req, res) => {
-    const sql = "SELECT * FROM sensores WHERE estado = 'activo'";
-    db.query(sql, (err, result) => {
-        if (err) {
-            console.error("Error al obtener sensores:", err);
-            return res.status(500).json({ error: err.message });
-        }
-        res.json(result);
-    });
-});
-
-// Endpoint para obtener insumos
-app.get('/api/insumos', (req, res) => {
-    const sql = "SELECT * FROM insumos WHERE estado = 'activo'";
-    db.query(sql, (err, result) => {
-        if (err) {
-            console.error("Error al obtener insumos:", err);
-            return res.status(500).json({ error: err.message });
-        }
-        res.json(result);
-    });
-});
-
-// Endpoint para obtener cultivos
-app.get('/api/cultivos', (req, res) => {
-    const sql = "SELECT * FROM cultivos WHERE estado = 'activo'";
-    db.query(sql, (err, result) => {
-        if (err) {
-            console.error("Error al obtener cultivos:", err);
-            return res.status(500).json({ error: err.message });
-        }
-        res.json(result);
-    });
-});
-
-// Endpoint para obtener usuarios
-app.get('/api/usuarios', (req, res) => {
-    const sql = "SELECT id, nombre, apellido, rol FROM usuarios WHERE estado = 'activo'";
-    db.query(sql, (err, result) => {
-        if (err) {
-            console.error("Error al obtener usuarios:", err);
-            return res.status(500).json({ error: err.message });
-        }
-        res.json(result);
-    });
-});
-
-// ————— RUTAS PARA PRODUCCIONES —————
-
-// 1) Listar producciones con sus relaciones
-app.get('/api/producciones', (req, res) => {
-    db.query('SELECT * FROM produccion ORDER BY creado_en DESC', (err, prods) => {
+    db.query('SELECT * FROM sensores', (err, results) => {
       if (err) {
-        console.error(err);
-        return res.status(500).json({ error: 'Error al leer producciones' });
+        return res.status(500).json({ error: 'Error al obtener sensores' });
       }
-      Promise.all(prods.map(p => new Promise((resolve, reject) => {
-        db.query(
-          'SELECT sensor_id FROM produccion_sensor WHERE produccion_id = ?',
-          [p.id],
-          (e1, sensRows) => {
-            if (e1) return reject(e1);
-            db.query(
-              'SELECT insumo_id FROM produccion_insumo WHERE produccion_id = ?',
-              [p.id],
-              (e2, insuRows) => {
-                if (e2) return reject(e2);
-                resolve({
-                  ...p,
-                  sensores: sensRows.map(r => r.sensor_id),
-                  insumos:  insuRows.map(r => r.insumo_id)
-                });
-              }
-            );
-          }
-        );
-      })))
-      .then(results => res.json(results))
-      .catch(err2 => {
-        console.error(err2);
-        res.status(500).json({ error: 'Error al cargar relaciones' });
-      });
+      res.json(results);
     });
-  });
-  
-  // 2) Crear nueva producción
-  app.post('/api/producciones', (req, res) => {
-    const {
-      nombre, responsable, cultivo, ciclo,
-      sensores, insumos,
-      fecha_inicio, fecha_fin,
-      inversion, meta, estado
-    } = req.body;
-  
-    // Generar ID con contador anual
-    const now = new Date();
-    const year = now.getFullYear();
-    db.query(
-      'SELECT COUNT(*) AS c FROM produccion WHERE YEAR(creado_en)=?',
-      [year],
-      (err1, rows) => {
-        if (err1) {
-          console.error(err1);
-          return res.status(500).json({ error: 'Error al generar ID' });
-        }
-        const nextNo = String(rows[0].c + 1).padStart(4,'0');
-        const dd = String(now.getDate()).padStart(2,'0');
-        const mm = String(now.getMonth()+1).padStart(2,'0');
-        const yy = String(now.getFullYear()).slice(-2);
-        const id  = `PROD-${dd}${mm}${yy}-${nextNo}`;
-  
-        // Insertar producción
-        const sqlP = `
-          INSERT INTO produccion
-            (id,nombre,responsable_id,cultivo_id,ciclo_id,
-             fecha_inicio,fecha_fin,inversion,meta,estado)
-          VALUES (?,?,?,?,?,?,?,?,?,?)
-        `;
-        db.query(
-          sqlP,
-          [id,nombre,responsable,cultivo,ciclo,
-           fecha_inicio,fecha_fin,inversion,meta,estado],
-          (err2) => {
-            if (err2) {
-              console.error(err2);
-              return res.status(500).json({ error: 'Error al insertar producción' });
-            }
-  
-            // Insertar sensores
-            const promSens = sensores.map(sid => new Promise((y,n) => {
-              db.query(
-                'INSERT INTO produccion_sensor (produccion_id, sensor_id) VALUES (?, ?)',
-                [id, sid],
-                err3 => err3 ? n(err3) : y()
-              );
-            }));
-            // Insertar insumos
-            const promInsu = insumos.map(iid => new Promise((y,n) => {
-              db.query(
-                'INSERT INTO produccion_insumo (produccion_id, insumo_id) VALUES (?, ?)',
-                [id, iid],
-                err4 => err4 ? n(err4) : y()
-              );
-            }));
-  
-            Promise.all([...promSens, ...promInsu])
-              .then(() => {
-                res.status(201).json({
-                  success: true,
-                  data: { id, nombre, responsable, cultivo, ciclo,
-                          sensores, insumos, fecha_inicio, fecha_fin,
-                          inversion, meta, estado }
-                });
-              })
-              .catch(err5 => {
-                console.error(err5);
-                res.status(500).json({ error: 'Error al insertar relaciones' });
-              });
-          }
-        );
+});
+
+// Ruta para obtener insumos
+app.get('/api/insumos', (req, res) => {
+    db.query('SELECT * FROM insumos', (err, results) => {
+      if (err) {
+        return res.status(500).json({ error: 'Error al obtener insumos' });
       }
-    );
-  });
-  
-  // 3) Actualizar producción existente
-  app.put('/api/producciones/:id', (req, res) => {
-    const { id } = req.params;
-    const {
-      nombre, responsable, cultivo, ciclo,
-      sensores, insumos,
-      fecha_inicio, fecha_fin,
-      inversion, meta, estado
-    } = req.body;
-  
-    // 1) Actualizar datos principales
-    const sqlUpdate = `
-        UPDATE produccion
-            SET nombre        = ?,
-                responsable_id= ?,
-                cultivo_id    = ?,
-                ciclo_id      = ?,
-                fecha_inicio  = ?,
-                fecha_fin     = ?,
-                inversion     = ?,
-                meta          = ?,
-                estado        = ?
-        WHERE id = ?
-    `;
-    db.query(
-      sqlUpdate,
-      [nombre, responsable, cultivo, ciclo,
-       fecha_inicio, fecha_fin, inversion, meta, estado,
-       id],
-      (err) => {
+      res.json(results);
+    });
+});
+app.get('/api/producciones', (req, res) => {
+    db.query('SELECT * FROM producciones', (err, results) => {
         if (err) {
-          console.error(err);
-          return res.status(500).json({ error: 'Error al actualizar producción' });
+            return res.status(500).json({ error: 'Error al obtener producciones' });
         }
-  
-        // 2) Reemplazar sensores
-        db.query('DELETE FROM produccion_sensor WHERE produccion_id = ?', [id], (err2) => {
-          if (err2) {
-            console.error(err2);
-            return res.status(500).json({ error: 'Error al borrar sensores antiguos' });
-          }
-          const promSens = sensores.map(sid => new Promise((y,n) => {
-            db.query(
-              'INSERT INTO produccion_sensor (produccion_id, sensor_id) VALUES (?, ?)',
-              [id, sid],
-              err3 => err3 ? n(err3) : y()
-            );
-          }));
-  
-          // 3) Reemplazar insumos
-          db.query('DELETE FROM produccion_insumo WHERE produccion_id = ?', [id], (err4) => {
-            if (err4) {
-              console.error(err4);
-              return res.status(500).json({ error: 'Error al borrar insumos antiguos' });
-            }
-            const promInsu = insumos.map(iid => new Promise((y,n) => {
-              db.query(
-                'INSERT INTO produccion_insumo (produccion_id, insumo_id) VALUES (?, ?)',
-                [id, iid],
-                err5 => err5 ? n(err5) : y()
-              );
-            }));
-  
-            Promise.all([...promSens, ...promInsu])
-              .then(() => res.json({ success: true }))
-              .catch(err6 => {
-                console.error(err6);
-                res.status(500).json({ error: 'Error al insertar relaciones nuevas' });
-              });
-          });
-        });
-      }
-    );
+        res.json(results);
+    });
+});
+
+
+app.get('/api/generar-id', (req, res) => {
+    const nuevoId = Date.now();  // Genera un ID único
+    res.json({ id: nuevoId });
+});
+
+
+const express = require('express');
+
+// Ruta para obtener todas las producciones
+app.get('/api/producciones', (req, res) => {
+    // Lógica para obtener producciones desde la base de datos
+    res.json(producciones); // respuesta con las producciones en formato JSON
   });
+  
+  // Ruta para generar un ID
+  app.get('/api/generar-id', (req, res) => {
+    const id = generarId(); // Generar ID desde la base de datos o lógica personalizada
+    res.json({ id });
+  });
+  
+  // Ruta para verificar si el nombre de producción ya existe
+  app.get('/api/verificar-nombre', (req, res) => {
+    const { nombre } = req.query;
+    const existe = verificarNombre(nombre); // Lógica para verificar si el nombre ya existe
+    res.json({ existe });
+  });
+  
+
+
 // Iniciar servidor
 app.listen(3000, () => {
     console.log("🚀 Servidor corriendo en http://localhost:3000");
