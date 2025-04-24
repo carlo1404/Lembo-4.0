@@ -48,6 +48,8 @@ function listarAsociaciones() {
 
 // Inicialización de gráficos (se ejecuta cuando el DOM está cargado)
 document.addEventListener('DOMContentLoaded', function() {
+    cargarDatos();
+
     // Función para generar datos aleatorios simulados
     function generateRandomData(hours, min, max) {
         return Array.from({length: hours}, () => 
@@ -157,3 +159,50 @@ document.addEventListener('DOMContentLoaded', function() {
         labels.push(newLabel);
     }, 5000);
 });
+
+async function cargarDatos() {
+    try {
+        // Cargar sensores
+        const sensores = await fetch('http://localhost:3000/api/sensores').then(r => r.json());
+        const sensorSelect = document.getElementById('sensor');
+        sensores.forEach(sensor => {
+            const option = document.createElement('option');
+            option.value = sensor.id;
+            option.textContent = sensor.nombre;
+            sensorSelect.appendChild(option);
+        });
+
+        // Cargar insumos
+        const insumos = await fetch('http://localhost:3000/api/insumos').then(r => r.json());
+        const insumoSelect = document.getElementById('insumo');
+        insumos.forEach(insumo => {
+            const option = document.createElement('option');
+            option.value = insumo.id;
+            option.textContent = insumo.nombre;
+            insumoSelect.appendChild(option);
+        });
+
+        // Cargar cultivos
+        const cultivos = await fetch('http://localhost:3000/api/cultivos').then(r => r.json());
+        const cultivoSelect = document.getElementById('ciclo');
+        cultivos.forEach(cultivo => {
+            const option = document.createElement('option');
+            option.value = cultivo.id;
+            option.textContent = cultivo.nombre;
+            cultivoSelect.appendChild(option);
+        });
+
+        // Cargar usuarios
+        const usuarios = await fetch('http://localhost:3000/api/usuarios').then(r => r.json());
+        const usuarioSelect = document.getElementById('usuario');
+        usuarios.forEach(usuario => {
+            const option = document.createElement('option');
+            option.value = usuario.id;
+            option.textContent = `${usuario.nombre} ${usuario.apellido}`;
+            usuarioSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Error al cargar datos:', error);
+        alert('Error al cargar los datos. Por favor, recarga la página.');
+    }
+}

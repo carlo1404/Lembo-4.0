@@ -161,6 +161,53 @@ app.post("/api/sensores", upload.single("imagen"), (req, res) => {
     });
 });
 
+// Endpoint para obtener sensores
+app.get('/api/sensores', (req, res) => {
+    const sql = "SELECT * FROM sensores WHERE estado = 'activo'";
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.error("Error al obtener sensores:", err);
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(result);
+    });
+});
+
+// Endpoint para obtener insumos
+app.get('/api/insumos', (req, res) => {
+    const sql = "SELECT * FROM insumos WHERE estado = 'activo'";
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.error("Error al obtener insumos:", err);
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(result);
+    });
+});
+
+// Endpoint para obtener cultivos
+app.get('/api/cultivos', (req, res) => {
+    const sql = "SELECT * FROM cultivos WHERE estado = 'activo'";
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.error("Error al obtener cultivos:", err);
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(result);
+    });
+});
+
+// Endpoint para obtener usuarios
+app.get('/api/usuarios', (req, res) => {
+    const sql = "SELECT id, nombre, apellido, rol FROM usuarios WHERE estado = 'activo'";
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.error("Error al obtener usuarios:", err);
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(result);
+    });
+});
 
 // ————— RUTAS PARA PRODUCCIONES —————
 
