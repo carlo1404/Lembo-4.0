@@ -200,6 +200,7 @@ tbody .content__table-data--status span {
     flex-direction: row;
     gap: 0.4rem;
     justify-content: center;
+    cursor: pointer;
 }
 
 /* Botones de acción */
