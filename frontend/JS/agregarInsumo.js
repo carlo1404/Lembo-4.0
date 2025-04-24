@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Agregar funcionalidad al botón volver
+    document.getElementById("backButton")?.addEventListener('click', () => {
+        window.location.href = "insumo.html";
+    });
+
     // Seleccionar elementos del DOM usando getElementById
     const nameInput = document.getElementById('name');
     const idInput = document.getElementById('id');
