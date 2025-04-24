@@ -3,21 +3,37 @@ document.getElementById('form-sensor').addEventListener('submit', function (even
 
   const formData = new FormData(this);
   
-  // Validar campos requeridos
-  const campos = ['nombre', 'tipo', 'unidad', 'tiempo'];
+  // Validación de campos
+  const campos = [
+    { name: 'tipo_sensor', label: 'tipo de sensor' },
+    { name: 'nombre', label: 'nombre' },
+    { name: 'unidad_medida', label: 'unidad de medida' },
+    { name: 'tiempo_muestreo', label: 'tiempo de muestreo' }
+  ];
+
   for (let campo of campos) {
-    if (!formData.get(campo)) {
-      mostrarError(`El campo ${campo} es requerido`);
+    const valor = formData.get(campo.name);
+    if (!valor || valor.trim() === '') {
+      mostrarError(`El campo ${campo.label} es requerido`);
       return;
     }
   }
 
-  // Enviar como FormData directamente
+  // Verificar que se ha seleccionado un tipo de sensor
+  const tipoSensor = formData.get('tipo_sensor');
+  if (tipoSensor === '') {
+    mostrarError('Debe seleccionar un tipo de sensor');
+    return;
+  }
+
+  console.log('Enviando datos:', Object.fromEntries(formData));
+
   fetch('http://localhost:5500/api/sensores', {
     method: 'POST',
     body: formData
   })
   .then(response => {
+    console.log('Estado de la respuesta:', response.status);
     if (!response.ok) {
       return response.text().then(text => {
         throw new Error(text || 'Error en el servidor');

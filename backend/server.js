@@ -14,6 +14,7 @@ const app = express();
 
 // Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 // Servir archivos estáticos
@@ -143,14 +144,16 @@ app.post("/api/sensores", upload.single("imagen"), (req, res) => {
     const imagen = req.file ? req.file.filename : null;
 
     console.log("📥 Datos recibidos:", req.body);
-    console.log("🖼️ Imagen:", req.file);
-
-    if (!tipo_sensor || !estado || !nombre) {
-        return res.status(400).json({ error: "Los campos obligatorios no fueron completados" });
+    
+    if (!tipo_sensor || !nombre || !unidad_medida) {
+        return res.status(400).json({ 
+            error: "Campos requeridos incompletos",
+            details: "tipo_sensor, nombre y unidad_medida son obligatorios"
+        });
     }
 
     const sql = `INSERT INTO sensores (tipo_sensor, estado, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)`;
+                 VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
     db.query(sql, [tipo_sensor, estado, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion], (err, result) => {
         if (err) {
