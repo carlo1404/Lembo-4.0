@@ -8,7 +8,7 @@
 </head>
 <body>
   <section class="form-container">
-    <form class="form" method="POST" action="http://localhost:3000/api/sensores" enctype="multipart/form-data" id="form-sensor">
+    <form class="form" method="POST" action="http://localhost:5500/api/sensores" enctype="multipart/form-data" id="form-sensor">
       
       <h2 class="form__title">Agregar Sensor</h2>
       <div class="form__container">
@@ -62,7 +62,7 @@
         <div class="form__field">
           <label class="form__label" for="imagen">Imagen del Sensor:</label>
           <!-- Usamos id "imagen" para que coincida en el JS -->
-          <input class="form__input form__input--img" type="file" name="imagen" id="imagen" required>
+          <input class="form__input form__input--img" type="file" name="imagen" id="imagen">
         </div>
 
         <!-- Descripción -->

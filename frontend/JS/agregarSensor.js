@@ -1,13 +1,30 @@
 document.getElementById('form-sensor').addEventListener('submit', function (event) {
-  event.preventDefault(); // Prevenir el comportamiento por defecto del formulario (evitar recarga)
+  event.preventDefault();
 
-  const formData = new FormData(this); // Crear un FormData con todos los campos del formulario
+  const formData = new FormData(this);
+  
+  // Validar campos requeridos
+  const campos = ['nombre', 'tipo', 'unidad', 'tiempo'];
+  for (let campo of campos) {
+    if (!formData.get(campo)) {
+      mostrarError(`El campo ${campo} es requerido`);
+      return;
+    }
+  }
 
-  fetch('http://localhost:3000/api/sensores', {
+  // Enviar como FormData directamente
+  fetch('http://localhost:5500/api/sensores', {
     method: 'POST',
-    body: formData, // Enviar los datos del formulario
+    body: formData
   })
-  .then(response => response.json())
+  .then(response => {
+    if (!response.ok) {
+      return response.text().then(text => {
+        throw new Error(text || 'Error en el servidor');
+      });
+    }
+    return response.json();
+  })
   .then(data => {
     const messageContainer = document.createElement('div');
     
@@ -38,6 +55,24 @@ document.getElementById('form-sensor').addEventListener('submit', function (even
   })
   .catch(error => {
     console.error('❌ Error:', error);
-    alert('Hubo un problema al enviar los datos.');
+    mostrarError(error.message || 'Error al procesar la solicitud');
   });
 });
+
+function mostrarError(mensaje) {
+  const errorContainer = document.createElement('div');
+  errorContainer.textContent = mensaje;
+  errorContainer.style.color = 'red';
+  errorContainer.style.fontSize = '16px';
+  errorContainer.style.textAlign = 'center';
+  errorContainer.style.marginTop = '10px';
+  errorContainer.style.padding = '10px';
+  errorContainer.style.backgroundColor = '#fff3f3';
+  errorContainer.style.border = '1px solid #ff0000';
+  errorContainer.style.borderRadius = '4px';
+  
+  const form = document.querySelector('.form');
+  form.appendChild(errorContainer);
+  
+  setTimeout(() => errorContainer.remove(), 5000);
+}

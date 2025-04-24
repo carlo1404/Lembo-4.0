@@ -26,7 +26,7 @@ const db = mysql.createConnection({
     user: 'root',
     password: 'root',
     database: 'lembo',
-    port: 3307
+    port: 4400
 });
 
 // Verificar conexión
@@ -161,9 +161,40 @@ app.post("/api/sensores", upload.single("imagen"), (req, res) => {
     });
 });
 
+// Ruta para agregar sensores
+app.post("/api/sensores", upload.single("imagen"), (req, res) => {
+    const { tipo_sensor, nombre, unidad_medida, estado, tiempo_muestreo, descripcion } = req.body;
+    const imagen = req.file ? req.file.filename : null;
 
+    if (!tipo_sensor || !nombre || !unidad_medida) {
+        return res.status(400).json({ error: "Faltan campos requeridos" });
+    }
+
+    const query = `
+        INSERT INTO sensores 
+        (tipo_sensor, nombre, unidad_medida, estado, tiempo_muestreo, descripcion, imagen) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(
+        query,
+        [tipo_sensor, nombre, unidad_medida, estado, tiempo_muestreo, descripcion, imagen],
+        (err, result) => {
+            if (err) {
+                console.error("❌ Error al insertar sensor:", err);
+                return res.status(500).json({ error: "Error al agregar sensor" });
+            }
+
+            res.status(201).json({
+                message: "Sensor agregado correctamente",
+                id: result.insertId,
+                imagen: imagen ? `/uploads/${imagen}` : null
+            });
+        }
+    );
+});
 
 // Iniciar servidor
-app.listen(3000, () => {
-    console.log("🚀 Servidor corriendo en http://localhost:3000");
+app.listen(5500, () => {
+    console.log("🚀 Servidor corriendo en http://localhost:5500");
 });

@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Datos a enviar:', formData);
 
         try {
-            const response = await fetch('http://localhost:3000/api/usuarios', {
+            const response = await fetch('http://localhost:5500/api/usuarios', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
