@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             console.log("📤 Enviando datos del sensor");
 
-            const response = await fetch('http://localhost:5500/api/sensores', {
+            const response = await fetch('http://localhost:3000/api/sensores', {
                 method: 'POST',
                 body: formData
             });
