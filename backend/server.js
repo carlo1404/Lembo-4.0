@@ -161,6 +161,7 @@ app.post("/api/sensores", upload.single("imagen"), (req, res) => {
     });
 });
 
+<<<<<<< HEAD
 // Ruta para agregar sensores
 app.post("/api/sensores", upload.single("imagen"), (req, res) => {
     const { tipo_sensor, nombre, unidad_medida, estado, tiempo_muestreo, descripcion } = req.body;
@@ -193,6 +194,200 @@ app.post("/api/sensores", upload.single("imagen"), (req, res) => {
         }
     );
 });
+=======
+// ————— RUTAS PARA PRODUCCIONES —————
+
+// 1) Listar producciones con sus relaciones
+app.get('/api/producciones', (req, res) => {
+    db.query('SELECT * FROM produccion ORDER BY creado_en DESC', (err, prods) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Error al leer producciones' });
+      }
+      Promise.all(prods.map(p => new Promise((resolve, reject) => {
+        db.query(
+          'SELECT sensor_id FROM produccion_sensor WHERE produccion_id = ?',
+          [p.id],
+          (e1, sensRows) => {
+            if (e1) return reject(e1);
+            db.query(
+              'SELECT insumo_id FROM produccion_insumo WHERE produccion_id = ?',
+              [p.id],
+              (e2, insuRows) => {
+                if (e2) return reject(e2);
+                resolve({
+                  ...p,
+                  sensores: sensRows.map(r => r.sensor_id),
+                  insumos:  insuRows.map(r => r.insumo_id)
+                });
+              }
+            );
+          }
+        );
+      })))
+      .then(results => res.json(results))
+      .catch(err2 => {
+        console.error(err2);
+        res.status(500).json({ error: 'Error al cargar relaciones' });
+      });
+    });
+  });
+  
+  // 2) Crear nueva producción
+  app.post('/api/producciones', (req, res) => {
+    const {
+      nombre, responsable, cultivo, ciclo,
+      sensores, insumos,
+      fecha_inicio, fecha_fin,
+      inversion, meta, estado
+    } = req.body;
+  
+    // Generar ID con contador anual
+    const now = new Date();
+    const year = now.getFullYear();
+    db.query(
+      'SELECT COUNT(*) AS c FROM produccion WHERE YEAR(creado_en)=?',
+      [year],
+      (err1, rows) => {
+        if (err1) {
+          console.error(err1);
+          return res.status(500).json({ error: 'Error al generar ID' });
+        }
+        const nextNo = String(rows[0].c + 1).padStart(4,'0');
+        const dd = String(now.getDate()).padStart(2,'0');
+        const mm = String(now.getMonth()+1).padStart(2,'0');
+        const yy = String(now.getFullYear()).slice(-2);
+        const id  = `PROD-${dd}${mm}${yy}-${nextNo}`;
+  
+        // Insertar producción
+        const sqlP = `
+          INSERT INTO produccion
+            (id,nombre,responsable_id,cultivo_id,ciclo_id,
+             fecha_inicio,fecha_fin,inversion,meta,estado)
+          VALUES (?,?,?,?,?,?,?,?,?,?)
+        `;
+        db.query(
+          sqlP,
+          [id,nombre,responsable,cultivo,ciclo,
+           fecha_inicio,fecha_fin,inversion,meta,estado],
+          (err2) => {
+            if (err2) {
+              console.error(err2);
+              return res.status(500).json({ error: 'Error al insertar producción' });
+            }
+  
+            // Insertar sensores
+            const promSens = sensores.map(sid => new Promise((y,n) => {
+              db.query(
+                'INSERT INTO produccion_sensor (produccion_id, sensor_id) VALUES (?, ?)',
+                [id, sid],
+                err3 => err3 ? n(err3) : y()
+              );
+            }));
+            // Insertar insumos
+            const promInsu = insumos.map(iid => new Promise((y,n) => {
+              db.query(
+                'INSERT INTO produccion_insumo (produccion_id, insumo_id) VALUES (?, ?)',
+                [id, iid],
+                err4 => err4 ? n(err4) : y()
+              );
+            }));
+  
+            Promise.all([...promSens, ...promInsu])
+              .then(() => {
+                res.status(201).json({
+                  success: true,
+                  data: { id, nombre, responsable, cultivo, ciclo,
+                          sensores, insumos, fecha_inicio, fecha_fin,
+                          inversion, meta, estado }
+                });
+              })
+              .catch(err5 => {
+                console.error(err5);
+                res.status(500).json({ error: 'Error al insertar relaciones' });
+              });
+          }
+        );
+      }
+    );
+  });
+  
+  // 3) Actualizar producción existente
+  app.put('/api/producciones/:id', (req, res) => {
+    const { id } = req.params;
+    const {
+      nombre, responsable, cultivo, ciclo,
+      sensores, insumos,
+      fecha_inicio, fecha_fin,
+      inversion, meta, estado
+    } = req.body;
+  
+    // 1) Actualizar datos principales
+    const sqlUpdate = `
+      UPDATE produccion
+         SET nombre        = ?,
+             responsable_id= ?,
+             cultivo_id    = ?,
+             ciclo_id      = ?,
+             fecha_inicio  = ?,
+             fecha_fin     = ?,
+             inversion     = ?,
+             meta          = ?,
+             estado        = ?
+       WHERE id = ?
+    `;
+    db.query(
+      sqlUpdate,
+      [nombre, responsable, cultivo, ciclo,
+       fecha_inicio, fecha_fin, inversion, meta, estado,
+       id],
+      (err) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ error: 'Error al actualizar producción' });
+        }
+  
+        // 2) Reemplazar sensores
+        db.query('DELETE FROM produccion_sensor WHERE produccion_id = ?', [id], (err2) => {
+          if (err2) {
+            console.error(err2);
+            return res.status(500).json({ error: 'Error al borrar sensores antiguos' });
+          }
+          const promSens = sensores.map(sid => new Promise((y,n) => {
+            db.query(
+              'INSERT INTO produccion_sensor (produccion_id, sensor_id) VALUES (?, ?)',
+              [id, sid],
+              err3 => err3 ? n(err3) : y()
+            );
+          }));
+  
+          // 3) Reemplazar insumos
+          db.query('DELETE FROM produccion_insumo WHERE produccion_id = ?', [id], (err4) => {
+            if (err4) {
+              console.error(err4);
+              return res.status(500).json({ error: 'Error al borrar insumos antiguos' });
+            }
+            const promInsu = insumos.map(iid => new Promise((y,n) => {
+              db.query(
+                'INSERT INTO produccion_insumo (produccion_id, insumo_id) VALUES (?, ?)',
+                [id, iid],
+                err5 => err5 ? n(err5) : y()
+              );
+            }));
+  
+            Promise.all([...promSens, ...promInsu])
+              .then(() => res.json({ success: true }))
+              .catch(err6 => {
+                console.error(err6);
+                res.status(500).json({ error: 'Error al insertar relaciones nuevas' });
+              });
+          });
+        });
+      }
+    );
+  });
+  
+>>>>>>> dab02ed1d7bb4c52ad1aca94098009f25ff3de71
 
 // Iniciar servidor
 app.listen(5500, () => {

@@ -260,6 +260,7 @@ tbody td:last-child .action-btn:hover {
     font-size: 1.125rem;
     margin-left: 0.625rem;
     cursor: pointer;
+    color: var(--black);
 }
 
 .content__icon-container {
