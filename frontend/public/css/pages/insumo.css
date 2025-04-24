@@ -241,6 +241,7 @@ tbody td:last-child .action-btn:hover {
     flex-direction: row;
     gap: 0.4rem;
     justify-content: center;
+    cursor:pointer;
 }
 
 .bx-plus-circle{
