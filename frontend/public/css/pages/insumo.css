@@ -154,7 +154,7 @@ main {
     font-size: 1.5rem;
     margin-left: 0.625rem;
     cursor: pointer;
-    color: var(--gray-60);
+    color: var(--black);
     background: none;
     border: none;
 }
