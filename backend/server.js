@@ -161,42 +161,6 @@ app.post("/api/sensores", upload.single("imagen"), (req, res) => {
     });
 });
 
-<<<<<<< HEAD
-// Ruta para agregar sensores
-app.post("/api/sensores", upload.single("imagen"), (req, res) => {
-    const { tipo_sensor, nombre, unidad_medida, estado, tiempo_muestreo, descripcion } = req.body;
-    const imagen = req.file ? req.file.filename : null;
-
-    if (!tipo_sensor || !nombre || !unidad_medida) {
-        return res.status(400).json({ error: "Faltan campos requeridos" });
-    }
-
-    const query = `
-        INSERT INTO sensores 
-        (tipo_sensor, nombre, unidad_medida, estado, tiempo_muestreo, descripcion, imagen) 
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    `;
-
-    db.query(
-        query,
-        [tipo_sensor, nombre, unidad_medida, estado, tiempo_muestreo, descripcion, imagen],
-        (err, result) => {
-            if (err) {
-                console.error("❌ Error al insertar sensor:", err);
-                return res.status(500).json({ error: "Error al agregar sensor" });
-            }
-
-            res.status(201).json({
-                message: "Sensor agregado correctamente",
-                id: result.insertId,
-                imagen: imagen ? `/uploads/${imagen}` : null
-            });
-        }
-    );
-});
-=======
-// ————— RUTAS PARA PRODUCCIONES —————
-
 // 1) Listar producciones con sus relaciones
 app.get('/api/producciones', (req, res) => {
     db.query('SELECT * FROM produccion ORDER BY creado_en DESC', (err, prods) => {
@@ -387,7 +351,6 @@ app.get('/api/producciones', (req, res) => {
     );
   });
   
->>>>>>> dab02ed1d7bb4c52ad1aca94098009f25ff3de71
 
 // Iniciar servidor
 app.listen(5500, () => {
