@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             console.log("📤 Enviando datos:", formData); // DEBUG
 
-            const response = await fetch('http://localhost:5500/api/insumos', {
+            const response = await fetch('http://localhost:3000/api/insumos', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

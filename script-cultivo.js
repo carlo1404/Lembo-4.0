@@ -5,7 +5,7 @@ document.getElementById("cultivoForm").addEventListener("submit", async function
     const formData = new FormData(form);
 
     try {
-        const response = await fetch("http://localhost:5500/api/cultivos", {
+        const response = await fetch("http://localhost:3000/api/cultivos", {
             method: "POST",
             body: formData
         });

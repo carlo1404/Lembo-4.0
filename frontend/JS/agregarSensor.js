@@ -28,7 +28,7 @@ document.getElementById('form-sensor').addEventListener('submit', function (even
 
   console.log('Enviando datos:', Object.fromEntries(formData));
 
-  fetch('http://localhost:5500/api/sensores', {
+  fetch('http://localhost:3000/api/sensores', {
     method: 'POST',
     body: formData
   })
