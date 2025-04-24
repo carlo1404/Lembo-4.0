@@ -1,3 +1,10 @@
+document.addEventListener('DOMContentLoaded', () => {
+    // Agregar funcionalidad al botón volver
+    document.getElementById("backButton")?.addEventListener('click', () => {
+        window.location.href = "listar-sensor.html";
+    });
+});
+
 document.getElementById('form-sensor').addEventListener('submit', function (event) {
   event.preventDefault();
 

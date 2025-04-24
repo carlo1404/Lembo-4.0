@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // Agregar funcionalidad al botón volver
+    document.getElementById("backButton")?.addEventListener('click', () => {
+        window.location.href = "listar-usuarios.html";
+    });
+
     // Seleccionar elementos del DOM
     const nameInput = document.querySelector('.register__input--name');
     const apellidoInput = document.querySelector('.register__input--lastname');
