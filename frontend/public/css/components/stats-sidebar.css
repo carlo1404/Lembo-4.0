@@ -1,0 +1,39 @@
+.stats-sidebar {
+    background-color: var(--white);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin: 1rem auto;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    overflow-x: auto;
+    height: auto;
+    min-height: 400px;
+}
+
+.chart-container {
+    flex: 0 0 auto;
+    width: 400px;
+    height: 300px;
+    background: var(--white);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.05);
+    border: 0.0625rem solid var(--gray-20);
+}
+
+.chart-container canvas {
+    width: 100% !important;
+    height: calc(100% - 2rem) !important;
+}
+
+/* Removemos los media queries anteriores ya que queremos tamaños fijos */
+@media (max-width: 1200px) {
+    .stats-sidebar {
+        justify-content: flex-start;
+        padding: 1.5rem;
+    }
+}
