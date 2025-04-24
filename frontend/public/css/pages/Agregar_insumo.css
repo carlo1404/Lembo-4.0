@@ -117,6 +117,21 @@ button:hover {
     background-color: var(--green-950);
 }
 
+.form__buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.form__button--back {
+    background-color: var(--gray-60);
+}
+
+.form__button--back:hover {
+    background-color: var(--gray-80);
+}
+
 /* Media Queries */
 @media (max-width: 768px) {
     .form-container {

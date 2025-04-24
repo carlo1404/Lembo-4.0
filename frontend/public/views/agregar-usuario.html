@@ -52,10 +52,18 @@
                 </div>
                 
             </div>
-            <button class="form__button" type="submit">Agregar Usuario</button>
+            <div class="form__buttons">
+                <button class="form__button" type="submit">Agregar Usuario</button>
+                <button class="form__button form__button--back" type="button" id="backButton">Volver</button>
+            </div>
         </form>
     </section>
 
+    <script>
+        document.getElementById("backButton").onclick = function() {
+            window.location.href = "listar-usuarios.html";
+        };
+    </script>
     <script src="/frontend/JS/agregarUsuario.js"></script>
     <script src="/server-agregar-usuario.js"></script>
 </body>
