@@ -1,0 +1,132 @@
+
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+  }
+  *, *::before, *::after {
+    box-sizing: inherit;
+  }
+  
+  body {
+    margin: 0;
+    font-family: var(--main-font);
+    background-color: var(--primary-50);
+  }
+  
+  .create-production {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .create-production__title {
+    font-size: var(--fs-lg);
+    margin-bottom: 2rem;
+    color: var(--primary-950);
+    text-align: center;
+  }
+  
+  .create-production__form {
+    display: grid;
+    gap: 1.6rem;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group__label {
+    margin-bottom: .4rem;
+    font-size: var(--fs-sm);
+  }
+  
+  .form-group__input {
+    padding: .8rem 1rem;
+    font-size: var(--fs-sm);
+    border: 1px solid var(--gray-200);
+    border-radius: .4rem;
+  }
+  
+  .form-group--triple {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.6rem;
+  }
+  
+  .select-with-add {
+    display: flex;
+  }
+  
+  .select-with-add .form-group__input {
+    flex: 1;
+    margin: 0;
+  }
+  
+  .select-with-add__btn {
+    background: var(--terciary-1000);
+    color: var(--white);
+    border: none;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 .4rem .4rem 0;
+    cursor: pointer;
+    transition: background .3s;
+  }
+  
+  .select-with-add__btn:hover {
+    background: var(--terciary-1000);
+  }
+  
+  #production-id.form-group__input {
+    background: var(--gray-200);
+    cursor: not-allowed;
+  }
+  
+  /* Acciones */
+  .form-actions {
+    display: flex;
+    gap: 1.2rem;
+    margin-top: 2rem;
+  }
+  
+  .form-actions__btn {
+    padding: 1rem 2rem;
+    font-size: var(--fs-sm);
+    border-radius: .4rem;
+    cursor: pointer;
+    border: none;
+  }
+  
+  .form-actions__btn--primary {
+    background-color: var(--primary-900);
+    color: var(--white);
+  }
+  
+  .form-actions__btn--primary:hover {
+    background-color: var(--primary-950);
+  }
+  
+  .form-actions__btn--secondary {
+    background-color: var(--secundary-900);
+    color: var(--white);
+  }
+  
+  .form-actions__btn--secondary:hover {
+    background-color: var(--secundary-1000);
+  }
+  
+  /* Responsivo */
+  @media (max-width: 768px) {
+    .create-production__form {
+      gap: 1rem;
+    }
+    .form-group--triple {
+      grid-template-columns: 1fr;
+    }
+    .form-actions {
+      flex-direction: column;
+    }
+  }

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crear Producción</title>
+  <link rel="stylesheet" href="/frontend/public/css/pages/crear-produccion.css">
+  <link rel="stylesheet" href="/frontend/public/css/main.css">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <script src="/frontend/JS/crear-produccion.js" defer></script>
+  <script src="/frontend/JS/validar-produccion.js" defer></script>
+</head>
+<body>
+  <main class="create-production">
+    <h1 class="create-production__title">Crear Producción</h1>
+    <form class="create-production__form" id="form-production">
+      
+      <!-- ID de Producción -->
+      <div class="form-group">
+        <label for="production-id" class="form-group__label">ID de Producción</label>
+        <input type="text" id="production-id" class="form-group__input" readonly
+               value="PROD-09042025-0001">
+      </div>
+
+      <!-- Nombre de Producción -->
+      <div class="form-group">
+        <label for="production-name" class="form-group__label">Nombre de Producción</label>
+        <input type="text" id="production-name" class="form-group__input"
+               required minlength="3" maxlength="100" pattern=".*[A-Za-z].*"
+               placeholder="Ej. Cosecha Verano">
+      </div>
+
+      <!-- Responsable, Cultivo y Zona -->
+      <div class="form-group form-group--triple">
+        <!-- Responsable -->
+        <div class="form-group__field">
+          <label for="responsible" class="form-group__label">Responsable</label>
+          <div class="select-with-add">
+            <select id="responsible" class="form-group__input">
+              <option value="">Selecciona...</option>
+            </select>
+            <button type="button" class="select-with-add__btn" title="Agregar Responsable">
+              <i class="bx bx-plus"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Cultivo -->
+        <div class="form-group__field">
+          <label for="cultivo" class="form-group__label">Cultivo</label>
+          <div class="select-with-add">
+            <select id="cultivo" class="form-group__input">
+              <option value="">Selecciona...</option>
+            </select>
+            <button type="button" class="select-with-add__btn" title="Agregar Cultivo">
+              <i class="bx bx-plus"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Zona -->
+        <div class="form-group__field">
+          <label for="zona" class="form-group__label">Zona</label>
+          <div class="select-with-add">
+            <select id="zona" class="form-group__input">
+              <option value="">Selecciona...</option>
+            </select>
+            <button type="button" class="select-with-add__btn" title="Agregar Zona">
+              <i class="bx bx-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ciclo -->
+      <div class="form-group">
+        <label for="ciclo" class="form-group__label">Ciclo</label>
+        <input type="text" id="ciclo" class="form-group__input" placeholder="Describe el ciclo">
+      </div>
+
+      <!-- Insumos -->
+      <div class="form-group">
+        <label for="insumos" class="form-group__label">Insumos (hasta 3)</label>
+        <select id="insumos" class="form-group__input" multiple size="3"></select>
+      </div>
+
+      <!-- Sensores -->
+      <div class="form-group">
+        <label for="sensores" class="form-group__label">Sensores (hasta 3)</label>
+        <select id="sensores" class="form-group__input" multiple size="3"></select>
+      </div>
+
+      <!-- Cantidad -->
+      <div class="form-group">
+        <label for="cantidad" class="form-group__label">Cantidad</label>
+        <input type="number" id="cantidad" class="form-group__input" min="1" placeholder="Ej. 100">
+      </div>
+
+      <!-- Fecha Inicio -->
+      <div class="form-group">
+        <label for="fecha-inicio" class="form-group__label">Fecha de Inicio</label>
+        <input type="date" id="fecha-inicio" class="form-group__input" required>
+      </div>
+
+      <!-- Fecha Fin -->
+      <div class="form-group">
+        <label for="fecha-fin" class="form-group__label">Fecha de Fin</label>
+        <input type="date" id="fecha-fin" class="form-group__input" required>
+      </div>
+
+      <!-- Inversión -->
+      <div class="form-group">
+        <label for="inversion" class="form-group__label">Inversión (COP)</label>
+        <input type="number" id="inversion" class="form-group__input" min="0" step="0.01" placeholder="Ej. 5000000">
+      </div>
+
+      <!-- Botones -->
+      <div class="form-actions">
+        <button type="submit" class="form-actions__btn form-actions__btn--primary">
+          Crear Producción
+        </button>
+        <button type="button" id="add-another" class="form-actions__btn form-actions__btn--secondary">
+          Agregar Otra
+        </button>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

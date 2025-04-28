@@ -28,6 +28,11 @@
     --secundary-100:#FEF8E1;
     --secundary-50:#FEFCF5;
 
+    /* Terciary color*/
+    --terciary-1000:#71277A;
+    --terciary-950:#8B4E92;
+    --terciary-900:#CFD0FD;
+
     /* Basic color*/
     --white: #fff;
     --black: #000;
@@ -47,10 +52,6 @@
     --main-font: Helvetica, Arial, sans-serif;
 
     /* Font-size */
-    --fs-xxxxl: 8.0rem; /* Ultra grande */
-    --fs-xxxl: 6.4rem; /* Súper grande */
-    --fs-xxl: 4.8rem; /* Extra grande */
-    --fs-xl: 4.0rem;  /* Muy grande */
     --fs-lg: 3.2rem;  /* Grande */
     --fs-md: 2.4rem;  /* Mediano */
     --fs-sm: 2.0rem;  /* Pequeño */
