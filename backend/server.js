@@ -1,5 +1,5 @@
 import express from "express";
-import mysql from "mysql2";
+import mysql from "mysql2/promise";
 import cors from "cors";
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -32,14 +32,6 @@ const db = mysql.createConnection({
     port: 3307
 });
 
-// Verificar conexión
-db.connect(err => {
-    if (err) {
-        console.error("❌ Error de conexión a MySQL:", err);
-        return;
-    }
-    console.log("✅ Conectado a la base de datos MySQL");
-});
 
 // Rutas de vistas
 app.get("/", (req, res) => {
@@ -139,129 +131,7 @@ app.post("/api/cultivos", upload.single("imagen"), (req, res) => {
         });
     });
 });
-// =================== SENSORES ===================
-// Ruta para agregar sensores
-app.post("/api/sensores", upload.single("imagen"), (req, res) => {
-    const { tipo_sensor, estado, nombre, unidad_medida, tiempo_muestreo, descripcion } = req.body;
-    const imagen = req.file ? req.file.filename : null;
 
-    console.log("📥 Datos recibidos:", req.body);
-    
-    if (!tipo_sensor || !nombre || !unidad_medida) {
-        return res.status(400).json({ 
-            error: "Campos requeridos incompletos",
-            details: "tipo_sensor, nombre y unidad_medida son obligatorios"
-        });
-    }
-
-    const sql = `INSERT INTO sensores (tipo_sensor, estado, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion)
-                 VALUES (?, ?, ?, ?, ?, ?, ?)`;
-
-    db.query(sql, [tipo_sensor, estado, nombre, unidad_medida, tiempo_muestreo, imagen, descripcion], (err, result) => {
-        if (err) {
-            console.error("❌ Error al insertar sensor:", err);
-            return res.status(500).json({ error: "Error al agregar el sensor" });
-        }
-        res.status(201).json({ message: "Sensor agregado correctamente", id: result.insertId });
-    });
-});
-
-// Ruta para obtener sensores
-app.get('/api/sensores', (req, res) => {
-    db.query('SELECT * FROM sensores', (err, results) => {
-      if (err) {
-        return res.status(500).json({ error: 'Error al obtener sensores' });
-      }
-      res.json(results);
-    });
-});
-
-// Ruta para obtener insumos
-app.get('/api/insumos', (req, res) => {
-    db.query('SELECT * FROM insumos', (err, results) => {
-      if (err) {
-        return res.status(500).json({ error: 'Error al obtener insumos' });
-      }
-      res.json(results);
-    });
-});
-app.get('/api/producciones', (req, res) => {
-    db.query('SELECT * FROM producciones', (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: 'Error al obtener producciones' });
-        }
-        res.json(results);
-    });
-});
-
-
-app.get('/api/generar-id', (req, res) => {
-    const nuevoId = Date.now();  // Genera un ID único
-    res.json({ id: nuevoId });
-});
-
-
-
-
-// Ruta para obtener todas las producciones
-app.get('/api/producciones', (req, res) => {
-    // Lógica para obtener producciones desde la base de datos
-    res.json(producciones); // respuesta con las producciones en formato JSON
-});
-  
-  // Ruta para generar un ID
-  app.get('/api/generar-id', (req, res) => {
-    const id = generarId(); // Generar ID desde la base de datos o lógica personalizada
-    res.json({ id });
-  });
-  
-  // Ruta para verificar si el nombre de producción ya existe
-  app.get('/api/verificar-nombre', (req, res) => {
-    const { nombre } = req.query;
-    const existe = verificarNombre(nombre); // Lógica para verificar si el nombre ya existe
-    res.json({ existe });
-  });
-  
-
-// Usar CORS para permitir las solicitudes desde el cliente
-app.use(cors());
-
-// Endpoint para obtener los usuarios con el rol "responsable"
-app.get('/api/usuarios', (req, res) => {
-  const rol = req.query.rol || ''; // Obtenemos el parámetro "rol" de la consulta (por defecto vacío)
-
-  const query = rol ? 
-    `SELECT id, nombre, rol FROM usuarios WHERE rol = ?` : 
-    `SELECT id, nombre, rol FROM usuarios`;
-
-  db.query(query, [rol], (err, results) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).json({ error: 'Error al obtener usuarios' });
-    }
-    res.json(results); // Enviar los usuarios como respuesta en formato JSON
-  });
-});
-
-app.use(express.json()); // Permite leer cuerpos de solicitudes JSON
-
-// Simulamos una base de datos de usuarios
-const usuarios = [
-    { id: 1, nombre: "Juan Pérez", rol: "responsable" },
-    { id: 2, nombre: "Ana Gómez", rol: "responsable" },
-    { id: 3, nombre: "Carlos López", rol: "admin" },
-    // Más usuarios
-];
-
-// Ruta para obtener usuarios por rol
-app.get('/api/usuarios', (req, res) => {
-    const rol = req.query.rol;
-    if (!rol) {
-        return res.status(400).json({ message: 'Falta el parámetro de rol' });
-    }
-    const usuariosFiltrados = usuarios.filter(usuario => usuario.rol.toLowerCase() === rol.toLowerCase());
-    res.json(usuariosFiltrados);
-});
 
 // Iniciar servidor
 app.listen(3000, () => {

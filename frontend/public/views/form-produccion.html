@@ -30,13 +30,14 @@
                placeholder="Ej. Cosecha Verano">
       </div>
 
+      
       <!-- Responsable, Cultivo y Zona -->
       <div class="form-group form-group--triple">
         <!-- Responsable -->
         <div class="form-group__field">
           <label for="responsible" class="form-group__label">Responsable</label>
           <div class="select-with-add">
-            <select id="responsible" class="form-group__input">
+            <select id="responsible" name="responsible" class="form-group__input">
               <option value="">Selecciona...</option>
             </select>
             <button type="button" class="select-with-add__btn" title="Agregar Responsable">
@@ -44,9 +45,8 @@
             </button>
           </div>
         </div>
-
-        <!-- Cultivo -->
-        <div class="form-group__field">
+         <!-- Cultivo -->
+         <div class="form-group__field">
           <label for="cultivo" class="form-group__label">Cultivo</label>
           <div class="select-with-add">
             <select id="cultivo" class="form-group__input">
@@ -125,5 +125,24 @@
       </div>
     </form>
   </main>
+
+  <script defer>
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const response = await fetch('/api/usuarios'); // Cambia la URL según tu API
+        const usuarios = await response.json();
+        const select = document.getElementById('responsible');
+
+        usuarios.forEach(user => {
+          const option = document.createElement('option');
+          option.value = user.id;
+          option.textContent = user.nombre;
+          select.appendChild(option);
+        });
+      } catch (err) {
+        console.error('Error cargando responsables:', err);
+      }
+    });
+  </script>
 </body>
 </html>
