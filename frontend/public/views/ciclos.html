@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Usuarios</title>
+    <title>Gestión de Ciclos</title>
     <!-- Boxicons para iconos -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!-- Estilos -->
@@ -17,7 +17,6 @@
 <body>
     <div class="app">
         <!-- Sidebar -->
-        <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar__logo" id="logo">
                 <img src="/IMG/Propuesta Logo 2 (1).jpg" alt="Logo" width="50px" height="50px">
@@ -27,11 +26,11 @@
                     <i class='bx bx-home-alt-2'></i>
                     <span class="sidebar__nav-label">Home</span>
                 </a>
-                <a href="ciclos.html" class="sidebar__nav-item">
+                <a href="ciclos.html" class="sidebar__nav-item sidebar__nav-item--active">
                     <i class='bx bx-time-five'></i>
                     <span class="sidebar__nav-label">ciclos</span>
                 </a>
-                <a href="insumo.html" class="sidebar__nav-item">
+                <a href="insumo.html" class="sidebar__nav-item ">
                     <i class='bx bxs-bar-chart-square'></i>
                     <span class="sidebar__nav-label">Insumo</span>
                 </a>
@@ -40,10 +39,10 @@
                     <span class="sidebar__nav-label">Sensor</span>
                 </a>
                 <a href="cultivos.html" class="sidebar__nav-item">
-                    <i class='bx bx-time-five'></i>
+                    <i class='bx bx-circle-three-quarter'></i>
                     <span class="sidebar__nav-label">Cultivo</span>
                 </a>
-                <a href="listar-usuarios.html" class="sidebar__nav-item sidebar__nav-item--active">
+                <a href="listar-usuarios.html" class="sidebar__nav-item">
                     <i class='bx bx-box'></i>
                     <span class="sidebar__nav-label">Usuarios</span>
                 </a>
@@ -61,10 +60,10 @@
         <!-- Contenido principal -->
         <main class="main">
             <div class="main__header">
-                <h1 class="main__title">Gestión de Usuarios</h1>
+                <h1 class="main__title">Gestión de Ciclos</h1>
                 <div class="main__actions">
-                    <button class="button button--primary" id="btnNuevoUsuario">
-                        <i class='bx bx-plus'></i> Nuevo Usuario
+                    <button class="button button--primary" id="btnNuevoCiclo">
+                        <i class='bx bx-plus'></i> Nuevo Ciclo
                     </button>
                     <div class="main__export">
                         <button class="button button--secondary" id="btnExportarExcel">
@@ -80,7 +79,7 @@
             <div class="main__search">
                 <div class="search">
                     <i class='bx bx-search search__icon'></i>
-                    <input type="text" class="search__input" id="searchInput" placeholder="Buscar usuario...">
+                    <input type="text" class="search__input" id="searchInput" placeholder="Buscar ciclo...">
                 </div>
             </div>
 
@@ -91,13 +90,12 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Teléfono</th>
-                                <th>Rol</th>
+                                <th>Duración</th>
+                                <th>Fecha Registro</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody class="table__body" id="usuariosTableBody">
+                        <tbody class="table__body" id="ciclosTableBody">
                             <!-- Datos cargados dinámicamente -->
                         </tbody>
                     </table>
@@ -106,25 +104,25 @@
                     <div class="loader__spinner"></div>
                 </div>
                 <div class="empty-state" id="emptyState">
-                    <i class='bx bx-user-x empty-state__icon'></i>
-                    <p class="empty-state__text">No se encontraron usuarios</p>
+                    <i class='bx bx-time-five empty-state__icon'></i>
+                    <p class="empty-state__text">No se encontraron ciclos</p>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Modal para crear/editar usuario -->
-    <div class="modal" id="userModal">
+    <!-- Modal para crear/editar ciclo -->
+    <div class="modal" id="cicloModal">
         <div class="modal__content">
             <div class="modal__header">
-                <h2 class="modal__title" id="modalTitle">Nuevo Usuario</h2>
+                <h2 class="modal__title" id="modalTitle">Nuevo Ciclo</h2>
                 <button class="modal__close" id="closeModal">
                     <i class='bx bx-x'></i>
                 </button>
             </div>
             <div class="modal__body">
-                <form id="userForm" class="form">
-                    <input type="hidden" id="userId">
+                <form id="cicloForm" class="form">
+                    <input type="hidden" id="cicloId">
                     
                     <div class="form__group">
                         <label class="form__label" for="nombre">Nombre</label>
@@ -132,23 +130,8 @@
                     </div>
                     
                     <div class="form__group">
-                        <label class="form__label" for="apellido">Apellido</label>
-                        <input type="text" class="form__input" id="apellido" name="apellido" required>
-                    </div>
-                    
-                    <div class="form__group">
-                        <label class="form__label" for="numero_telefonico">Teléfono</label>
-                        <input type="tel" class="form__input" id="numero_telefonico" name="numero_telefonico">
-                    </div>
-                    
-                    <div class="form__group">
-                        <label class="form__label" for="rol">Rol</label>
-                        <select class="form__select" id="rol" name="rol" required>
-                            <option value="">Seleccionar rol</option>
-                            <option value="usuario">Usuario</option>
-                            <option value="admin">Administrador</option>
-                            <option value="personal de apoyo">Personal de apoyo</option>
-                        </select>
+                        <label class="form__label" for="duracion">Duración</label>
+                        <input type="text" class="form__input" id="duracion" name="duracion" required placeholder="Ej: 3 meses">
                     </div>
                     
                     <div class="form__actions">
@@ -160,11 +143,11 @@
         </div>
     </div>
 
-    <!-- Modal para ver detalles de usuario -->
+    <!-- Modal para ver detalles de ciclo -->
     <div class="modal" id="detailsModal">
         <div class="modal__content">
             <div class="modal__header">
-                <h2 class="modal__title">Detalles del Usuario</h2>
+                <h2 class="modal__title">Detalles del Ciclo</h2>
                 <button class="modal__close" id="closeDetailsModal">
                     <i class='bx bx-x'></i>
                 </button>
@@ -172,8 +155,7 @@
             <div class="modal__body">
                 <div class="user-details">
                     <div class="user-details__avatar">
-                        <i class='bx bxs-user-circle'></i>
-                        <span class="user-details__role" id="detailsRole"></span>
+                        <i class='bx bx-time-five'></i>
                     </div>
                     <div class="user-details__info">
                         <div class="user-details__item">
@@ -185,16 +167,12 @@
                             <span class="user-details__value" id="detailsNombre"></span>
                         </div>
                         <div class="user-details__item">
-                            <span class="user-details__label">Apellido:</span>
-                            <span class="user-details__value" id="detailsApellido"></span>
+                            <span class="user-details__label">Duración:</span>
+                            <span class="user-details__value" id="detailsDuracion"></span>
                         </div>
                         <div class="user-details__item">
-                            <span class="user-details__label">Teléfono:</span>
-                            <span class="user-details__value" id="detailsTelefono"></span>
-                        </div>
-                        <div class="user-details__item">
-                            <span class="user-details__label">Estado:</span>
-                            <span class="user-details__value" id="detailsEstado"></span>
+                            <span class="user-details__label">Registro:</span>
+                            <span class="user-details__value" id="detailsFechaRegistro"></span>
                         </div>
                     </div>
                 </div>
@@ -232,6 +210,6 @@
         </button>
     </div>
 
-    <script src="/frontend/JS/usuarios.js"></script>
+    <script src="/frontend/JS/ciclos.js"></script>
 </body>
 </html>

@@ -1,157 +1,361 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestión de Producciones Agrícolas</title>
-  <!-- Estilos principales -->
-  <link rel="stylesheet" href="/frontend/public/css/pages/Normalize.css">
-  <link rel="stylesheet" href="/frontend/public/css/pages/produccion.css">
-  <link rel="stylesheet" href="/frontend/public/css/main.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Producciones</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Quicksand:wght@400;600&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/frontend/public/css/pages/produccion.css">
 </head>
-
 <body>
-  <aside class="sidebar"></aside>
-  <div class="produccion">
-    <header class="produccion__header">
-      <h1 class="produccion__title">Gestión de Producciones Agrícolas</h1>
-      <div class="produccion__actions">
-        <button id="crearProduccionBtn" class="produccion__button produccion__button--primary">
-          <i class="fas fa-plus"></i> Crear Producción
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar__logo" id="logo">
+                <img src="/IMG/Propuesta Logo 2 (1).jpg" alt="Logo" width="50px" height="50px">
+            </div>
+            <nav class="sidebar__nav-icons" id="nav-icons">
+                <a href="home.html" class="sidebar__nav-item">
+                    <i class='bx bx-home-alt-2'></i>
+                    <span class="sidebar__nav-label">Home</span>
+                </a>
+                <a href="ciclos.html" class="sidebar__nav-item">
+                    <i class='bx bx-time-five'></i>
+                    <span class="sidebar__nav-label">ciclos</span>
+                </a>
+                <a href="insumo.html" class="sidebar__nav-item">
+                    <i class='bx bxs-bar-chart-square'></i>
+                    <span class="sidebar__nav-label">Insumo</span>
+                </a>
+                <a href="listar-sensor.html" class="sidebar__nav-item">
+                    <i class='bx bx-chip'></i>
+                    <span class="sidebar__nav-label">Sensor</span>
+                </a>
+                <a href="cultivos.html" class="sidebar__nav-item ">
+                    <i class='bx bx-circle-three-quarter'></i>
+                    <span class="sidebar__nav-label">Cultivo</span>
+                </a>
+                <a href="listar-usuarios.html" class="sidebar__nav-item">
+                    <i class='bx bx-box'></i>
+                    <span class="sidebar__nav-label">Usuarios</span>
+                </a>
+                <a href="produccion.html" class="sidebar__nav-item sidebar__nav-item--active">
+                    <i class='bx bxs-component bx-flip-horizontal' ></i>
+                    <span class="sidebar__nav-label">Producciones</span>
+                </a>
+                <a href="login.html" class="sidebar__nav-item sidebar__nav-item--end" id="papa">
+                    <i class='bx bxs-door-open'></i>
+                    <span class="sidebar__nav-label">Cerrar Sesión</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main">
+            <header class="header">
+                <h1 class="header__title">Gestión de Producciones</h1>
+                <div class="header__actions">
+                    <button class="button button--primary" id="btnNuevaProduccion">
+                        <i class='bx bx-plus'></i> Nueva Producción
+                    </button>
+                    <div class="dropdown">
+                        <button class="button button--secondary dropdown__trigger">
+                            <i class='bx bx-export'></i> Exportar
+                        </button>
+                        <div class="dropdown__menu">
+                            <button class="dropdown__item" id="btnExportExcel">
+                                <i class='bx bxs-file-export'></i> Exportar a Excel
+                            </button>
+                            <button class="dropdown__item" id="btnExportPDF">
+                                <i class='bx bxs-file-pdf'></i> Exportar a PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard">
+                <section class="dashboard__stats">
+                    <div class="stat-card">
+                        <div class="stat-card__icon">
+                            <i class='bx bx-leaf'></i>
+                        </div>
+                        <div class="stat-card__content">
+                            <h3 class="stat-card__title">Total Producciones</h3>
+                            <p class="stat-card__value" id="totalProducciones">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card__icon">
+                            <i class='bx bx-check-circle'></i>
+                        </div>
+                        <div class="stat-card__content">
+                            <h3 class="stat-card__title">Producciones Activas</h3>
+                            <p class="stat-card__value" id="produccionesActivas">0</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card__icon">
+                            <i class='bx bx-trending-up'></i>
+                        </div>
+                        <div class="stat-card__content">
+                            <h3 class="stat-card__title">Inversión Total</h3>
+                            <p class="stat-card__value" id="inversionTotal">$0</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="dashboard__charts">
+                    <div class="chart-container" >
+                        <h2 class="chart-container__title">Estado de Producciones</h2>
+                        <canvas id="estadoProduccionesChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h2 class="chart-container__title">Inversión por Producción</h2>
+                        <canvas id="inversionChart"></canvas>
+                    </div>
+                </section>
+
+                <section class="dashboard__table">
+                    <div class="table-container">
+                        <div class="table-header">
+                            <h2 class="table-header__title">Listado de Producciones</h2>
+                            <div class="table-header__search">
+                                <input type="text" class="form__input" id="searchProduccion" placeholder="Buscar producción...">
+                                <i class='bx bx-search'></i>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Fecha Inicio</th>
+                                        <th>Fecha Fin</th>
+                                        <th>Estado</th>
+                                        <th>Inversión</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="produccionesTableBody">
+                                    <!-- Datos de producciones se cargarán aquí -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal para crear/editar producción -->
+    <div class="modal" id="produccionModal">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h2 class="modal__title" id="modalTitle">Nueva Producción</h2>
+                <button class="modal__close" id="closeModal">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+            <div class="modal__body">
+                <form id="produccionForm" class="form">
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="id" class="form__label">ID</label>
+                            <input type="text" id="id" name="id" class="form__input" required>
+                        </div>
+                        <div class="form__group">
+                            <label for="nombre" class="form__label">Nombre</label>
+                            <input type="text" id="nombre" name="nombre" class="form__input" required>
+                        </div>
+                    </div>
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="responsable_id" class="form__label">Responsable</label>
+                            <select id="responsable_id" name="responsable_id" class="form__select" required>
+                                <option value="">Seleccionar responsable</option>
+                            </select>
+                        </div>
+                        <div class="form__group">
+                            <label for="cultivo_id" class="form__label">Cultivo</label>
+                            <select id="cultivo_id" name="cultivo_id" class="form__select" required>
+                                <option value="">Seleccionar cultivo</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="ciclo_id" class="form__label">Ciclo</label>
+                            <select id="ciclo_id" name="ciclo_id" class="form__select" required>
+                                <option value="">Seleccionar ciclo</option>
+                            </select>
+                        </div>
+                        <div class="form__group">
+                            <label for="estado" class="form__label">Estado</label>
+                            <select id="estado" name="estado" class="form__select" required>
+                                <option value="activo">Activo</option>
+                                <option value="inactivo">Inactivo</option>
+                                <option value="completado">Completado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="fecha_inicio" class="form__label">Fecha Inicio</label>
+                            <input type="date" id="fecha_inicio" name="fecha_inicio" class="form__input" required>
+                        </div>
+                        <div class="form__group">
+                            <label for="fecha_fin" class="form__label">Fecha Fin</label>
+                            <input type="date" id="fecha_fin" name="fecha_fin" class="form__input">
+                        </div>
+                    </div>
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="inversion" class="form__label">Inversión</label>
+                            <input type="number" id="inversion" name="inversion" class="form__input" min="0" step="0.01">
+                        </div>
+                        <div class="form__group">
+                            <label for="meta" class="form__label">Meta</label>
+                            <input type="number" id="meta" name="meta" class="form__input" min="0" step="0.01">
+                        </div>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label">Sensores (máximo 3)</label>
+                        <div class="form__checkbox-group" id="sensoresContainer">
+                            <!-- Los sensores se cargarán aquí -->
+                        </div>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label">Insumos</label>
+                        <div class="form__checkbox-group" id="insumosContainer">
+                            <!-- Los insumos se cargarán aquí -->
+                        </div>
+                    </div>
+                    <div class="form__actions">
+                        <button type="button" class="button button--secondary" id="cancelarForm">Cancelar</button>
+                        <button type="submit" class="button button--primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para ver detalles de producción -->
+    <div class="modal" id="detalleModal">
+        <div class="modal__content modal__content--large">
+            <div class="modal__header">
+                <h2 class="modal__title">Detalles de Producción</h2>
+                <button class="modal__close" id="closeDetalleModal">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+            <div class="modal__body">
+                <div class="tabs">
+                    <div class="tabs__header">
+                        <button class="tabs__button tabs__button--active" data-tab="info">Información</button>
+                        <button class="tabs__button" data-tab="sensores">Sensores</button>
+                        <button class="tabs__button" data-tab="insumos">Insumos</button>
+                    </div>
+                    <div class="tabs__content">
+                        <div class="tabs__panel tabs__panel--active" data-tab="info">
+                            <div class="detalle-info">
+                                <div class="detalle-info__item">
+                                    <span class="detalle-info__label">ID:</span>
+                                    <span class="detalle-info__value" id="detalle-id"></span>
+                                </div>
+                                <div class="detalle-info__item">
+                                    <span class="detalle-info__label">Nombre:</span>
+                                    <span class="detalle-info__value" id="detalle-nombre"></span>
+                                </div>
+                                <div class="detalle-info__item">
+                                    <span class="detalle-info__label">Responsable:</span>
+                                    <span class="detalle-info__value" id="detalle-responsable"></span>
+                                </div>
+                                <div class="detalle-info__item">
+                                    <span class="detalle-info__label">Cultivo:</span>
+                                    <span class="detalle-info__value" id="detalle-cultivo"></span>
+                                </div>
+                                <div class="detalle-info__item">
+                                    <span class="detalle-info__label">Ciclo:</span>
+                                    <span class="detalle-info__value" id="detalle-ciclo"></span>
+                                </div>
+                                <div class="detalle-info__item">
+                                    <span class="detalle-info__label">Estado:</span>
+                                    <span class="detalle-info__value" id="detalle-estado"></span>
+                                </div>
+                                <div class="detalle-info__item">
+                                    <span class="detalle-info__label">Fecha Inicio:</span>
+                                    <span class="detalle-info__value" id="detalle-fecha-inicio"></span>
+                                </div>
+                                <div class="detalle-info__item">
+                                    <span class="detalle-info__label">Fecha Fin:</span>
+                                    <span class="detalle-info__value" id="detalle-fecha-fin"></span>
+                                </div>
+                                <div class="detalle-info__item">
+                                    <span class="detalle-info__label">Inversión:</span>
+                                    <span class="detalle-info__value" id="detalle-inversion"></span>
+                                </div>
+                                <div class="detalle-info__item">
+                                    <span class="detalle-info__label">Meta:</span>
+                                    <span class="detalle-info__value" id="detalle-meta"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tabs__panel" data-tab="sensores">
+                            <div class="sensor-charts">
+                                <div class="sensor-charts__header">
+                                    <h3 class="sensor-charts__title">Lecturas de Sensores</h3>
+                                    <div class="sensor-charts__filter">
+                                        <label for="sensorFilter">Filtrar por sensor:</label>
+                                        <select id="sensorFilter" class="form__select">
+                                            <option value="all">Todos los sensores</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="sensor-charts__container">
+                                    <canvas id="sensoresChart"></canvas>
+                                </div>
+                                <div class="sensor-list" id="sensorList">
+                                    <!-- Lista de sensores se cargará aquí -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tabs__panel" data-tab="insumos">
+                            <div class="insumos-container">
+                                <div class="insumos-chart">
+                                    <h3 class="insumos-chart__title">Uso de Insumos</h3>
+                                    <canvas id="insumosChart"></canvas>
+                                </div>
+                                <div class="insumos-list" id="insumosList">
+                                    <!-- Lista de insumos se cargará aquí -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast para notificaciones -->
+    <div class="toast" id="toast">
+        <div class="toast__icon">
+            <i class='bx bx-check-circle'></i>
+        </div>
+        <div class="toast__content">
+            <p class="toast__message" id="toastMessage"></p>
+        </div>
+        <button class="toast__close" id="closeToast">
+            <i class='bx bx-x'></i>
         </button>
-      </div>
-    </header>
-
-    <nav class="produccion__tabs">
-      <button data-tab="listar" class="produccion__tab produccion__tab--active">Listar</button>
-      <button data-tab="estado" class="produccion__tab">Estado</button>
-      <button data-tab="reportes" class="produccion__tab">Reportes</button>
-    </nav>
-
-    <main class="produccion__content">
-      <section id="listar" class="produccion__section produccion__section--active">
-        <table class="produccion__table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Cultivo</th>
-              <th>Insumos</th>
-              <th>Responsable</th>
-              <th>Fecha de Inicio</th>
-              <th>Fecha de Fin</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody id="produccionesTableBody"></tbody>
-        </table>
-      </section>
-
-      <section id="estado" class="produccion__section">
-        <p>Habilitar/Deshabilitar</p>
-      </section>
-
-      <section id="reportes" class="produccion__section">
-        <p>Generar Reportes</p>
-      </section>
-    </main>
-  </div>
-
-  <!-- Modal Crear Producción -->
-  <div id="modalCrearProduccion" class="modal">
-    <div class="modal__content">
-      <button class="modal__close">&times;</button>
-      <h2>Crear Producción</h2>
-      <form id="crearProduccionForm" class="modal-form">
-        <div class="form-group">
-          <label for="produccionId">ID Producción</label>
-          <input id="produccionId" disabled>
-        </div>
-        <div class="form-group inline-group">
-          <label for="responsable">Responsable</label>
-          <select id="responsable"></select>
-          <button type="button" id="agregarResponsableBtn" class="btn-small"><i class="fas fa-plus"></i></button>
-        </div>
-        <div class="form-group">
-          <label for="nombreProduccion">Nombre de Producción</label>
-          <input id="nombreProduccion" placeholder="Ingrese un nombre">
-          <span id="nombreError" class="error-message"></span>
-        </div>
-        <div class="form-group inline-group">
-          <label for="cultivo">Cultivo</label>
-          <select id="cultivo"></select>
-          <button type="button" id="agregarCultivoBtn" class="btn-small"><i class="fas fa-plus"></i></button>
-        </div>
-        <div class="form-group inline-group">
-          <label for="cicloCultivo">Ciclo</label>
-          <select id="cicloCultivo"></select>
-          <button type="button" id="agregarCicloBtn" class="btn-small"><i class="fas fa-plus"></i></button>
-        </div>
-        <div class="form-group inline-group">
-          <label for="sensores">Sensores (máx 3)</label>
-          <select id="sensores" multiple size="3"></select>
-          <button type="button" id="agregarSensorBtn" class="btn-small"><i class="fas fa-plus"></i></button>
-          <span id="sensoresError" class="error-message"></span>
-        </div>
-        <div class="form-group inline-group">
-          <label for="insumos">Insumos</label>
-          <select id="insumos" multiple size="3"></select>
-          <button type="button" id="agregarInsumoBtn" class="btn-small"><i class="fas fa-plus"></i></button>
-        </div>
-        <div class="form-group">
-          <label for="fechaInicio">Fecha Inicio</label>
-          <input id="fechaInicio" type="text" placeholder="DD/MM/YYYY">
-        </div>
-        <div class="form-group">
-          <label for="fechaFin">Fecha Fin</label>
-          <input id="fechaFin" type="text" placeholder="DD/MM/YYYY">
-        </div>
-        <div class="form-group">
-          <label>Inversión</label>
-          <span id="inversionEstimada" class="form-value">$0</span>
-        </div>
-        <div class="form-group">
-          <label>Meta</label>
-          <span id="metaEstimada" class="form-value">$0</span>
-        </div>
-
-        <div class="modal__actions">
-          <button type="button" id="guardarBorrador" class="produccion__button produccion__button--secondary">
-            Guardar Borrador
-          </button>
-          <button type="button" id="crearProduccion" class="produccion__button produccion__button--primary" disabled>
-            Crear Producción
-          </button>
-        </div>
-      </form>
     </div>
-  </div>
-  <div class="stats-sidebar">
-    <div class="chart-container">
-        <h3 class="chart-title">Temperatura (°C) - Últimas 24 horas</h3>
-        <canvas id="tempChart"></canvas>
-    </div>
-    
-    <div class="chart-container">
-        <h3 class="chart-title">Velocidad del Viento (km/h) - Últimas 24 horas</h3>
-        <canvas id="windChart"></canvas>
-    </div>
-    
-    <div class="chart-container">
-        <h3 class="chart-title">Intensidad Lumínica (lux) - Últimas 24 horas</h3>
-        <canvas id="lightChart"></canvas>
-    </div>
-</div>
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="/frontend/JS/sidebar.js"></script>
-  <script src="/frontend/JS/produccionForm.js"></script>
-  <script src="/frontend/JS/statsSidebarInit.js"></script>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="/frontend/JS/produccion.js"></script>
 </body>
-
 </html>

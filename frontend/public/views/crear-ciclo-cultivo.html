@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Ciclo de Cultivo</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/pages/crear-ciclo.css">
+</head>
+<body>
+    <div class="ciclo">
+        <h1 class="ciclo__titulo"><i class="fas fa-seedling"></i> Crear Ciclo de Cultivo</h1>
+        
+        <form id="crearCicloForm" class="ciclo__form">
+            <div class="ciclo__form-grupo">
+                <label class="ciclo__label" for="nombre"><i class="fas fa-tag"></i> Nombre del ciclo (*)</label>
+                <input class="ciclo__input" type="text" id="nombre" name="nombre" required>
+            </div>
+
+            <div class="ciclo__form-grupo">
+                <label class="ciclo__label" for="duracion"><i class="fas fa-clock"></i> Duración (*)</label>
+                <input class="ciclo__input" type="text" id="duracion" name="duracion" placeholder="Ej: 3 meses" required>
+            </div>
+
+            <div class="ciclo__form-grupo">
+                <label class="ciclo__label" for="descripcion"><i class="fas fa-align-left"></i> Descripción (*)</label>
+                <textarea class="ciclo__textarea" id="descripcion" name="descripcion" required></textarea>
+            </div>
+
+            <div class="ciclo__form-grupo">
+                <label class="ciclo__label" for="fechaInicio"><i class="fas fa-calendar-alt"></i> Fecha Inicial (*)</label>
+                <input class="ciclo__input" type="date" id="fechaInicio" name="fechaInicio" required>
+            </div>
+
+            <div class="ciclo__form-grupo">
+                <label class="ciclo__label" for="fechaFin"><i class="fas fa-calendar-check"></i> Fecha Final (*)</label>
+                <input class="ciclo__input" type="date" id="fechaFin" name="fechaFin" required>
+            </div>
+
+            <div class="ciclo__form-grupo">
+                <label class="ciclo__label" for="estado"><i class="fas fa-toggle-on"></i> Estado</label>
+                <select class="ciclo__select" id="estado" name="estado">
+                    <option value="habilitado">Habilitado</option>
+                    <option value="deshabilitado">Deshabilitado</option>
+                </select>
+            </div>
+
+            <div class="ciclo__form-grupo">
+                <label class="ciclo__label" for="novedades"><i class="fas fa-bell"></i> Novedades (*)</label>
+                <textarea class="ciclo__textarea" id="novedades" name="novedades" required></textarea>
+            </div>
+
+            <div class="ciclo__botones">
+                <button type="submit" class="ciclo__boton ciclo__boton--primario">Guardar Ciclo</button>
+                <button type="button" class="ciclo__boton ciclo__boton--secundario"><a href="ciclo_cultivo.html">Cancelar</a></button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('crearCicloForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                nombre: document.getElementById('nombre').value,
+                duracion: document.getElementById('duracion').value,
+                descripcion: document.getElementById('descripcion').value,
+                fechaInicio: document.getElementById('fechaInicio').value,
+                fechaFin: document.getElementById('fechaFin').value,
+                estado: document.getElementById('estado').value,
+                novedades: document.getElementById('novedades').value
+            };
+
+            try {
+                const response = await fetch('/api/ciclos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    alert('Ciclo de cultivo creado exitosamente');
+                    window.location.href = 'lista-ciclos-cultivo.html';
+                } else {
+                    alert('Error al crear el ciclo de cultivo');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al conectar con el servidor');
+            }
+        });
+    </script>
+</body>
+</html>

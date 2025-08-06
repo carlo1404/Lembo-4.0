@@ -1,5 +1,5 @@
 document.getElementById("add").onclick = function() {
-    window.location.href = "cultivo-agregar.html";
+    window.location.href = "crear-ciclo-cultivo.html";
 };
 document.getElementById("download").onclick = function() {
     window.location.href = "cultivo_informe.html";

@@ -1,283 +1,256 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Insumos</title>
-    <link rel="stylesheet" href="/frontend/public/css/pages/insumo.css">
+    <!-- Boxicons para iconos -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="/frontend/JS/sidebar.js" defer></script>
-    <script src="/frontend/JS/grafico_insumo.js" defer></script>
-    <script src="../../JS/insumoEdit.js" defer></script>
+    <!-- Estilos -->
+    <link rel="stylesheet" href="/frontend/public/css/pages/listaru.css">
+    <!-- CDN para exportar a Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!-- CDN para exportar a PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 </head>
-
 <body>
-    <div class="header">
-        <div class="header__left-section">
-            <span class="header__menu-item">Insumos</span>
-            <span class="header__menu-separator">/</span>
-            <span class="header__menu-item">Lista de Insumos</span>
-            <span class="header__menu-separator">-</span>
-            <span class="header__menu-item">Cantidad de Insumos: 9</span>
-        </div>
-        <div class="header__right-section">
-            <input type="text" class="header__search-bar" placeholder="Buscar">
-            <span class="header__icon"><i class='bx bx-message-square-add' id="add" title="Agregar"></i></span>
-            <span class="header__icon"><i class='bx bxs-download' id="download" title="Descargar Informe"></i></span>
-            <span class="header__icon"><box-icon name='bell' type='solid'></box-icon></span>
-        </div>
+    <div class="app">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar__logo" id="logo">
+                <img src="/IMG/Propuesta Logo 2 (1).jpg" alt="Logo" width="50px" height="50px">
+            </div>
+            <nav class="sidebar__nav-icons" id="nav-icons">
+                <a href="home.html" class="sidebar__nav-item">
+                    <i class='bx bx-home-alt-2'></i>
+                    <span class="sidebar__nav-label">Home</span>
+                </a>
+                <a href="ciclos.html" class="sidebar__nav-item">
+                    <i class='bx bx-time-five'></i>
+                    <span class="sidebar__nav-label">ciclos</span>
+                </a>
+                <a href="insumo.html" class="sidebar__nav-item sidebar__nav-item--active">
+                    <i class='bx bxs-bar-chart-square'></i>
+                    <span class="sidebar__nav-label">Insumo</span>
+                </a>
+                <a href="listar-sensor.html" class="sidebar__nav-item">
+                    <i class='bx bx-chip'></i>
+                    <span class="sidebar__nav-label">Sensor</span>
+                </a>
+                <a href="cultivos.html" class="sidebar__nav-item">
+                    <i class='bx bx-circle-three-quarter'></i>
+                    <span class="sidebar__nav-label">Cultivo</span>
+                </a>
+                <a href="listar-usuarios.html" class="sidebar__nav-item">
+                    <i class='bx bx-box'></i>
+                    <span class="sidebar__nav-label">Usuarios</span>
+                </a>
+                <a href="produccion.html" class="sidebar__nav-item">
+                    <i class='bx bxs-component bx-flip-horizontal' ></i>
+                    <span class="sidebar__nav-label">Producciones</span>
+                </a>
+                <a href="login.html" class="sidebar__nav-item sidebar__nav-item--end" id="papa">
+                    <i class='bx bxs-door-open'></i>
+                    <span class="sidebar__nav-label">Cerrar Sesión</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Contenido principal -->
+        <main class="main">
+            <div class="main__header">
+                <h1 class="main__title">Gestión de Insumos</h1>
+                <div class="main__actions">
+                    <button class="button button--primary" id="btnNuevoInsumo">
+                        <i class='bx bx-plus'></i> Nuevo Insumo
+                    </button>
+                    <div class="main__export">
+                        <button class="button button--secondary" id="btnExportarExcel">
+                            <i class='bx bx-spreadsheet'></i> Excel
+                        </button>
+                        <button class="button button--secondary" id="btnExportarPDF">
+                            <i class='bx bxs-file-pdf'></i> PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main__search">
+                <div class="search">
+                    <i class='bx bx-search search__icon'></i>
+                    <input type="text" class="search__input" id="searchInput" placeholder="Buscar insumo...">
+                </div>
+            </div>
+
+            <div class="main__content">
+                <div class="table-container">
+                    <table class="table">
+                        <thead class="table__head">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Valor Unitario</th>
+                                <th>Cantidad</th>
+                                <th>Unidad</th>
+                                <th>Fecha Registro</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table__body" id="insumosTableBody">
+                            <!-- Datos cargados dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="loader" id="loader">
+                    <div class="loader__spinner"></div>
+                </div>
+                <div class="empty-state" id="emptyState">
+                    <i class='bx bx-package empty-state__icon'></i>
+                    <p class="empty-state__text">No se encontraron insumos</p>
+                </div>
+            </div>
+        </main>
     </div>
-    <main>
-        <!-- Aquí va la SIDEBAR -->
-        <div class="sidebar"> </div>
-        <section class="content">
-            <table class="content__table">
-                <thead class="content__table-head">
-                    <tr class="content__table-row">
-                        <th class="content__table-header">Nombre</th>
-                        <th class="content__table-header">ID</th>
-                        <th class="content__table-header">Unidad de medida</th>
-                        <th class="content__table-header">Cantidad</th>
-                        <th class="content__table-header">Valor Unitario</th>
-                        <th class="content__table-header">Estado</th>
-                        <th class="content__table-header">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="content__table-body">
-                    <tr class="content__table-row">
-                        <td class="content__table-data">Semillas</td>
-                        <td class="content__table-data">GNR76286</td>
-                        <td class="content__table-data">Gramos</td>
-                        <td class="content__table-data">5</td>
-                        <td class="content__table-data">$8.000</td>
-                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span
-                                class="content__status-enabled"></span>&nbsp;
-                            Deshabilitado:&nbsp;<span></span></td>
-                        <td class="content__table-data">
-                            <div class="content__icon-container">
-                                <div class="content__icon content__icon--blue" title="Editar">
-                                    <i class='bx bxs-edit edit-button'></i>
-                                </div>
-                                <div class="content__icon content__icon--red" title="Eliminar">
-                                    <i class='bx bxs-trash'></i>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="content__table-row">
-                        <td class="content__table-data">Fertilizante</td>
-                        <td class="content__table-data">GNR76286</td>
-                        <td class="content__table-data">Kilos</td>
-                        <td class="content__table-data">6</td>
-                        <td class="content__table-data">$3.000</td>
-                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span
-                                class="content__status-enabled"></span>&nbsp; Deshabilitado:
-                            &nbsp;<span></span></td>
-                        <td class="content__table-data">
-                            <div class="content__icon-container">
-                                <div class="content__icon content__icon--blue" title="Editar">
-                                    <i class='bx bxs-edit edit-button'></i>
-                                </div>
-                                <div class="content__icon content__icon--red" title="Eliminar">
-                                    <i class='bx bxs-trash'></i>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="content__table-row">
-                        <td class="content__table-data">Pesticida</td>
-                        <td class="content__table-data">GNR76286</td>
-                        <td class="content__table-data">Kilos</td>
-                        <td class="content__table-data">20</td>
-                        <td class="content__table-data">$25.000</td>
-                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span
-                                class="content__status-enabled"></span>&nbsp; Deshabilitado:
-                            &nbsp;<span></span></td>
-                        <td class="content__table-data">
-                            <div class="content__icon-container">
-                                <div class="content__icon content__icon--blue" title="Editar">
-                                    <i class='bx bxs-edit edit-button'></i>
-                                </div>
-                                <div class="content__icon content__icon--red" title="Eliminar">
-                                    <i class='bx bxs-trash'></i>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="content__table-row">
-                        <td class="content__table-data">Sustrato</td>
-                        <td class="content__table-data">GNR76286</td>
-                        <td class="content__table-data">Kilos</td>
-                        <td class="content__table-data">3</td>
-                        <td class="content__table-data">$25.000</td>
-                        <td class="content__table-data content__table-data--status">Habilitado:
-                            &nbsp;<span></span>&nbsp; Deshabilitado: &nbsp;<span
-                                class="content__status-disabled"></span></td>
-                        <td class="content__table-data">
-                            <div class="content__icon-container">
-                                <div class="content__icon content__icon--blue" title="Editar">
-                                    <i class='bx bxs-edit edit-button'></i>
-                                </div>
-                                <div class="content__icon content__icon--red" title="Eliminar">
-                                    <i class='bx bxs-trash'></i>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="content__table-row">
-                        <td class="content__table-data">Herramientas</td>
-                        <td class="content__table-data">USR76286</td>
-                        <td class="content__table-data">Personal de Apoyo</td>
-                        <td class="content__table-data">12</td>
-                        <td class="content__table-data">$35.000</td>
-                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span
-                                class="content__status-enabled"></span>&nbsp; Deshabilitado:
-                            &nbsp;<span></span></td>
-                        <td class="content__table-data">
-                            <div class="content__icon-container">
-                                <div class="content__icon content__icon--blue" title="Editar">
-                                    <i class='bx bxs-edit edit-button'></i>
-                                </div>
-                                <div class="content__icon content__icon--red" title="Eliminar">
-                                    <i class='bx bxs-trash'></i>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="content__table-row">
-                        <td class="content__table-data">Aspersores</td>
-                        <td class="content__table-data">USR76288</td>
-                        <td class="content__table-data">Personal de Apoyo</td>
-                        <td class="content__table-data">25</td>
-                        <td class="content__table-data">$55.000</td>
-                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span
-                                class="content__status-enabled"></span>&nbsp; Deshabilitado:
-                            &nbsp;<span></span></td>
-                        <td class="content__table-data">
-                            <div class="content__icon-container">
-                                <div class="content__icon content__icon--blue" title="Editar">
-                                    <i class='bx bxs-edit edit-button'></i>
-                                </div>
-                                <div class="content__icon content__icon--red" title="Eliminar">
-                                    <i class='bx bxs-trash'></i>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="content__table-row">
-                        <td class="content__table-data">Mangueras</td>
-                        <td class="content__table-data">GNR76287</td>
-                        <td class="content__table-data">Metros</td>
-                        <td class="content__table-data">22</td>
-                        <td class="content__table-data">$19.500</td>
-                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span
-                                class="content__status-enabled"></span>&nbsp; Deshabilitado:
-                            &nbsp;<span></span></td>
-                        <td class="content__table-data">
-                            <div class="content__icon-container">
-                                <div class="content__icon content__icon--blue" title="Editar">
-                                    <i class='bx bxs-edit edit-button'></i>
-                                </div>
-                                <div class="content__icon content__icon--red" title="Eliminar">
-                                    <i class='bx bxs-trash'></i>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="content__table-row">
-                        <td class="content__table-data">Mallas protectoras</td>
-                        <td class="content__table-data">USR76284</td>
-                        <td class="content__table-data">Metros</td>
-                        <td class="content__table-data">17</td>
-                        <td class="content__table-data">$5.000</td>
-                        <td class="content__table-data content__table-data--status">Habilitado:
-                            &nbsp;<span></span>&nbsp; Deshabilitado: &nbsp;<span
-                                class="content__status-disabled"></span></td>
-                        <td class="content__table-data">
-                            <div class="content__icon-container">
-                                <div class="content__icon content__icon--blue" title="Editar">
-                                    <i class='bx bxs-edit edit-button'></i>
-                                </div>
-                                <div class="content__icon content__icon--red" title="Eliminar">
-                                    <i class='bx bxs-trash'></i>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="content__table-row">
-                        <td class="content__table-data">Invernadero de Plástico</td>
-                        <td class="content__table-data">USR76286</td>
-                        <td class="content__table-data">Metro Cubico</td>
-                        <td class="content__table-data">12</td>
-                        <td class="content__table-data">$5.000</td>
-                        <td class="content__table-data content__table-data--status">Habilitado: &nbsp;<span
-                                class="content__status-enabled"></span>&nbsp; Deshabilitado:
-                            &nbsp;<span></span></td>
-                        <td class="content__table-data">
-                            <div class="content__icon-container">
-                                <div class="content__icon content__icon--blue" title="Editar">
-                                    <i class='bx bxs-edit edit-button'></i>
-                                </div>
-                                <div class="content__icon content__icon--red" title="Eliminar">
-                                    <i class='bx bxs-trash'></i>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
 
-    </main>
-
-    <!-- Modal de Edición -->
-    <div class="modal" id="editInsumoModal">
+    <!-- Modal para crear/editar insumo -->
+    <div class="modal" id="insumoModal">
         <div class="modal__content">
             <div class="modal__header">
-                <h2 class="modal__title">Editar Insumo</h2>
-                <span class="modal__close" id="closeEditModal">&times;</span>
+                <h2 class="modal__title" id="modalTitle">Nuevo Insumo</h2>
+                <button class="modal__close" id="closeModal">
+                    <i class='bx bx-x'></i>
+                </button>
             </div>
             <div class="modal__body">
-                <form id="editInsumoForm" class="form">
-                    <div class="form__field">
-                        <label class="form__label" for="editNombre">Nombre:</label>
-                        <input class="form__input" type="text" id="editNombre" required>
+                <form id="insumoForm" class="form">
+                    <input type="hidden" id="insumoId">
+                    
+                    <div class="form__group">
+                        <label class="form__label" for="nombre">Nombre</label>
+                        <input type="text" class="form__input" id="nombre" name="nombre" required>
                     </div>
-                    <div class="form__field">
-                        <label class="form__label" for="editUnidad">Unidad de medida:</label>
-                        <select class="form__select" id="editUnidad">
-                            <option value="Gramos">Gramos</option>
-                            <option value="Kilos">Kilos</option>
-                            <option value="Metros">Metros</option>
-                            <option value="Metro Cubico">Metro Cúbico</option>
-                            <option value="Personal de Apoyo">Personal de Apoyo</option>
+                    
+                    <div class="form__group">
+                        <label class="form__label" for="valor_unitario">Valor Unitario</label>
+                        <input type="number" class="form__input" id="valor_unitario" name="valor_unitario" min="0" step="0.01" required>
+                    </div>
+                    
+                    <div class="form__group">
+                        <label class="form__label" for="cantidad">Cantidad</label>
+                        <input type="number" class="form__input" id="cantidad" name="cantidad" min="0" required>
+                    </div>
+                    
+                    <div class="form__group">
+                        <label class="form__label" for="unidad">Unidad</label>
+                        <select class="form__select" id="unidad" name="unidad" required>
+                            <option value="">Seleccionar unidad</option>
+                            <option value="kilo">Kilo</option>
+                            <option value="gramos">Gramos</option>
+                            <option value="pascal">Pascal</option>
+                            <option value="metros">Metros</option>
                         </select>
                     </div>
-                    <div class="form__field">
-                        <label class="form__label" for="editCantidad">Cantidad:</label>
-                        <input class="form__input" type="number" id="editCantidad" required>
+                    
+                    <div class="form__group">
+                        <label class="form__label" for="descripcion">Descripción</label>
+                        <textarea class="form__input" id="descripcion" name="descripcion" rows="3"></textarea>
                     </div>
-                    <div class="form__field">
-                        <label class="form__label" for="editValor">Valor Unitario:</label>
-                        <input class="form__input" type="number" id="editValor" required>
+                    
+                    <div class="form__group">
+                        <label class="form__label" for="imagen">Imagen</label>
+                        <input type="file" class="form__input" id="imagen" name="imagen" accept="image/*">
+                        <small class="form__help">Seleccione una imagen para el insumo (opcional)</small>
                     </div>
-                    <div class="form__field">
-                        <label class="form__label" for="editEstado">Estado:</label>
-                        <select class="form__select" id="editEstado">
-                            <option value="habilitado">Habilitado</option>
-                            <option value="deshabilitado">Deshabilitado</option>
-                        </select>
+                    
+                    <div class="form__actions">
+                        <button type="button" class="button button--secondary" id="cancelForm">Cancelar</button>
+                        <button type="submit" class="button button--primary">Guardar</button>
                     </div>
                 </form>
             </div>
-            <div class="modal__footer">
-                <button class="form__button" id="saveEditInsumo">Guardar Cambios</button>
+        </div>
+    </div>
+
+    <!-- Modal para ver detalles de insumo -->
+    <div class="modal" id="detailsModal">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h2 class="modal__title">Detalles del Insumo</h2>
+                <button class="modal__close" id="closeDetailsModal">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+            <div class="modal__body">
+                <div class="user-details">
+                    <div class="user-details__avatar">
+                        <i class='bx bxs-package'></i>
+                    </div>
+                    <div class="user-details__info">
+                        <div class="user-details__item">
+                            <span class="user-details__label">ID:</span>
+                            <span class="user-details__value" id="detailsId"></span>
+                        </div>
+                        <div class="user-details__item">
+                            <span class="user-details__label">Nombre:</span>
+                            <span class="user-details__value" id="detailsNombre"></span>
+                        </div>
+                        <div class="user-details__item">
+                            <span class="user-details__label">Valor Unitario:</span>
+                            <span class="user-details__value" id="detailsValorUnitario"></span>
+                        </div>
+                        <div class="user-details__item">
+                            <span class="user-details__label">Cantidad:</span>
+                            <span class="user-details__value" id="detailsCantidad"></span>
+                        </div>
+                        <div class="user-details__item">
+                            <span class="user-details__label">Unidad:</span>
+                            <span class="user-details__value" id="detailsUnidad"></span>
+                        </div>
+                        <div class="user-details__item">
+                            <span class="user-details__label">Descripción:</span>
+                            <span class="user-details__value" id="detailsDescripcion"></span>
+                        </div>
+                        <div class="user-details__item">
+                            <span class="user-details__label">Fecha de Registro:</span>
+                            <span class="user-details__value" id="detailsFechaRegistro"></span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-</body>
+    <!-- Modal de confirmación -->
+    <div class="modal" id="confirmModal">
+        <div class="modal__content modal__content--sm">
+            <div class="modal__header">
+                <h2 class="modal__title" id="confirmTitle">Confirmar acción</h2>
+                <button class="modal__close" id="closeConfirmModal">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+            <div class="modal__body">
+                <p id="confirmMessage">¿Estás seguro de realizar esta acción?</p>
+                <div class="form__actions">
+                    <button type="button" class="button button--secondary" id="cancelConfirm">Cancelar</button>
+                    <button type="button" class="button button--danger" id="confirmAction">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Toast para notificaciones -->
+    <div class="toast" id="toast">
+        <div class="toast__content">
+            <i class='bx bx-check-circle toast__icon toast__icon--success' id="toastIcon"></i>
+            <div class="toast__message" id="toastMessage">Operación exitosa</div>
+        </div>
+        <button class="toast__close" id="closeToast">
+            <i class='bx bx-x'></i>
+        </button>
+    </div>
+
+    <script src="/frontend/JS/insumos.js"></script>
+</body>
 </html>

@@ -1,4 +1,4 @@
-// backend/index.js o app.js
+/*// backend/index.js o app.js
 const express = require('express');
 const app = express();
 

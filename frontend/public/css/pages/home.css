@@ -1,5 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Quicksand:wght@300..700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
+html {
+    font-size: 95%; /* Aumenta el tamaño base en un 15% */
+}
 
 * {
     margin: 0;
@@ -28,11 +31,14 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    max-width: 120rem;
+    margin: 0 auto;
 }
 
 .nav__logo-img {
-    height: 4rem;
+    height: 4.6rem; /* Aumentado de 4rem */
     width: auto;
+    margin-right: 30rem;
 }
 .nav__toggle {
     display: none;
@@ -65,14 +71,20 @@ body {
 /* Hero Section */
 .main {
     margin-top: 7.2rem;
+    max-width: 120rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 2rem;
 }
 
 .hero {
     display: flex;
     align-items: center;
+    justify-content: center;
     min-height: calc(100vh - 7.2rem);
     padding: 2rem;
-    background-color: var(--secundary-50);
+    max-width: 120rem;
+    margin: 0 auto;
 }
 
 .hero__content {
@@ -81,14 +93,14 @@ body {
 }
 
 .hero__title {
-    font-size: 3.5rem;
+    font-size: 4rem; /* Aumentado de 3.5rem */
     font-weight: 700;
     margin-bottom: 1rem;
     color: var(--text-color);
 }
 
 .hero__text {
-    font-size: 1.25rem;
+    font-size: 1.4rem; /* Aumentado de 1.25rem */
     margin-bottom: 2rem;
 }
 
@@ -162,13 +174,14 @@ body {
 /* Features Section */
 .features {
     padding: 4rem 2rem;
-    background-color: var(--white);
+    max-width: 120rem;
+    margin: 0 auto;
 }
 
 .features__title {
     text-align: center;
-    font-size: 2.5rem;
-    margin-bottom: 3rem;
+    font-size: 2.9rem; /* Aumentado de 2.5rem */
+    margin-bottom: 3.45rem; /* Aumentado proporcionalmente */
 }
 
 .features__grid {
@@ -233,7 +246,8 @@ body {
 /* Dashboard Preview */
 .dashboard-preview {
     padding: 4rem 2rem;
-    background-color: var(--gray-50);
+    max-width: 120rem;
+    margin: 0 auto;
 }
 
 .dashboard-preview__title {
@@ -293,6 +307,7 @@ body {
 .footer__content {
     max-width: 120rem;
     margin: 0 auto;
+    padding: 0 2rem;
     text-align: center;
 }
 
@@ -352,6 +367,7 @@ body {
     .hero {
         flex-direction: column;
         text-align: center;
+        padding: 2rem 1rem;
     }
 
     .hero__content,
@@ -360,7 +376,7 @@ body {
     }
 
     .hero__title {
-        font-size: 2.5rem;
+        font-size: 2.9rem; /* Aumentado de 2.5rem */
     }
 
     .features__grid {
@@ -378,6 +394,14 @@ body {
 
     .feature-card__list {
         padding-left: 0;
+    }
+
+    .features, .dashboard-preview {
+        padding: 2rem 1rem;
+    }
+
+    .main {
+        padding: 0 1rem;
     }
 }
 

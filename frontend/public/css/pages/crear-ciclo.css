@@ -1,0 +1,178 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: var(--main-font);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(2rem); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+body {
+    background: linear-gradient(135deg, var(--primary-50), var(--gray-50));
+    min-height: 100vh;
+    font-size: var(--fs-xs);
+    line-height: 1.5;
+}
+
+.ciclo {
+    animation: fadeIn 0.6s ease-out;
+    max-width: 80rem;
+    margin: 2rem auto;
+    padding: 3rem;
+    background-color: var(--white);
+    border-radius: 1.2rem;
+    box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(1rem);
+    border: 0.1rem solid rgba(255, 255, 255, 0.2);
+}
+
+.ciclo__titulo {
+    color: var(--gray-800);
+    font-size: var(--fs-lg);
+    margin-bottom: 3rem;
+    text-align: center;
+    position: relative;
+}
+
+.ciclo__titulo::after {
+    content: '';
+    position: absolute;
+    bottom: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6rem;
+    height: 0.3rem;
+    background: linear-gradient(90deg, var(--primary-700), var(--primary-500));
+    border-radius: 1rem;
+}
+
+.ciclo__titulo i {
+    color: var(--primary-900);
+    margin-right: 1rem;
+}
+
+.ciclo__form {
+    display: grid;
+    gap: 2rem;
+}
+
+.ciclo__form-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+a{
+    text-decoration: none;
+    color: var(--black);
+    font-weight: 600;
+}
+
+.ciclo__label {
+    color: var(--gray-700);
+    font-size: var(--fs-xs);
+}
+
+.ciclo__label i {
+    color: var(--primary-800);
+    margin-right: 0.5rem;
+}
+
+.ciclo__input,
+.ciclo__textarea,
+.ciclo__select {
+    padding: 1.2rem;
+    border: 0.2rem solid var(--gray-100);
+    border-radius: 0.8rem;
+    font-size: var(--fs-xs);
+    transition: all 0.3s ease;
+    background-color: var(--gray-50);
+}
+
+.ciclo__input:hover,
+.ciclo__textarea:hover,
+.ciclo__select:hover {
+    border-color: var(--primary-400);
+    background-color: var(--white);
+}
+
+.ciclo__input:focus,
+.ciclo__textarea:focus,
+.ciclo__select:focus {
+    outline: none;
+    border-color: var(--primary-700);
+    box-shadow: 0 0 0 0.3rem var(--primary-100);
+    background-color: var(--white);
+}
+
+.ciclo__textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.ciclo__botones {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: flex-end;
+    margin-top: 3rem;
+}
+
+.ciclo__boton {
+    padding: 1.2rem 2.4rem;
+    border: none;
+    border-radius: 0.8rem;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.ciclo__boton--primario {
+    background: linear-gradient(135deg, var(--primary-800), var(--primary-900));
+    color: var(--white);
+}
+
+.ciclo__boton--primario:hover {
+    transform: translateY(-0.2rem);
+    box-shadow: 0 0.5rem 1.5rem rgba(85, 180, 12, 0.3);
+}
+
+.ciclo__boton--primario:active {
+    transform: translateY(0);
+}
+
+.ciclo__boton--secundario {
+    background: var(--gray-100);
+    color: var(--gray-800);
+}
+
+.ciclo__boton--secundario:hover {
+    background: var(--gray-200);
+    transform: translateY(-0.2rem);
+}
+
+@media (max-width: 768px) {
+    .ciclo {
+        margin: 1rem;
+        padding: 2rem;
+    }
+    
+    .ciclo__titulo {
+        font-size: var(--fs-md);
+    }
+
+    .ciclo__label {
+        font-size: var(--fs-xxs);
+    }
+
+    .ciclo__input,
+    .ciclo__textarea,
+    .ciclo__select,
+    .ciclo__boton {
+        font-size: var(--fs-xxs);
+    }
+}
